@@ -21,7 +21,7 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import {SinonStub} from 'sinon';
 import {describe, it} from 'mocha';
-import * as featurestoreserviceModule from '../src';
+import * as vertexragdataserviceModule from '../src';
 
 import {PassThrough} from 'stream';
 
@@ -165,18 +165,18 @@ function stubAsyncIterationCall<ResponseType>(
   return sinon.stub().returns(asyncIterable);
 }
 
-describe('v1.FeaturestoreServiceClient', () => {
+describe('v1.VertexRagDataServiceClient', () => {
   describe('Common methods', () => {
     it('has apiEndpoint', () => {
       const client =
-        new featurestoreserviceModule.v1.FeaturestoreServiceClient();
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient();
       const apiEndpoint = client.apiEndpoint;
       assert.strictEqual(apiEndpoint, 'aiplatform.googleapis.com');
     });
 
     it('has universeDomain', () => {
       const client =
-        new featurestoreserviceModule.v1.FeaturestoreServiceClient();
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient();
       const universeDomain = client.universeDomain;
       assert.strictEqual(universeDomain, 'googleapis.com');
     });
@@ -188,7 +188,7 @@ describe('v1.FeaturestoreServiceClient', () => {
       it('throws DeprecationWarning if static servicePath is used', () => {
         const stub = sinon.stub(process, 'emitWarning');
         const servicePath =
-          featurestoreserviceModule.v1.FeaturestoreServiceClient.servicePath;
+          vertexragdataserviceModule.v1.VertexRagDataServiceClient.servicePath;
         assert.strictEqual(servicePath, 'aiplatform.googleapis.com');
         assert(stub.called);
         stub.restore();
@@ -197,24 +197,26 @@ describe('v1.FeaturestoreServiceClient', () => {
       it('throws DeprecationWarning if static apiEndpoint is used', () => {
         const stub = sinon.stub(process, 'emitWarning');
         const apiEndpoint =
-          featurestoreserviceModule.v1.FeaturestoreServiceClient.apiEndpoint;
+          vertexragdataserviceModule.v1.VertexRagDataServiceClient.apiEndpoint;
         assert.strictEqual(apiEndpoint, 'aiplatform.googleapis.com');
         assert(stub.called);
         stub.restore();
       });
     }
     it('sets apiEndpoint according to universe domain camelCase', () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {universeDomain: 'example.com'}
-      );
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
+          universeDomain: 'example.com',
+        });
       const servicePath = client.apiEndpoint;
       assert.strictEqual(servicePath, 'aiplatform.example.com');
     });
 
     it('sets apiEndpoint according to universe domain snakeCase', () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {universe_domain: 'example.com'}
-      );
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
+          universe_domain: 'example.com',
+        });
       const servicePath = client.apiEndpoint;
       assert.strictEqual(servicePath, 'aiplatform.example.com');
     });
@@ -225,7 +227,7 @@ describe('v1.FeaturestoreServiceClient', () => {
           const saved = process.env['GOOGLE_CLOUD_UNIVERSE_DOMAIN'];
           process.env['GOOGLE_CLOUD_UNIVERSE_DOMAIN'] = 'example.com';
           const client =
-            new featurestoreserviceModule.v1.FeaturestoreServiceClient();
+            new vertexragdataserviceModule.v1.VertexRagDataServiceClient();
           const servicePath = client.apiEndpoint;
           assert.strictEqual(servicePath, 'aiplatform.example.com');
           if (saved) {
@@ -239,7 +241,7 @@ describe('v1.FeaturestoreServiceClient', () => {
           const saved = process.env['GOOGLE_CLOUD_UNIVERSE_DOMAIN'];
           process.env['GOOGLE_CLOUD_UNIVERSE_DOMAIN'] = 'example.com';
           const client =
-            new featurestoreserviceModule.v1.FeaturestoreServiceClient({
+            new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
               universeDomain: 'configured.example.com',
             });
           const servicePath = client.apiEndpoint;
@@ -254,7 +256,7 @@ describe('v1.FeaturestoreServiceClient', () => {
     }
     it('does not allow setting both universeDomain and universe_domain', () => {
       assert.throws(() => {
-        new featurestoreserviceModule.v1.FeaturestoreServiceClient({
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           universe_domain: 'example.com',
           universeDomain: 'example.net',
         });
@@ -262,60 +264,57 @@ describe('v1.FeaturestoreServiceClient', () => {
     });
 
     it('has port', () => {
-      const port = featurestoreserviceModule.v1.FeaturestoreServiceClient.port;
+      const port =
+        vertexragdataserviceModule.v1.VertexRagDataServiceClient.port;
       assert(port);
       assert(typeof port === 'number');
     });
 
     it('should create a client with no option', () => {
       const client =
-        new featurestoreserviceModule.v1.FeaturestoreServiceClient();
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient();
       assert(client);
     });
 
     it('should create a client with gRPC fallback', () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           fallback: true,
-        }
-      );
+        });
       assert(client);
     });
 
     it('has initialize method and supports deferred initialization', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
-      assert.strictEqual(client.featurestoreServiceStub, undefined);
+        });
+      assert.strictEqual(client.vertexRagDataServiceStub, undefined);
       await client.initialize();
-      assert(client.featurestoreServiceStub);
+      assert(client.vertexRagDataServiceStub);
     });
 
     it('has close method for the initialized client', done => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
-      assert(client.featurestoreServiceStub);
+      assert(client.vertexRagDataServiceStub);
       client.close().then(() => {
         done();
       });
     });
 
     it('has close method for the non-initialized client', done => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
-      assert.strictEqual(client.featurestoreServiceStub, undefined);
+        });
+      assert.strictEqual(client.vertexRagDataServiceStub, undefined);
       client.close().then(() => {
         done();
       });
@@ -323,12 +322,11 @@ describe('v1.FeaturestoreServiceClient', () => {
 
     it('has getProjectId method', async () => {
       const fakeProjectId = 'fake-project-id';
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.auth.getProjectId = sinon.stub().resolves(fakeProjectId);
       const result = await client.getProjectId();
       assert.strictEqual(result, fakeProjectId);
@@ -337,12 +335,11 @@ describe('v1.FeaturestoreServiceClient', () => {
 
     it('has getProjectId method with callback', async () => {
       const fakeProjectId = 'fake-project-id';
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.auth.getProjectId = sinon
         .stub()
         .callsArgWith(0, null, fakeProjectId);
@@ -360,68 +357,66 @@ describe('v1.FeaturestoreServiceClient', () => {
     });
   });
 
-  describe('getFeaturestore', () => {
-    it('invokes getFeaturestore without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('getRagCorpus', () => {
+    it('invokes getRagCorpus without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.GetRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.GetRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.Featurestore()
+        new protos.google.cloud.aiplatform.v1.RagCorpus()
       );
-      client.innerApiCalls.getFeaturestore = stubSimpleCall(expectedResponse);
-      const [response] = await client.getFeaturestore(request);
+      client.innerApiCalls.getRagCorpus = stubSimpleCall(expectedResponse);
+      const [response] = await client.getRagCorpus(request);
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.getFeaturestore as SinonStub
+        client.innerApiCalls.getRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.getFeaturestore as SinonStub
+        client.innerApiCalls.getRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes getFeaturestore without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes getRagCorpus without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.GetRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.GetRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.Featurestore()
+        new protos.google.cloud.aiplatform.v1.RagCorpus()
       );
-      client.innerApiCalls.getFeaturestore =
+      client.innerApiCalls.getRagCorpus =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.getFeaturestore(
+        client.getRagCorpus(
           request,
           (
             err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IFeaturestore | null
+            result?: protos.google.cloud.aiplatform.v1.IRagCorpus | null
           ) => {
             if (err) {
               reject(err);
@@ -434,132 +429,128 @@ describe('v1.FeaturestoreServiceClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.getFeaturestore as SinonStub
+        client.innerApiCalls.getRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.getFeaturestore as SinonStub
+        client.innerApiCalls.getRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes getFeaturestore with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes getRagCorpus with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.GetRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.GetRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.getFeaturestore = stubSimpleCall(
+      client.innerApiCalls.getRagCorpus = stubSimpleCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.getFeaturestore(request), expectedError);
+      await assert.rejects(client.getRagCorpus(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.getFeaturestore as SinonStub
+        client.innerApiCalls.getRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.getFeaturestore as SinonStub
+        client.innerApiCalls.getRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes getFeaturestore with closed client', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes getRagCorpus with closed client', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.GetRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.GetRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
-      await assert.rejects(client.getFeaturestore(request), expectedError);
+      await assert.rejects(client.getRagCorpus(request), expectedError);
     });
   });
 
-  describe('getEntityType', () => {
-    it('invokes getEntityType without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('uploadRagFile', () => {
+    it('invokes uploadRagFile without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.UploadRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetEntityTypeRequest',
-        ['name']
+        '.google.cloud.aiplatform.v1.UploadRagFileRequest',
+        ['parent']
       );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
+      request.parent = defaultValue1;
+      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.EntityType()
+        new protos.google.cloud.aiplatform.v1.UploadRagFileResponse()
       );
-      client.innerApiCalls.getEntityType = stubSimpleCall(expectedResponse);
-      const [response] = await client.getEntityType(request);
+      client.innerApiCalls.uploadRagFile = stubSimpleCall(expectedResponse);
+      const [response] = await client.uploadRagFile(request);
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.getEntityType as SinonStub
+        client.innerApiCalls.uploadRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.getEntityType as SinonStub
+        client.innerApiCalls.uploadRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes getEntityType without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes uploadRagFile without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.UploadRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetEntityTypeRequest',
-        ['name']
+        '.google.cloud.aiplatform.v1.UploadRagFileRequest',
+        ['parent']
       );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
+      request.parent = defaultValue1;
+      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.EntityType()
+        new protos.google.cloud.aiplatform.v1.UploadRagFileResponse()
       );
-      client.innerApiCalls.getEntityType =
+      client.innerApiCalls.uploadRagFile =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.getEntityType(
+        client.uploadRagFile(
           request,
           (
             err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IEntityType | null
+            result?: protos.google.cloud.aiplatform.v1.IUploadRagFileResponse | null
           ) => {
             if (err) {
               reject(err);
@@ -572,134 +563,128 @@ describe('v1.FeaturestoreServiceClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.getEntityType as SinonStub
+        client.innerApiCalls.uploadRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.getEntityType as SinonStub
+        client.innerApiCalls.uploadRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes getEntityType with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes uploadRagFile with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.UploadRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.UploadRagFileRequest',
+        ['parent']
+      );
+      request.parent = defaultValue1;
+      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
+      const expectedError = new Error('expected');
+      client.innerApiCalls.uploadRagFile = stubSimpleCall(
+        undefined,
+        expectedError
+      );
+      await assert.rejects(client.uploadRagFile(request), expectedError);
+      const actualRequest = (
+        client.innerApiCalls.uploadRagFile as SinonStub
+      ).getCall(0).args[0];
+      assert.deepStrictEqual(actualRequest, request);
+      const actualHeaderRequestParams = (
+        client.innerApiCalls.uploadRagFile as SinonStub
+      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
+    });
+
+    it('invokes uploadRagFile with closed client', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
+          credentials: {client_email: 'bogus', private_key: 'bogus'},
+          projectId: 'bogus',
+        });
+      client.initialize();
+      const request = generateSampleMessage(
+        new protos.google.cloud.aiplatform.v1.UploadRagFileRequest()
+      );
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.aiplatform.v1.UploadRagFileRequest',
+        ['parent']
+      );
+      request.parent = defaultValue1;
+      const expectedError = new Error('The client has already been closed.');
+      client.close();
+      await assert.rejects(client.uploadRagFile(request), expectedError);
+    });
+  });
+
+  describe('getRagFile', () => {
+    it('invokes getRagFile without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
+          credentials: {client_email: 'bogus', private_key: 'bogus'},
+          projectId: 'bogus',
+        });
+      client.initialize();
+      const request = generateSampleMessage(
+        new protos.google.cloud.aiplatform.v1.GetRagFileRequest()
+      );
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.aiplatform.v1.GetRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.getEntityType = stubSimpleCall(
-        undefined,
-        expectedError
+      const expectedResponse = generateSampleMessage(
+        new protos.google.cloud.aiplatform.v1.RagFile()
       );
-      await assert.rejects(client.getEntityType(request), expectedError);
+      client.innerApiCalls.getRagFile = stubSimpleCall(expectedResponse);
+      const [response] = await client.getRagFile(request);
+      assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.getEntityType as SinonStub
+        client.innerApiCalls.getRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.getEntityType as SinonStub
+        client.innerApiCalls.getRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes getEntityType with closed client', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes getRagFile without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.GetRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.GetRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
-      const expectedError = new Error('The client has already been closed.');
-      client.close();
-      await assert.rejects(client.getEntityType(request), expectedError);
-    });
-  });
-
-  describe('updateEntityType', () => {
-    it('invokes updateEntityType without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateEntityTypeRequest()
-      );
-      request.entityType ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateEntityTypeRequest',
-        ['entityType', 'name']
-      );
-      request.entityType.name = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type.name=${defaultValue1}`;
+      const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.EntityType()
+        new protos.google.cloud.aiplatform.v1.RagFile()
       );
-      client.innerApiCalls.updateEntityType = stubSimpleCall(expectedResponse);
-      const [response] = await client.updateEntityType(request);
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateEntityType as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateEntityType as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes updateEntityType without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateEntityTypeRequest()
-      );
-      request.entityType ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateEntityTypeRequest',
-        ['entityType', 'name']
-      );
-      request.entityType.name = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type.name=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.EntityType()
-      );
-      client.innerApiCalls.updateEntityType =
+      client.innerApiCalls.getRagFile =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.updateEntityType(
+        client.getRagFile(
           request,
           (
             err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IEntityType | null
+            result?: protos.google.cloud.aiplatform.v1.IRagFile | null
           ) => {
             if (err) {
               reject(err);
@@ -712,366 +697,81 @@ describe('v1.FeaturestoreServiceClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.updateEntityType as SinonStub
+        client.innerApiCalls.getRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.updateEntityType as SinonStub
+        client.innerApiCalls.getRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes updateEntityType with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes getRagFile with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateEntityTypeRequest()
-      );
-      request.entityType ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateEntityTypeRequest',
-        ['entityType', 'name']
-      );
-      request.entityType.name = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type.name=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.updateEntityType = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.updateEntityType(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.updateEntityType as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateEntityType as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes updateEntityType with closed client', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateEntityTypeRequest()
-      );
-      request.entityType ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateEntityTypeRequest',
-        ['entityType', 'name']
-      );
-      request.entityType.name = defaultValue1;
-      const expectedError = new Error('The client has already been closed.');
-      client.close();
-      await assert.rejects(client.updateEntityType(request), expectedError);
-    });
-  });
-
-  describe('getFeature', () => {
-    it('invokes getFeature without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeatureRequest()
+        new protos.google.cloud.aiplatform.v1.GetRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeatureRequest',
-        ['name']
-      );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.Feature()
-      );
-      client.innerApiCalls.getFeature = stubSimpleCall(expectedResponse);
-      const [response] = await client.getFeature(request);
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes getFeature without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeatureRequest',
-        ['name']
-      );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.Feature()
-      );
-      client.innerApiCalls.getFeature =
-        stubSimpleCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.getFeature(
-          request,
-          (
-            err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IFeature | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const response = await promise;
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes getFeature with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeatureRequest',
+        '.google.cloud.aiplatform.v1.GetRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.getFeature = stubSimpleCall(
+      client.innerApiCalls.getRagFile = stubSimpleCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.getFeature(request), expectedError);
+      await assert.rejects(client.getRagFile(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.getFeature as SinonStub
+        client.innerApiCalls.getRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.getFeature as SinonStub
+        client.innerApiCalls.getRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes getFeature with closed client', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes getRagFile with closed client', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.GetFeatureRequest()
+        new protos.google.cloud.aiplatform.v1.GetRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.GetFeatureRequest',
+        '.google.cloud.aiplatform.v1.GetRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
-      await assert.rejects(client.getFeature(request), expectedError);
+      await assert.rejects(client.getRagFile(request), expectedError);
     });
   });
 
-  describe('updateFeature', () => {
-    it('invokes updateFeature without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('createRagCorpus', () => {
+    it('invokes createRagCorpus without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeatureRequest()
-      );
-      request.feature ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeatureRequest',
-        ['feature', 'name']
-      );
-      request.feature.name = defaultValue1;
-      const expectedHeaderRequestParams = `feature.name=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.Feature()
-      );
-      client.innerApiCalls.updateFeature = stubSimpleCall(expectedResponse);
-      const [response] = await client.updateFeature(request);
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes updateFeature without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeatureRequest()
-      );
-      request.feature ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeatureRequest',
-        ['feature', 'name']
-      );
-      request.feature.name = defaultValue1;
-      const expectedHeaderRequestParams = `feature.name=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.Feature()
-      );
-      client.innerApiCalls.updateFeature =
-        stubSimpleCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.updateFeature(
-          request,
-          (
-            err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IFeature | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const response = await promise;
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes updateFeature with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeatureRequest()
-      );
-      request.feature ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeatureRequest',
-        ['feature', 'name']
-      );
-      request.feature.name = defaultValue1;
-      const expectedHeaderRequestParams = `feature.name=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.updateFeature = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.updateFeature(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.updateFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes updateFeature with closed client', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeatureRequest()
-      );
-      request.feature ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeatureRequest',
-        ['feature', 'name']
-      );
-      request.feature.name = defaultValue1;
-      const expectedError = new Error('The client has already been closed.');
-      client.close();
-      await assert.rejects(client.updateFeature(request), expectedError);
-    });
-  });
-
-  describe('createFeaturestore', () => {
-    it('invokes createFeaturestore without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.CreateRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.CreateRagCorpusRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -1079,34 +779,33 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.createFeaturestore =
+      client.innerApiCalls.createRagCorpus =
         stubLongRunningCall(expectedResponse);
-      const [operation] = await client.createFeaturestore(request);
+      const [operation] = await client.createRagCorpus(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes createFeaturestore without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes createRagCorpus without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.CreateRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.CreateRagCorpusRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -1114,16 +813,16 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.createFeaturestore =
+      client.innerApiCalls.createRagCorpus =
         stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.createFeaturestore(
+        client.createRagCorpus(
           request,
           (
             err?: Error | null,
             result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IFeaturestore,
-              protos.google.cloud.aiplatform.v1.ICreateFeaturestoreOperationMetadata
+              protos.google.cloud.aiplatform.v1.IRagCorpus,
+              protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
             > | null
           ) => {
             if (err) {
@@ -1135,96 +834,93 @@ describe('v1.FeaturestoreServiceClient', () => {
         );
       });
       const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IFeaturestore,
-        protos.google.cloud.aiplatform.v1.ICreateFeaturestoreOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes createFeaturestore with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes createRagCorpus with call error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.CreateRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.CreateRagCorpusRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createFeaturestore = stubLongRunningCall(
+      client.innerApiCalls.createRagCorpus = stubLongRunningCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.createFeaturestore(request), expectedError);
+      await assert.rejects(client.createRagCorpus(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes createFeaturestore with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes createRagCorpus with LRO error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.CreateRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.CreateRagCorpusRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createFeaturestore = stubLongRunningCall(
+      client.innerApiCalls.createRagCorpus = stubLongRunningCall(
         undefined,
         undefined,
         expectedError
       );
-      const [operation] = await client.createFeaturestore(request);
+      const [operation] = await client.createRagCorpus(request);
       await assert.rejects(operation.promise(), expectedError);
       const actualRequest = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeaturestore as SinonStub
+        client.innerApiCalls.createRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes checkCreateFeaturestoreProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkCreateRagCorpusProgress without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedResponse = generateSampleMessage(
         new operationsProtos.google.longrunning.Operation()
@@ -1234,7 +930,7 @@ describe('v1.FeaturestoreServiceClient', () => {
       expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkCreateFeaturestoreProgress(
+      const decodedOperation = await client.checkCreateRagCorpusProgress(
         expectedResponse.name
       );
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
@@ -1242,13 +938,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
 
-    it('invokes checkCreateFeaturestoreProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkCreateRagCorpusProgress with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedError = new Error('expected');
 
@@ -1257,81 +952,79 @@ describe('v1.FeaturestoreServiceClient', () => {
         expectedError
       );
       await assert.rejects(
-        client.checkCreateFeaturestoreProgress(''),
+        client.checkCreateRagCorpusProgress(''),
         expectedError
       );
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
 
-  describe('updateFeaturestore', () => {
-    it('invokes updateFeaturestore without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('updateRagCorpus', () => {
+    it('invokes updateRagCorpus without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.UpdateRagCorpusRequest()
       );
-      request.featurestore ??= {};
+      request.ragCorpus ??= {};
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest',
-        ['featurestore', 'name']
+        '.google.cloud.aiplatform.v1.UpdateRagCorpusRequest',
+        ['ragCorpus', 'name']
       );
-      request.featurestore.name = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore.name=${defaultValue1}`;
+      request.ragCorpus.name = defaultValue1;
+      const expectedHeaderRequestParams = `rag_corpus.name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.updateFeaturestore =
+      client.innerApiCalls.updateRagCorpus =
         stubLongRunningCall(expectedResponse);
-      const [operation] = await client.updateFeaturestore(request);
+      const [operation] = await client.updateRagCorpus(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes updateFeaturestore without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes updateRagCorpus without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.UpdateRagCorpusRequest()
       );
-      request.featurestore ??= {};
+      request.ragCorpus ??= {};
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest',
-        ['featurestore', 'name']
+        '.google.cloud.aiplatform.v1.UpdateRagCorpusRequest',
+        ['ragCorpus', 'name']
       );
-      request.featurestore.name = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore.name=${defaultValue1}`;
+      request.ragCorpus.name = defaultValue1;
+      const expectedHeaderRequestParams = `rag_corpus.name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.updateFeaturestore =
+      client.innerApiCalls.updateRagCorpus =
         stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.updateFeaturestore(
+        client.updateRagCorpus(
           request,
           (
             err?: Error | null,
             result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IFeaturestore,
-              protos.google.cloud.aiplatform.v1.IUpdateFeaturestoreOperationMetadata
+              protos.google.cloud.aiplatform.v1.IRagCorpus,
+              protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
             > | null
           ) => {
             if (err) {
@@ -1343,98 +1036,95 @@ describe('v1.FeaturestoreServiceClient', () => {
         );
       });
       const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IFeaturestore,
-        protos.google.cloud.aiplatform.v1.IUpdateFeaturestoreOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes updateFeaturestore with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes updateRagCorpus with call error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.UpdateRagCorpusRequest()
       );
-      request.featurestore ??= {};
+      request.ragCorpus ??= {};
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest',
-        ['featurestore', 'name']
+        '.google.cloud.aiplatform.v1.UpdateRagCorpusRequest',
+        ['ragCorpus', 'name']
       );
-      request.featurestore.name = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore.name=${defaultValue1}`;
+      request.ragCorpus.name = defaultValue1;
+      const expectedHeaderRequestParams = `rag_corpus.name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.updateFeaturestore = stubLongRunningCall(
+      client.innerApiCalls.updateRagCorpus = stubLongRunningCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.updateFeaturestore(request), expectedError);
+      await assert.rejects(client.updateRagCorpus(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes updateFeaturestore with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes updateRagCorpus with LRO error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.UpdateRagCorpusRequest()
       );
-      request.featurestore ??= {};
+      request.ragCorpus ??= {};
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.UpdateFeaturestoreRequest',
-        ['featurestore', 'name']
+        '.google.cloud.aiplatform.v1.UpdateRagCorpusRequest',
+        ['ragCorpus', 'name']
       );
-      request.featurestore.name = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore.name=${defaultValue1}`;
+      request.ragCorpus.name = defaultValue1;
+      const expectedHeaderRequestParams = `rag_corpus.name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.updateFeaturestore = stubLongRunningCall(
+      client.innerApiCalls.updateRagCorpus = stubLongRunningCall(
         undefined,
         undefined,
         expectedError
       );
-      const [operation] = await client.updateFeaturestore(request);
+      const [operation] = await client.updateRagCorpus(request);
       await assert.rejects(operation.promise(), expectedError);
       const actualRequest = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.updateFeaturestore as SinonStub
+        client.innerApiCalls.updateRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes checkUpdateFeaturestoreProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkUpdateRagCorpusProgress without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedResponse = generateSampleMessage(
         new operationsProtos.google.longrunning.Operation()
@@ -1444,7 +1134,7 @@ describe('v1.FeaturestoreServiceClient', () => {
       expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkUpdateFeaturestoreProgress(
+      const decodedOperation = await client.checkUpdateRagCorpusProgress(
         expectedResponse.name
       );
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
@@ -1452,13 +1142,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
 
-    it('invokes checkUpdateFeaturestoreProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkUpdateRagCorpusProgress with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedError = new Error('expected');
 
@@ -1467,27 +1156,26 @@ describe('v1.FeaturestoreServiceClient', () => {
         expectedError
       );
       await assert.rejects(
-        client.checkUpdateFeaturestoreProgress(''),
+        client.checkUpdateRagCorpusProgress(''),
         expectedError
       );
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
 
-  describe('deleteFeaturestore', () => {
-    it('invokes deleteFeaturestore without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('deleteRagCorpus', () => {
+    it('invokes deleteRagCorpus without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1495,34 +1183,33 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.deleteFeaturestore =
+      client.innerApiCalls.deleteRagCorpus =
         stubLongRunningCall(expectedResponse);
-      const [operation] = await client.deleteFeaturestore(request);
+      const [operation] = await client.deleteRagCorpus(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes deleteFeaturestore without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes deleteRagCorpus without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1530,10 +1217,10 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.deleteFeaturestore =
+      client.innerApiCalls.deleteRagCorpus =
         stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.deleteFeaturestore(
+        client.deleteRagCorpus(
           request,
           (
             err?: Error | null,
@@ -1557,90 +1244,87 @@ describe('v1.FeaturestoreServiceClient', () => {
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes deleteFeaturestore with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes deleteRagCorpus with call error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteFeaturestore = stubLongRunningCall(
+      client.innerApiCalls.deleteRagCorpus = stubLongRunningCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.deleteFeaturestore(request), expectedError);
+      await assert.rejects(client.deleteRagCorpus(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes deleteFeaturestore with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes deleteRagCorpus with LRO error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagCorpusRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeaturestoreRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagCorpusRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteFeaturestore = stubLongRunningCall(
+      client.innerApiCalls.deleteRagCorpus = stubLongRunningCall(
         undefined,
         undefined,
         expectedError
       );
-      const [operation] = await client.deleteFeaturestore(request);
+      const [operation] = await client.deleteRagCorpus(request);
       await assert.rejects(operation.promise(), expectedError);
       const actualRequest = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeaturestore as SinonStub
+        client.innerApiCalls.deleteRagCorpus as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes checkDeleteFeaturestoreProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkDeleteRagCorpusProgress without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedResponse = generateSampleMessage(
         new operationsProtos.google.longrunning.Operation()
@@ -1650,7 +1334,7 @@ describe('v1.FeaturestoreServiceClient', () => {
       expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkDeleteFeaturestoreProgress(
+      const decodedOperation = await client.checkDeleteRagCorpusProgress(
         expectedResponse.name
       );
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
@@ -1658,13 +1342,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
 
-    it('invokes checkDeleteFeaturestoreProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkDeleteRagCorpusProgress with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedError = new Error('expected');
 
@@ -1673,27 +1356,26 @@ describe('v1.FeaturestoreServiceClient', () => {
         expectedError
       );
       await assert.rejects(
-        client.checkDeleteFeaturestoreProgress(''),
+        client.checkDeleteRagCorpusProgress(''),
         expectedError
       );
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
 
-  describe('createEntityType', () => {
-    it('invokes createEntityType without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('importRagFiles', () => {
+    it('invokes importRagFiles without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.ImportRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.ImportRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -1701,34 +1383,33 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.createEntityType =
+      client.innerApiCalls.importRagFiles =
         stubLongRunningCall(expectedResponse);
-      const [operation] = await client.createEntityType(request);
+      const [operation] = await client.importRagFiles(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes createEntityType without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes importRagFiles without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.ImportRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.ImportRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -1736,16 +1417,16 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.createEntityType =
+      client.innerApiCalls.importRagFiles =
         stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.createEntityType(
+        client.importRagFiles(
           request,
           (
             err?: Error | null,
             result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IEntityType,
-              protos.google.cloud.aiplatform.v1.ICreateEntityTypeOperationMetadata
+              protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+              protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
             > | null
           ) => {
             if (err) {
@@ -1757,96 +1438,93 @@ describe('v1.FeaturestoreServiceClient', () => {
         );
       });
       const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IEntityType,
-        protos.google.cloud.aiplatform.v1.ICreateEntityTypeOperationMetadata
+        protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+        protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes createEntityType with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes importRagFiles with call error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.ImportRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.ImportRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createEntityType = stubLongRunningCall(
+      client.innerApiCalls.importRagFiles = stubLongRunningCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.createEntityType(request), expectedError);
+      await assert.rejects(client.importRagFiles(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes createEntityType with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes importRagFiles with LRO error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.ImportRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.ImportRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createEntityType = stubLongRunningCall(
+      client.innerApiCalls.importRagFiles = stubLongRunningCall(
         undefined,
         undefined,
         expectedError
       );
-      const [operation] = await client.createEntityType(request);
+      const [operation] = await client.importRagFiles(request);
       await assert.rejects(operation.promise(), expectedError);
       const actualRequest = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.createEntityType as SinonStub
+        client.innerApiCalls.importRagFiles as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes checkCreateEntityTypeProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkImportRagFilesProgress without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedResponse = generateSampleMessage(
         new operationsProtos.google.longrunning.Operation()
@@ -1856,7 +1534,7 @@ describe('v1.FeaturestoreServiceClient', () => {
       expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkCreateEntityTypeProgress(
+      const decodedOperation = await client.checkImportRagFilesProgress(
         expectedResponse.name
       );
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
@@ -1864,13 +1542,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
 
-    it('invokes checkCreateEntityTypeProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkImportRagFilesProgress with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedError = new Error('expected');
 
@@ -1879,27 +1556,26 @@ describe('v1.FeaturestoreServiceClient', () => {
         expectedError
       );
       await assert.rejects(
-        client.checkCreateEntityTypeProgress(''),
+        client.checkImportRagFilesProgress(''),
         expectedError
       );
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
 
-  describe('deleteEntityType', () => {
-    it('invokes deleteEntityType without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('deleteRagFile', () => {
+    it('invokes deleteRagFile without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1907,34 +1583,33 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.deleteEntityType =
+      client.innerApiCalls.deleteRagFile =
         stubLongRunningCall(expectedResponse);
-      const [operation] = await client.deleteEntityType(request);
+      const [operation] = await client.deleteRagFile(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes deleteEntityType without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes deleteRagFile without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1942,10 +1617,10 @@ describe('v1.FeaturestoreServiceClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.longrunning.Operation()
       );
-      client.innerApiCalls.deleteEntityType =
+      client.innerApiCalls.deleteRagFile =
         stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.deleteEntityType(
+        client.deleteRagFile(
           request,
           (
             err?: Error | null,
@@ -1969,90 +1644,87 @@ describe('v1.FeaturestoreServiceClient', () => {
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes deleteEntityType with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes deleteRagFile with call error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteEntityType = stubLongRunningCall(
+      client.innerApiCalls.deleteRagFile = stubLongRunningCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.deleteEntityType(request), expectedError);
+      await assert.rejects(client.deleteRagFile(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes deleteEntityType with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes deleteRagFile with LRO error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteEntityTypeRequest()
+        new protos.google.cloud.aiplatform.v1.DeleteRagFileRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteEntityTypeRequest',
+        '.google.cloud.aiplatform.v1.DeleteRagFileRequest',
         ['name']
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteEntityType = stubLongRunningCall(
+      client.innerApiCalls.deleteRagFile = stubLongRunningCall(
         undefined,
         undefined,
         expectedError
       );
-      const [operation] = await client.deleteEntityType(request);
+      const [operation] = await client.deleteRagFile(request);
       await assert.rejects(operation.promise(), expectedError);
       const actualRequest = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteEntityType as SinonStub
+        client.innerApiCalls.deleteRagFile as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes checkDeleteEntityTypeProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkDeleteRagFileProgress without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedResponse = generateSampleMessage(
         new operationsProtos.google.longrunning.Operation()
@@ -2062,7 +1734,7 @@ describe('v1.FeaturestoreServiceClient', () => {
       expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkDeleteEntityTypeProgress(
+      const decodedOperation = await client.checkDeleteRagFileProgress(
         expectedResponse.name
       );
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
@@ -2070,13 +1742,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
 
-    it('invokes checkDeleteEntityTypeProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes checkDeleteRagFileProgress with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const expectedError = new Error('expected');
 
@@ -2085,1536 +1756,89 @@ describe('v1.FeaturestoreServiceClient', () => {
         expectedError
       );
       await assert.rejects(
-        client.checkDeleteEntityTypeProgress(''),
+        client.checkDeleteRagFileProgress(''),
         expectedError
       );
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
 
-  describe('createFeature', () => {
-    it('invokes createFeature without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('listRagCorpora', () => {
+    it('invokes listRagCorpora without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeatureRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagCorporaRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeatureRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.createFeature =
-        stubLongRunningCall(expectedResponse);
-      const [operation] = await client.createFeature(request);
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes createFeature without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeatureRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.createFeature =
-        stubLongRunningCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.createFeature(
-          request,
-          (
-            err?: Error | null,
-            result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IFeature,
-              protos.google.cloud.aiplatform.v1.ICreateFeatureOperationMetadata
-            > | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IFeature,
-        protos.google.cloud.aiplatform.v1.ICreateFeatureOperationMetadata
-      >;
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes createFeature with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeatureRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.createFeature = stubLongRunningCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.createFeature(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes createFeature with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.CreateFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.CreateFeatureRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.createFeature = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError
-      );
-      const [operation] = await client.createFeature(request);
-      await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes checkCreateFeatureProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedResponse = generateSampleMessage(
-        new operationsProtos.google.longrunning.Operation()
-      );
-      expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
-
-      client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkCreateFeatureProgress(
-        expectedResponse.name
-      );
-      assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
-      assert(decodedOperation.metadata);
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-
-    it('invokes checkCreateFeatureProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedError = new Error('expected');
-
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.checkCreateFeatureProgress(''),
-        expectedError
-      );
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-  });
-
-  describe('batchCreateFeatures', () => {
-    it('invokes batchCreateFeatures without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.batchCreateFeatures =
-        stubLongRunningCall(expectedResponse);
-      const [operation] = await client.batchCreateFeatures(request);
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes batchCreateFeatures without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.batchCreateFeatures =
-        stubLongRunningCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.batchCreateFeatures(
-          request,
-          (
-            err?: Error | null,
-            result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IBatchCreateFeaturesResponse,
-              protos.google.cloud.aiplatform.v1.IBatchCreateFeaturesOperationMetadata
-            > | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IBatchCreateFeaturesResponse,
-        protos.google.cloud.aiplatform.v1.IBatchCreateFeaturesOperationMetadata
-      >;
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes batchCreateFeatures with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.batchCreateFeatures = stubLongRunningCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.batchCreateFeatures(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes batchCreateFeatures with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchCreateFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.batchCreateFeatures = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError
-      );
-      const [operation] = await client.batchCreateFeatures(request);
-      await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchCreateFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes checkBatchCreateFeaturesProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedResponse = generateSampleMessage(
-        new operationsProtos.google.longrunning.Operation()
-      );
-      expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
-
-      client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkBatchCreateFeaturesProgress(
-        expectedResponse.name
-      );
-      assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
-      assert(decodedOperation.metadata);
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-
-    it('invokes checkBatchCreateFeaturesProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedError = new Error('expected');
-
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.checkBatchCreateFeaturesProgress(''),
-        expectedError
-      );
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-  });
-
-  describe('deleteFeature', () => {
-    it('invokes deleteFeature without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureRequest',
-        ['name']
-      );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.deleteFeature =
-        stubLongRunningCall(expectedResponse);
-      const [operation] = await client.deleteFeature(request);
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes deleteFeature without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureRequest',
-        ['name']
-      );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.deleteFeature =
-        stubLongRunningCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.deleteFeature(
-          request,
-          (
-            err?: Error | null,
-            result?: LROperation<
-              protos.google.protobuf.IEmpty,
-              protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-            > | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const operation = (await promise) as LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >;
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes deleteFeature with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureRequest',
-        ['name']
-      );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.deleteFeature = stubLongRunningCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.deleteFeature(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes deleteFeature with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureRequest',
-        ['name']
-      );
-      request.name = defaultValue1;
-      const expectedHeaderRequestParams = `name=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.deleteFeature = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError
-      );
-      const [operation] = await client.deleteFeature(request);
-      await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeature as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes checkDeleteFeatureProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedResponse = generateSampleMessage(
-        new operationsProtos.google.longrunning.Operation()
-      );
-      expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
-
-      client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkDeleteFeatureProgress(
-        expectedResponse.name
-      );
-      assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
-      assert(decodedOperation.metadata);
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-
-    it('invokes checkDeleteFeatureProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedError = new Error('expected');
-
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.checkDeleteFeatureProgress(''),
-        expectedError
-      );
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-  });
-
-  describe('importFeatureValues', () => {
-    it('invokes importFeatureValues without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ImportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ImportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.importFeatureValues =
-        stubLongRunningCall(expectedResponse);
-      const [operation] = await client.importFeatureValues(request);
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes importFeatureValues without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ImportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ImportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.importFeatureValues =
-        stubLongRunningCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.importFeatureValues(
-          request,
-          (
-            err?: Error | null,
-            result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IImportFeatureValuesResponse,
-              protos.google.cloud.aiplatform.v1.IImportFeatureValuesOperationMetadata
-            > | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IImportFeatureValuesResponse,
-        protos.google.cloud.aiplatform.v1.IImportFeatureValuesOperationMetadata
-      >;
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes importFeatureValues with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ImportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ImportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.importFeatureValues = stubLongRunningCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.importFeatureValues(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes importFeatureValues with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ImportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ImportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.importFeatureValues = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError
-      );
-      const [operation] = await client.importFeatureValues(request);
-      await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes checkImportFeatureValuesProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedResponse = generateSampleMessage(
-        new operationsProtos.google.longrunning.Operation()
-      );
-      expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
-
-      client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkImportFeatureValuesProgress(
-        expectedResponse.name
-      );
-      assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
-      assert(decodedOperation.metadata);
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-
-    it('invokes checkImportFeatureValuesProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedError = new Error('expected');
-
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.checkImportFeatureValuesProgress(''),
-        expectedError
-      );
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-  });
-
-  describe('batchReadFeatureValues', () => {
-    it('invokes batchReadFeatureValues without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest',
-        ['featurestore']
-      );
-      request.featurestore = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.batchReadFeatureValues =
-        stubLongRunningCall(expectedResponse);
-      const [operation] = await client.batchReadFeatureValues(request);
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes batchReadFeatureValues without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest',
-        ['featurestore']
-      );
-      request.featurestore = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.batchReadFeatureValues =
-        stubLongRunningCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.batchReadFeatureValues(
-          request,
-          (
-            err?: Error | null,
-            result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IBatchReadFeatureValuesResponse,
-              protos.google.cloud.aiplatform.v1.IBatchReadFeatureValuesOperationMetadata
-            > | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IBatchReadFeatureValuesResponse,
-        protos.google.cloud.aiplatform.v1.IBatchReadFeatureValuesOperationMetadata
-      >;
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes batchReadFeatureValues with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest',
-        ['featurestore']
-      );
-      request.featurestore = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.batchReadFeatureValues = stubLongRunningCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.batchReadFeatureValues(request),
-        expectedError
-      );
-      const actualRequest = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes batchReadFeatureValues with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.BatchReadFeatureValuesRequest',
-        ['featurestore']
-      );
-      request.featurestore = defaultValue1;
-      const expectedHeaderRequestParams = `featurestore=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.batchReadFeatureValues = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError
-      );
-      const [operation] = await client.batchReadFeatureValues(request);
-      await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.batchReadFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes checkBatchReadFeatureValuesProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedResponse = generateSampleMessage(
-        new operationsProtos.google.longrunning.Operation()
-      );
-      expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
-
-      client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkBatchReadFeatureValuesProgress(
-        expectedResponse.name
-      );
-      assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
-      assert(decodedOperation.metadata);
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-
-    it('invokes checkBatchReadFeatureValuesProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedError = new Error('expected');
-
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.checkBatchReadFeatureValuesProgress(''),
-        expectedError
-      );
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-  });
-
-  describe('exportFeatureValues', () => {
-    it('invokes exportFeatureValues without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ExportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ExportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.exportFeatureValues =
-        stubLongRunningCall(expectedResponse);
-      const [operation] = await client.exportFeatureValues(request);
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes exportFeatureValues without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ExportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ExportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.exportFeatureValues =
-        stubLongRunningCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.exportFeatureValues(
-          request,
-          (
-            err?: Error | null,
-            result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IExportFeatureValuesResponse,
-              protos.google.cloud.aiplatform.v1.IExportFeatureValuesOperationMetadata
-            > | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IExportFeatureValuesResponse,
-        protos.google.cloud.aiplatform.v1.IExportFeatureValuesOperationMetadata
-      >;
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes exportFeatureValues with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ExportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ExportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.exportFeatureValues = stubLongRunningCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.exportFeatureValues(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes exportFeatureValues with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ExportFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ExportFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.exportFeatureValues = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError
-      );
-      const [operation] = await client.exportFeatureValues(request);
-      await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes checkExportFeatureValuesProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedResponse = generateSampleMessage(
-        new operationsProtos.google.longrunning.Operation()
-      );
-      expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
-
-      client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkExportFeatureValuesProgress(
-        expectedResponse.name
-      );
-      assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
-      assert(decodedOperation.metadata);
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-
-    it('invokes checkExportFeatureValuesProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedError = new Error('expected');
-
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.checkExportFeatureValuesProgress(''),
-        expectedError
-      );
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-  });
-
-  describe('deleteFeatureValues', () => {
-    it('invokes deleteFeatureValues without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.deleteFeatureValues =
-        stubLongRunningCall(expectedResponse);
-      const [operation] = await client.deleteFeatureValues(request);
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes deleteFeatureValues without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation()
-      );
-      client.innerApiCalls.deleteFeatureValues =
-        stubLongRunningCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.deleteFeatureValues(
-          request,
-          (
-            err?: Error | null,
-            result?: LROperation<
-              protos.google.cloud.aiplatform.v1.IDeleteFeatureValuesResponse,
-              protos.google.cloud.aiplatform.v1.IDeleteFeatureValuesOperationMetadata
-            > | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const operation = (await promise) as LROperation<
-        protos.google.cloud.aiplatform.v1.IDeleteFeatureValuesResponse,
-        protos.google.cloud.aiplatform.v1.IDeleteFeatureValuesOperationMetadata
-      >;
-      const [response] = await operation.promise();
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes deleteFeatureValues with call error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.deleteFeatureValues = stubLongRunningCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.deleteFeatureValues(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes deleteFeatureValues with LRO error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.DeleteFeatureValuesRequest',
-        ['entityType']
-      );
-      request.entityType = defaultValue1;
-      const expectedHeaderRequestParams = `entity_type=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.deleteFeatureValues = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError
-      );
-      const [operation] = await client.deleteFeatureValues(request);
-      await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteFeatureValues as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes checkDeleteFeatureValuesProgress without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedResponse = generateSampleMessage(
-        new operationsProtos.google.longrunning.Operation()
-      );
-      expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
-
-      client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkDeleteFeatureValuesProgress(
-        expectedResponse.name
-      );
-      assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
-      assert(decodedOperation.metadata);
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-
-    it('invokes checkDeleteFeatureValuesProgress with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const expectedError = new Error('expected');
-
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(
-        client.checkDeleteFeatureValuesProgress(''),
-        expectedError
-      );
-      assert((client.operationsClient.getOperation as SinonStub).getCall(0));
-    });
-  });
-
-  describe('listFeaturestores', () => {
-    it('invokes listFeaturestores without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturestoresRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturestoresRequest',
+        '.google.cloud.aiplatform.v1.ListRagCorporaRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
       ];
-      client.innerApiCalls.listFeaturestores = stubSimpleCall(expectedResponse);
-      const [response] = await client.listFeaturestores(request);
+      client.innerApiCalls.listRagCorpora = stubSimpleCall(expectedResponse);
+      const [response] = await client.listRagCorpora(request);
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.listFeaturestores as SinonStub
+        client.innerApiCalls.listRagCorpora as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.listFeaturestores as SinonStub
+        client.innerApiCalls.listRagCorpora as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes listFeaturestores without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagCorpora without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturestoresRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagCorporaRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturestoresRequest',
+        '.google.cloud.aiplatform.v1.ListRagCorporaRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
       ];
-      client.innerApiCalls.listFeaturestores =
+      client.innerApiCalls.listRagCorpora =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.listFeaturestores(
+        client.listRagCorpora(
           request,
           (
             err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IFeaturestore[] | null
+            result?: protos.google.cloud.aiplatform.v1.IRagCorpus[] | null
           ) => {
             if (err) {
               reject(err);
@@ -3627,84 +1851,82 @@ describe('v1.FeaturestoreServiceClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.listFeaturestores as SinonStub
+        client.innerApiCalls.listRagCorpora as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.listFeaturestores as SinonStub
+        client.innerApiCalls.listRagCorpora as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes listFeaturestores with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagCorpora with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturestoresRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagCorporaRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturestoresRequest',
+        '.google.cloud.aiplatform.v1.ListRagCorporaRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listFeaturestores = stubSimpleCall(
+      client.innerApiCalls.listRagCorpora = stubSimpleCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.listFeaturestores(request), expectedError);
+      await assert.rejects(client.listRagCorpora(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.listFeaturestores as SinonStub
+        client.innerApiCalls.listRagCorpora as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.listFeaturestores as SinonStub
+        client.innerApiCalls.listRagCorpora as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes listFeaturestoresStream without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagCorporaStream without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturestoresRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagCorporaRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturestoresRequest',
+        '.google.cloud.aiplatform.v1.ListRagCorporaRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
       ];
-      client.descriptors.page.listFeaturestores.createStream =
+      client.descriptors.page.listRagCorpora.createStream =
         stubPageStreamingCall(expectedResponse);
-      const stream = client.listFeaturestoresStream(request);
+      const stream = client.listRagCorporaStream(request);
       const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.Featurestore[] = [];
+        const responses: protos.google.cloud.aiplatform.v1.RagCorpus[] = [];
         stream.on(
           'data',
-          (response: protos.google.cloud.aiplatform.v1.Featurestore) => {
+          (response: protos.google.cloud.aiplatform.v1.RagCorpus) => {
             responses.push(response);
           }
         );
@@ -3718,12 +1940,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       const responses = await promise;
       assert.deepStrictEqual(responses, expectedResponse);
       assert(
-        (client.descriptors.page.listFeaturestores.createStream as SinonStub)
+        (client.descriptors.page.listRagCorpora.createStream as SinonStub)
           .getCall(0)
-          .calledWith(client.innerApiCalls.listFeaturestores, request)
+          .calledWith(client.innerApiCalls.listRagCorpora, request)
       );
       assert(
-        (client.descriptors.page.listFeaturestores.createStream as SinonStub)
+        (client.descriptors.page.listRagCorpora.createStream as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -3731,32 +1953,31 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
 
-    it('invokes listFeaturestoresStream with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagCorporaStream with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturestoresRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagCorporaRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturestoresRequest',
+        '.google.cloud.aiplatform.v1.ListRagCorporaRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.descriptors.page.listFeaturestores.createStream =
+      client.descriptors.page.listRagCorpora.createStream =
         stubPageStreamingCall(undefined, expectedError);
-      const stream = client.listFeaturestoresStream(request);
+      const stream = client.listRagCorporaStream(request);
       const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.Featurestore[] = [];
+        const responses: protos.google.cloud.aiplatform.v1.RagCorpus[] = [];
         stream.on(
           'data',
-          (response: protos.google.cloud.aiplatform.v1.Featurestore) => {
+          (response: protos.google.cloud.aiplatform.v1.RagCorpus) => {
             responses.push(response);
           }
         );
@@ -3769,12 +1990,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       });
       await assert.rejects(promise, expectedError);
       assert(
-        (client.descriptors.page.listFeaturestores.createStream as SinonStub)
+        (client.descriptors.page.listRagCorpora.createStream as SinonStub)
           .getCall(0)
-          .calledWith(client.innerApiCalls.listFeaturestores, request)
+          .calledWith(client.innerApiCalls.listRagCorpora, request)
       );
       assert(
-        (client.descriptors.page.listFeaturestores.createStream as SinonStub)
+        (client.descriptors.page.listRagCorpora.createStream as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -3782,50 +2003,49 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
 
-    it('uses async iteration with listFeaturestores without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('uses async iteration with listRagCorpora without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturestoresRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagCorporaRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturestoresRequest',
+        '.google.cloud.aiplatform.v1.ListRagCorporaRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
         generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.Featurestore()
+          new protos.google.cloud.aiplatform.v1.RagCorpus()
         ),
       ];
-      client.descriptors.page.listFeaturestores.asyncIterate =
+      client.descriptors.page.listRagCorpora.asyncIterate =
         stubAsyncIterationCall(expectedResponse);
-      const responses: protos.google.cloud.aiplatform.v1.IFeaturestore[] = [];
-      const iterable = client.listFeaturestoresAsync(request);
+      const responses: protos.google.cloud.aiplatform.v1.IRagCorpus[] = [];
+      const iterable = client.listRagCorporaAsync(request);
       for await (const resource of iterable) {
         responses.push(resource!);
       }
       assert.deepStrictEqual(responses, expectedResponse);
       assert.deepStrictEqual(
         (
-          client.descriptors.page.listFeaturestores.asyncIterate as SinonStub
+          client.descriptors.page.listRagCorpora.asyncIterate as SinonStub
         ).getCall(0).args[1],
         request
       );
       assert(
-        (client.descriptors.page.listFeaturestores.asyncIterate as SinonStub)
+        (client.descriptors.page.listRagCorpora.asyncIterate as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -3833,41 +2053,40 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
 
-    it('uses async iteration with listFeaturestores with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('uses async iteration with listRagCorpora with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturestoresRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagCorporaRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturestoresRequest',
+        '.google.cloud.aiplatform.v1.ListRagCorporaRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.descriptors.page.listFeaturestores.asyncIterate =
+      client.descriptors.page.listRagCorpora.asyncIterate =
         stubAsyncIterationCall(undefined, expectedError);
-      const iterable = client.listFeaturestoresAsync(request);
+      const iterable = client.listRagCorporaAsync(request);
       await assert.rejects(async () => {
-        const responses: protos.google.cloud.aiplatform.v1.IFeaturestore[] = [];
+        const responses: protos.google.cloud.aiplatform.v1.IRagCorpus[] = [];
         for await (const resource of iterable) {
           responses.push(resource!);
         }
       });
       assert.deepStrictEqual(
         (
-          client.descriptors.page.listFeaturestores.asyncIterate as SinonStub
+          client.descriptors.page.listRagCorpora.asyncIterate as SinonStub
         ).getCall(0).args[1],
         request
       );
       assert(
-        (client.descriptors.page.listFeaturestores.asyncIterate as SinonStub)
+        (client.descriptors.page.listRagCorpora.asyncIterate as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -3876,84 +2095,70 @@ describe('v1.FeaturestoreServiceClient', () => {
     });
   });
 
-  describe('listEntityTypes', () => {
-    it('invokes listEntityTypes without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+  describe('listRagFiles', () => {
+    it('invokes listRagFiles without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListEntityTypesRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListEntityTypesRequest',
+        '.google.cloud.aiplatform.v1.ListRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
       ];
-      client.innerApiCalls.listEntityTypes = stubSimpleCall(expectedResponse);
-      const [response] = await client.listEntityTypes(request);
+      client.innerApiCalls.listRagFiles = stubSimpleCall(expectedResponse);
+      const [response] = await client.listRagFiles(request);
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.listEntityTypes as SinonStub
+        client.innerApiCalls.listRagFiles as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.listEntityTypes as SinonStub
+        client.innerApiCalls.listRagFiles as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes listEntityTypes without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagFiles without error using callback', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListEntityTypesRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListEntityTypesRequest',
+        '.google.cloud.aiplatform.v1.ListRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
       ];
-      client.innerApiCalls.listEntityTypes =
+      client.innerApiCalls.listRagFiles =
         stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
-        client.listEntityTypes(
+        client.listRagFiles(
           request,
           (
             err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IEntityType[] | null
+            result?: protos.google.cloud.aiplatform.v1.IRagFile[] | null
           ) => {
             if (err) {
               reject(err);
@@ -3966,84 +2171,76 @@ describe('v1.FeaturestoreServiceClient', () => {
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
       const actualRequest = (
-        client.innerApiCalls.listEntityTypes as SinonStub
+        client.innerApiCalls.listRagFiles as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.listEntityTypes as SinonStub
+        client.innerApiCalls.listRagFiles as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes listEntityTypes with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagFiles with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListEntityTypesRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListEntityTypesRequest',
+        '.google.cloud.aiplatform.v1.ListRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listEntityTypes = stubSimpleCall(
+      client.innerApiCalls.listRagFiles = stubSimpleCall(
         undefined,
         expectedError
       );
-      await assert.rejects(client.listEntityTypes(request), expectedError);
+      await assert.rejects(client.listRagFiles(request), expectedError);
       const actualRequest = (
-        client.innerApiCalls.listEntityTypes as SinonStub
+        client.innerApiCalls.listRagFiles as SinonStub
       ).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
-        client.innerApiCalls.listEntityTypes as SinonStub
+        client.innerApiCalls.listRagFiles as SinonStub
       ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
-    it('invokes listEntityTypesStream without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagFilesStream without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListEntityTypesRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListEntityTypesRequest',
+        '.google.cloud.aiplatform.v1.ListRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
       ];
-      client.descriptors.page.listEntityTypes.createStream =
+      client.descriptors.page.listRagFiles.createStream =
         stubPageStreamingCall(expectedResponse);
-      const stream = client.listEntityTypesStream(request);
+      const stream = client.listRagFilesStream(request);
       const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.EntityType[] = [];
+        const responses: protos.google.cloud.aiplatform.v1.RagFile[] = [];
         stream.on(
           'data',
-          (response: protos.google.cloud.aiplatform.v1.EntityType) => {
+          (response: protos.google.cloud.aiplatform.v1.RagFile) => {
             responses.push(response);
           }
         );
@@ -4057,12 +2254,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       const responses = await promise;
       assert.deepStrictEqual(responses, expectedResponse);
       assert(
-        (client.descriptors.page.listEntityTypes.createStream as SinonStub)
+        (client.descriptors.page.listRagFiles.createStream as SinonStub)
           .getCall(0)
-          .calledWith(client.innerApiCalls.listEntityTypes, request)
+          .calledWith(client.innerApiCalls.listRagFiles, request)
       );
       assert(
-        (client.descriptors.page.listEntityTypes.createStream as SinonStub)
+        (client.descriptors.page.listRagFiles.createStream as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -4070,32 +2267,33 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
 
-    it('invokes listEntityTypesStream with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('invokes listRagFilesStream with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListEntityTypesRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListEntityTypesRequest',
+        '.google.cloud.aiplatform.v1.ListRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.descriptors.page.listEntityTypes.createStream =
-        stubPageStreamingCall(undefined, expectedError);
-      const stream = client.listEntityTypesStream(request);
+      client.descriptors.page.listRagFiles.createStream = stubPageStreamingCall(
+        undefined,
+        expectedError
+      );
+      const stream = client.listRagFilesStream(request);
       const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.EntityType[] = [];
+        const responses: protos.google.cloud.aiplatform.v1.RagFile[] = [];
         stream.on(
           'data',
-          (response: protos.google.cloud.aiplatform.v1.EntityType) => {
+          (response: protos.google.cloud.aiplatform.v1.RagFile) => {
             responses.push(response);
           }
         );
@@ -4108,12 +2306,12 @@ describe('v1.FeaturestoreServiceClient', () => {
       });
       await assert.rejects(promise, expectedError);
       assert(
-        (client.descriptors.page.listEntityTypes.createStream as SinonStub)
+        (client.descriptors.page.listRagFiles.createStream as SinonStub)
           .getCall(0)
-          .calledWith(client.innerApiCalls.listEntityTypes, request)
+          .calledWith(client.innerApiCalls.listRagFiles, request)
       );
       assert(
-        (client.descriptors.page.listEntityTypes.createStream as SinonStub)
+        (client.descriptors.page.listRagFiles.createStream as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -4121,50 +2319,43 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
 
-    it('uses async iteration with listEntityTypes without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('uses async iteration with listRagFiles without error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListEntityTypesRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListEntityTypesRequest',
+        '.google.cloud.aiplatform.v1.ListRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
-        generateSampleMessage(
-          new protos.google.cloud.aiplatform.v1.EntityType()
-        ),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
+        generateSampleMessage(new protos.google.cloud.aiplatform.v1.RagFile()),
       ];
-      client.descriptors.page.listEntityTypes.asyncIterate =
+      client.descriptors.page.listRagFiles.asyncIterate =
         stubAsyncIterationCall(expectedResponse);
-      const responses: protos.google.cloud.aiplatform.v1.IEntityType[] = [];
-      const iterable = client.listEntityTypesAsync(request);
+      const responses: protos.google.cloud.aiplatform.v1.IRagFile[] = [];
+      const iterable = client.listRagFilesAsync(request);
       for await (const resource of iterable) {
         responses.push(resource!);
       }
       assert.deepStrictEqual(responses, expectedResponse);
       assert.deepStrictEqual(
         (
-          client.descriptors.page.listEntityTypes.asyncIterate as SinonStub
+          client.descriptors.page.listRagFiles.asyncIterate as SinonStub
         ).getCall(0).args[1],
         request
       );
       assert(
-        (client.descriptors.page.listEntityTypes.asyncIterate as SinonStub)
+        (client.descriptors.page.listRagFiles.asyncIterate as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -4172,673 +2363,40 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
 
-    it('uses async iteration with listEntityTypes with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+    it('uses async iteration with listRagFiles with error', async () => {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListEntityTypesRequest()
+        new protos.google.cloud.aiplatform.v1.ListRagFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListEntityTypesRequest',
+        '.google.cloud.aiplatform.v1.ListRagFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
-      client.descriptors.page.listEntityTypes.asyncIterate =
+      client.descriptors.page.listRagFiles.asyncIterate =
         stubAsyncIterationCall(undefined, expectedError);
-      const iterable = client.listEntityTypesAsync(request);
+      const iterable = client.listRagFilesAsync(request);
       await assert.rejects(async () => {
-        const responses: protos.google.cloud.aiplatform.v1.IEntityType[] = [];
+        const responses: protos.google.cloud.aiplatform.v1.IRagFile[] = [];
         for await (const resource of iterable) {
           responses.push(resource!);
         }
       });
       assert.deepStrictEqual(
         (
-          client.descriptors.page.listEntityTypes.asyncIterate as SinonStub
+          client.descriptors.page.listRagFiles.asyncIterate as SinonStub
         ).getCall(0).args[1],
         request
       );
       assert(
-        (client.descriptors.page.listEntityTypes.asyncIterate as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-  });
-
-  describe('listFeatures', () => {
-    it('invokes listFeatures without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.innerApiCalls.listFeatures = stubSimpleCall(expectedResponse);
-      const [response] = await client.listFeatures(request);
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes listFeatures without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.innerApiCalls.listFeatures =
-        stubSimpleCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.listFeatures(
-          request,
-          (
-            err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IFeature[] | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const response = await promise;
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes listFeatures with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.listFeatures = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.listFeatures(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.listFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes listFeaturesStream without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.descriptors.page.listFeatures.createStream =
-        stubPageStreamingCall(expectedResponse);
-      const stream = client.listFeaturesStream(request);
-      const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.Feature[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.cloud.aiplatform.v1.Feature) => {
-            responses.push(response);
-          }
-        );
-        stream.on('end', () => {
-          resolve(responses);
-        });
-        stream.on('error', (err: Error) => {
-          reject(err);
-        });
-      });
-      const responses = await promise;
-      assert.deepStrictEqual(responses, expectedResponse);
-      assert(
-        (client.descriptors.page.listFeatures.createStream as SinonStub)
-          .getCall(0)
-          .calledWith(client.innerApiCalls.listFeatures, request)
-      );
-      assert(
-        (client.descriptors.page.listFeatures.createStream as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-
-    it('invokes listFeaturesStream with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.descriptors.page.listFeatures.createStream = stubPageStreamingCall(
-        undefined,
-        expectedError
-      );
-      const stream = client.listFeaturesStream(request);
-      const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.Feature[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.cloud.aiplatform.v1.Feature) => {
-            responses.push(response);
-          }
-        );
-        stream.on('end', () => {
-          resolve(responses);
-        });
-        stream.on('error', (err: Error) => {
-          reject(err);
-        });
-      });
-      await assert.rejects(promise, expectedError);
-      assert(
-        (client.descriptors.page.listFeatures.createStream as SinonStub)
-          .getCall(0)
-          .calledWith(client.innerApiCalls.listFeatures, request)
-      );
-      assert(
-        (client.descriptors.page.listFeatures.createStream as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-
-    it('uses async iteration with listFeatures without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.descriptors.page.listFeatures.asyncIterate =
-        stubAsyncIterationCall(expectedResponse);
-      const responses: protos.google.cloud.aiplatform.v1.IFeature[] = [];
-      const iterable = client.listFeaturesAsync(request);
-      for await (const resource of iterable) {
-        responses.push(resource!);
-      }
-      assert.deepStrictEqual(responses, expectedResponse);
-      assert.deepStrictEqual(
-        (
-          client.descriptors.page.listFeatures.asyncIterate as SinonStub
-        ).getCall(0).args[1],
-        request
-      );
-      assert(
-        (client.descriptors.page.listFeatures.asyncIterate as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-
-    it('uses async iteration with listFeatures with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.ListFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.ListFeaturesRequest',
-        ['parent']
-      );
-      request.parent = defaultValue1;
-      const expectedHeaderRequestParams = `parent=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.descriptors.page.listFeatures.asyncIterate =
-        stubAsyncIterationCall(undefined, expectedError);
-      const iterable = client.listFeaturesAsync(request);
-      await assert.rejects(async () => {
-        const responses: protos.google.cloud.aiplatform.v1.IFeature[] = [];
-        for await (const resource of iterable) {
-          responses.push(resource!);
-        }
-      });
-      assert.deepStrictEqual(
-        (
-          client.descriptors.page.listFeatures.asyncIterate as SinonStub
-        ).getCall(0).args[1],
-        request
-      );
-      assert(
-        (client.descriptors.page.listFeatures.asyncIterate as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-  });
-
-  describe('searchFeatures', () => {
-    it('invokes searchFeatures without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.SearchFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.SearchFeaturesRequest',
-        ['location']
-      );
-      request.location = defaultValue1;
-      const expectedHeaderRequestParams = `location=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.innerApiCalls.searchFeatures = stubSimpleCall(expectedResponse);
-      const [response] = await client.searchFeatures(request);
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.searchFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.searchFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes searchFeatures without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.SearchFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.SearchFeaturesRequest',
-        ['location']
-      );
-      request.location = defaultValue1;
-      const expectedHeaderRequestParams = `location=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.innerApiCalls.searchFeatures =
-        stubSimpleCallWithCallback(expectedResponse);
-      const promise = new Promise((resolve, reject) => {
-        client.searchFeatures(
-          request,
-          (
-            err?: Error | null,
-            result?: protos.google.cloud.aiplatform.v1.IFeature[] | null
-          ) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-      });
-      const response = await promise;
-      assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.searchFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.searchFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes searchFeatures with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.SearchFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.SearchFeaturesRequest',
-        ['location']
-      );
-      request.location = defaultValue1;
-      const expectedHeaderRequestParams = `location=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.innerApiCalls.searchFeatures = stubSimpleCall(
-        undefined,
-        expectedError
-      );
-      await assert.rejects(client.searchFeatures(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.searchFeatures as SinonStub
-      ).getCall(0).args[0];
-      assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.searchFeatures as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
-      assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
-    });
-
-    it('invokes searchFeaturesStream without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.SearchFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.SearchFeaturesRequest',
-        ['location']
-      );
-      request.location = defaultValue1;
-      const expectedHeaderRequestParams = `location=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.descriptors.page.searchFeatures.createStream =
-        stubPageStreamingCall(expectedResponse);
-      const stream = client.searchFeaturesStream(request);
-      const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.Feature[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.cloud.aiplatform.v1.Feature) => {
-            responses.push(response);
-          }
-        );
-        stream.on('end', () => {
-          resolve(responses);
-        });
-        stream.on('error', (err: Error) => {
-          reject(err);
-        });
-      });
-      const responses = await promise;
-      assert.deepStrictEqual(responses, expectedResponse);
-      assert(
-        (client.descriptors.page.searchFeatures.createStream as SinonStub)
-          .getCall(0)
-          .calledWith(client.innerApiCalls.searchFeatures, request)
-      );
-      assert(
-        (client.descriptors.page.searchFeatures.createStream as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-
-    it('invokes searchFeaturesStream with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.SearchFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.SearchFeaturesRequest',
-        ['location']
-      );
-      request.location = defaultValue1;
-      const expectedHeaderRequestParams = `location=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.descriptors.page.searchFeatures.createStream =
-        stubPageStreamingCall(undefined, expectedError);
-      const stream = client.searchFeaturesStream(request);
-      const promise = new Promise((resolve, reject) => {
-        const responses: protos.google.cloud.aiplatform.v1.Feature[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.cloud.aiplatform.v1.Feature) => {
-            responses.push(response);
-          }
-        );
-        stream.on('end', () => {
-          resolve(responses);
-        });
-        stream.on('error', (err: Error) => {
-          reject(err);
-        });
-      });
-      await assert.rejects(promise, expectedError);
-      assert(
-        (client.descriptors.page.searchFeatures.createStream as SinonStub)
-          .getCall(0)
-          .calledWith(client.innerApiCalls.searchFeatures, request)
-      );
-      assert(
-        (client.descriptors.page.searchFeatures.createStream as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-
-    it('uses async iteration with searchFeatures without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.SearchFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.SearchFeaturesRequest',
-        ['location']
-      );
-      request.location = defaultValue1;
-      const expectedHeaderRequestParams = `location=${defaultValue1}`;
-      const expectedResponse = [
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-        generateSampleMessage(new protos.google.cloud.aiplatform.v1.Feature()),
-      ];
-      client.descriptors.page.searchFeatures.asyncIterate =
-        stubAsyncIterationCall(expectedResponse);
-      const responses: protos.google.cloud.aiplatform.v1.IFeature[] = [];
-      const iterable = client.searchFeaturesAsync(request);
-      for await (const resource of iterable) {
-        responses.push(resource!);
-      }
-      assert.deepStrictEqual(responses, expectedResponse);
-      assert.deepStrictEqual(
-        (
-          client.descriptors.page.searchFeatures.asyncIterate as SinonStub
-        ).getCall(0).args[1],
-        request
-      );
-      assert(
-        (client.descriptors.page.searchFeatures.asyncIterate as SinonStub)
-          .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams)
-      );
-    });
-
-    it('uses async iteration with searchFeatures with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.cloud.aiplatform.v1.SearchFeaturesRequest()
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.cloud.aiplatform.v1.SearchFeaturesRequest',
-        ['location']
-      );
-      request.location = defaultValue1;
-      const expectedHeaderRequestParams = `location=${defaultValue1}`;
-      const expectedError = new Error('expected');
-      client.descriptors.page.searchFeatures.asyncIterate =
-        stubAsyncIterationCall(undefined, expectedError);
-      const iterable = client.searchFeaturesAsync(request);
-      await assert.rejects(async () => {
-        const responses: protos.google.cloud.aiplatform.v1.IFeature[] = [];
-        for await (const resource of iterable) {
-          responses.push(resource!);
-        }
-      });
-      assert.deepStrictEqual(
-        (
-          client.descriptors.page.searchFeatures.asyncIterate as SinonStub
-        ).getCall(0).args[1],
-        request
-      );
-      assert(
-        (client.descriptors.page.searchFeatures.asyncIterate as SinonStub)
+        (client.descriptors.page.listRagFiles.asyncIterate as SinonStub)
           .getCall(0)
           .args[2].otherArgs.headers[
             'x-goog-request-params'
@@ -4848,12 +2406,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('getIamPolicy', () => {
     it('invokes getIamPolicy without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.GetIamPolicyRequest()
@@ -4880,12 +2437,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('invokes getIamPolicy without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.GetIamPolicyRequest()
@@ -4926,12 +2482,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.iamClient.getIamPolicy as SinonStub).getCall(0));
     });
     it('invokes getIamPolicy with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.GetIamPolicyRequest()
@@ -4960,12 +2515,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('setIamPolicy', () => {
     it('invokes setIamPolicy without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.SetIamPolicyRequest()
@@ -4992,12 +2546,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('invokes setIamPolicy without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.SetIamPolicyRequest()
@@ -5038,12 +2591,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.iamClient.setIamPolicy as SinonStub).getCall(0));
     });
     it('invokes setIamPolicy with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.SetIamPolicyRequest()
@@ -5072,12 +2624,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('testIamPermissions', () => {
     it('invokes testIamPermissions without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.TestIamPermissionsRequest()
@@ -5107,12 +2658,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('invokes testIamPermissions without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.TestIamPermissionsRequest()
@@ -5153,12 +2703,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.iamClient.testIamPermissions as SinonStub).getCall(0));
     });
     it('invokes testIamPermissions with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new IamProtos.google.iam.v1.TestIamPermissionsRequest()
@@ -5190,12 +2739,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('getLocation', () => {
     it('invokes getLocation without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new LocationProtos.google.cloud.location.GetLocationRequest()
@@ -5222,12 +2770,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('invokes getLocation without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new LocationProtos.google.cloud.location.GetLocationRequest()
@@ -5268,12 +2815,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.locationsClient.getLocation as SinonStub).getCall(0));
     });
     it('invokes getLocation with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new LocationProtos.google.cloud.location.GetLocationRequest()
@@ -5305,12 +2851,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('listLocationsAsync', () => {
     it('uses async iteration with listLocations without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new LocationProtos.google.cloud.location.ListLocationsRequest()
@@ -5355,12 +2900,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('uses async iteration with listLocations with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new LocationProtos.google.cloud.location.ListLocationsRequest()
@@ -5398,12 +2942,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('getOperation', () => {
     it('invokes getOperation without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.GetOperationRequest()
@@ -5421,12 +2964,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('invokes getOperation without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.GetOperationRequest()
       );
@@ -5457,12 +2999,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
     it('invokes getOperation with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.GetOperationRequest()
       );
@@ -5483,12 +3024,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('cancelOperation', () => {
     it('invokes cancelOperation without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.CancelOperationRequest()
@@ -5507,12 +3047,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('invokes cancelOperation without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.CancelOperationRequest()
       );
@@ -5543,12 +3082,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.cancelOperation as SinonStub).getCall(0));
     });
     it('invokes cancelOperation with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.CancelOperationRequest()
       );
@@ -5569,12 +3107,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('deleteOperation', () => {
     it('invokes deleteOperation without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.DeleteOperationRequest()
@@ -5593,12 +3130,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('invokes deleteOperation without error using callback', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.DeleteOperationRequest()
       );
@@ -5629,12 +3165,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       assert((client.operationsClient.deleteOperation as SinonStub).getCall(0));
     });
     it('invokes deleteOperation with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.DeleteOperationRequest()
       );
@@ -5655,12 +3190,11 @@ describe('v1.FeaturestoreServiceClient', () => {
   });
   describe('listOperationsAsync', () => {
     it('uses async iteration with listOperations without error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.ListOperationsRequest()
       );
@@ -5693,12 +3227,11 @@ describe('v1.FeaturestoreServiceClient', () => {
       );
     });
     it('uses async iteration with listOperations with error', async () => {
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.ListOperationsRequest()
@@ -5734,12 +3267,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         data_item: 'dataItemValue',
         annotation: 'annotationValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.annotationPathTemplate.render = sinon
         .stub()
@@ -5823,12 +3355,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         dataset: 'datasetValue',
         annotation_spec: 'annotationSpecValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.annotationSpecPathTemplate.render = sinon
         .stub()
@@ -5902,12 +3433,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         metadata_store: 'metadataStoreValue',
         artifact: 'artifactValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.artifactPathTemplate.render = sinon
         .stub()
@@ -5979,12 +3509,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         batch_prediction_job: 'batchPredictionJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.batchPredictionJobPathTemplate.render = sinon
         .stub()
@@ -6059,12 +3588,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         metadata_store: 'metadataStoreValue',
         context: 'contextValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.contextPathTemplate.render = sinon
         .stub()
@@ -6136,12 +3664,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         custom_job: 'customJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.customJobPathTemplate.render = sinon
         .stub()
@@ -6203,12 +3730,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         dataset: 'datasetValue',
         data_item: 'dataItemValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.dataItemPathTemplate.render = sinon
         .stub()
@@ -6280,12 +3806,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         data_labeling_job: 'dataLabelingJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.dataLabelingJobPathTemplate.render = sinon
         .stub()
@@ -6347,12 +3872,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         dataset: 'datasetValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.datasetPathTemplate.render = sinon
         .stub()
@@ -6414,12 +3938,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         dataset: 'datasetValue',
         dataset_version: 'datasetVersionValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.datasetVersionPathTemplate.render = sinon
         .stub()
@@ -6492,12 +4015,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         deployment_resource_pool: 'deploymentResourcePoolValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.deploymentResourcePoolPathTemplate.render = sinon
         .stub()
@@ -6576,12 +4098,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         featurestore: 'featurestoreValue',
         entity_type: 'entityTypeValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.entityTypePathTemplate.render = sinon
         .stub()
@@ -6654,12 +4175,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         metadata_store: 'metadataStoreValue',
         execution: 'executionValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.executionPathTemplate.render = sinon
         .stub()
@@ -6731,12 +4251,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         feature_group: 'featureGroupValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.featureGroupPathTemplate.render = sinon
         .stub()
@@ -6797,12 +4316,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         feature_online_store: 'featureOnlineStoreValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.featureOnlineStorePathTemplate.render = sinon
         .stub()
@@ -6877,12 +4395,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         feature_online_store: 'featureOnlineStoreValue',
         feature_view: 'featureViewValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.featureViewPathTemplate.render = sinon
         .stub()
@@ -6956,12 +4473,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         feature_online_store: 'featureOnlineStoreValue',
         feature_view: 'featureViewValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.featureViewSyncPathTemplate.render = sinon
         .stub()
@@ -7034,12 +4550,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         featurestore: 'featurestoreValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.featurestorePathTemplate.render = sinon
         .stub()
@@ -7100,12 +4615,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         hyperparameter_tuning_job: 'hyperparameterTuningJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.hyperparameterTuningJobPathTemplate.render = sinon
         .stub()
@@ -7183,12 +4697,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         index: 'indexValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.indexPathTemplate.render = sinon
         .stub()
@@ -7249,12 +4762,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         index_endpoint: 'indexEndpointValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.indexEndpointPathTemplate.render = sinon
         .stub()
@@ -7314,12 +4826,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         project: 'projectValue',
         location: 'locationValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.locationPathTemplate.render = sinon
         .stub()
@@ -7367,12 +4878,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         metadata_store: 'metadataStoreValue',
         metadata_schema: 'metadataSchemaValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.metadataSchemaPathTemplate.render = sinon
         .stub()
@@ -7446,12 +4956,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         metadata_store: 'metadataStoreValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.metadataStorePathTemplate.render = sinon
         .stub()
@@ -7512,12 +5021,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         model: 'modelValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.modelPathTemplate.render = sinon
         .stub()
@@ -7578,12 +5086,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         model_deployment_monitoring_job: 'modelDeploymentMonitoringJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.modelDeploymentMonitoringJobPathTemplate.render =
         sinon.stub().returns(fakePath);
@@ -7660,12 +5167,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         model: 'modelValue',
         evaluation: 'evaluationValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.modelEvaluationPathTemplate.render = sinon
         .stub()
@@ -7739,12 +5245,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         evaluation: 'evaluationValue',
         slice: 'sliceValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.modelEvaluationSlicePathTemplate.render = sinon
         .stub()
@@ -7848,12 +5353,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         nas_job: 'nasJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.nasJobPathTemplate.render = sinon
         .stub()
@@ -7915,12 +5419,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         nas_job: 'nasJobValue',
         nas_trial_detail: 'nasTrialDetailValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.nasTrialDetailPathTemplate.render = sinon
         .stub()
@@ -7993,12 +5496,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         notebook_execution_job: 'notebookExecutionJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.notebookExecutionJobPathTemplate.render = sinon
         .stub()
@@ -8076,12 +5578,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         notebook_runtime: 'notebookRuntimeValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.notebookRuntimePathTemplate.render = sinon
         .stub()
@@ -8143,12 +5644,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         notebook_runtime_template: 'notebookRuntimeTemplateValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.notebookRuntimeTemplatePathTemplate.render = sinon
         .stub()
@@ -8226,12 +5726,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         persistent_resource: 'persistentResourceValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.persistentResourcePathTemplate.render = sinon
         .stub()
@@ -8305,12 +5804,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         pipeline_job: 'pipelineJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.pipelineJobPathTemplate.render = sinon
         .stub()
@@ -8364,46 +5862,6 @@ describe('v1.FeaturestoreServiceClient', () => {
       });
     });
 
-    describe('project', () => {
-      const fakePath = '/rendered/path/project';
-      const expectedParameters = {
-        project: 'projectValue',
-      };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
-          credentials: {client_email: 'bogus', private_key: 'bogus'},
-          projectId: 'bogus',
-        }
-      );
-      client.initialize();
-      client.pathTemplates.projectPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.projectPathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
-
-      it('projectPath', () => {
-        const result = client.projectPath('projectValue');
-        assert.strictEqual(result, fakePath);
-        assert(
-          (client.pathTemplates.projectPathTemplate.render as SinonStub)
-            .getCall(-1)
-            .calledWith(expectedParameters)
-        );
-      });
-
-      it('matchProjectFromProjectName', () => {
-        const result = client.matchProjectFromProjectName(fakePath);
-        assert.strictEqual(result, 'projectValue');
-        assert(
-          (client.pathTemplates.projectPathTemplate.match as SinonStub)
-            .getCall(-1)
-            .calledWith(fakePath)
-        );
-      });
-    });
-
     describe('projectLocationEndpoint', () => {
       const fakePath = '/rendered/path/projectLocationEndpoint';
       const expectedParameters = {
@@ -8411,12 +5869,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         endpoint: 'endpointValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.projectLocationEndpointPathTemplate.render = sinon
         .stub()
@@ -8493,12 +5950,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         feature_group: 'featureGroupValue',
         feature: 'featureValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.projectLocationFeatureGroupFeaturePathTemplate.render =
         sinon.stub().returns(fakePath);
@@ -8598,12 +6054,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         entity_type: 'entityTypeValue',
         feature: 'featureValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.projectLocationFeaturestoreEntityTypeFeaturePathTemplate.render =
         sinon.stub().returns(fakePath);
@@ -8724,12 +6179,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         publisher: 'publisherValue',
         model: 'modelValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.projectLocationPublisherModelPathTemplate.render =
         sinon.stub().returns(fakePath);
@@ -8817,12 +6271,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         publisher: 'publisherValue',
         model: 'modelValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.publisherModelPathTemplate.render = sinon
         .stub()
@@ -8872,12 +6325,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         rag_corpus: 'ragCorpusValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.ragCorpusPathTemplate.render = sinon
         .stub()
@@ -8939,12 +6391,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         rag_corpus: 'ragCorpusValue',
         rag_file: 'ragFileValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.ragFilePathTemplate.render = sinon
         .stub()
@@ -9017,12 +6468,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         dataset: 'datasetValue',
         saved_query: 'savedQueryValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.savedQueryPathTemplate.render = sinon
         .stub()
@@ -9094,12 +6544,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         schedule: 'scheduleValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.schedulePathTemplate.render = sinon
         .stub()
@@ -9160,12 +6609,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         specialist_pool: 'specialistPoolValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.specialistPoolPathTemplate.render = sinon
         .stub()
@@ -9227,12 +6675,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         study: 'studyValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.studyPathTemplate.render = sinon
         .stub()
@@ -9293,12 +6740,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         tensorboard: 'tensorboardValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.tensorboardPathTemplate.render = sinon
         .stub()
@@ -9360,12 +6806,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         tensorboard: 'tensorboardValue',
         experiment: 'experimentValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.tensorboardExperimentPathTemplate.render = sinon
         .stub()
@@ -9458,12 +6903,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         experiment: 'experimentValue',
         run: 'runValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.tensorboardRunPathTemplate.render = sinon
         .stub()
@@ -9549,12 +6993,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         run: 'runValue',
         time_series: 'timeSeriesValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.tensorboardTimeSeriesPathTemplate.render = sinon
         .stub()
@@ -9674,12 +7117,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         training_pipeline: 'trainingPipelineValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.trainingPipelinePathTemplate.render = sinon
         .stub()
@@ -9745,12 +7187,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         study: 'studyValue',
         trial: 'trialValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.trialPathTemplate.render = sinon
         .stub()
@@ -9822,12 +7263,11 @@ describe('v1.FeaturestoreServiceClient', () => {
         location: 'locationValue',
         tuning_job: 'tuningJobValue',
       };
-      const client = new featurestoreserviceModule.v1.FeaturestoreServiceClient(
-        {
+      const client =
+        new vertexragdataserviceModule.v1.VertexRagDataServiceClient({
           credentials: {client_email: 'bogus', private_key: 'bogus'},
           projectId: 'bogus',
-        }
-      );
+        });
       client.initialize();
       client.pathTemplates.tuningJobPathTemplate.render = sinon
         .stub()

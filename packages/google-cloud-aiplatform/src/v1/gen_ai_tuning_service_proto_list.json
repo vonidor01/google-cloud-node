@@ -2,6 +2,7 @@
   "../../protos/google/cloud/aiplatform/v1/accelerator_type.proto",
   "../../protos/google/cloud/aiplatform/v1/annotation.proto",
   "../../protos/google/cloud/aiplatform/v1/annotation_spec.proto",
+  "../../protos/google/cloud/aiplatform/v1/api_auth.proto",
   "../../protos/google/cloud/aiplatform/v1/artifact.proto",
   "../../protos/google/cloud/aiplatform/v1/batch_prediction_job.proto",
   "../../protos/google/cloud/aiplatform/v1/completion_stats.proto",
@@ -143,5 +144,8 @@
   "../../protos/google/cloud/aiplatform/v1/unmanaged_container_model.proto",
   "../../protos/google/cloud/aiplatform/v1/user_action_reference.proto",
   "../../protos/google/cloud/aiplatform/v1/value.proto",
+  "../../protos/google/cloud/aiplatform/v1/vertex_rag_data.proto",
+  "../../protos/google/cloud/aiplatform/v1/vertex_rag_data_service.proto",
+  "../../protos/google/cloud/aiplatform/v1/vertex_rag_service.proto",
   "../../protos/google/cloud/aiplatform/v1/vizier_service.proto"
 ]

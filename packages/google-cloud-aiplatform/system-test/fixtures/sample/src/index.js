@@ -54,6 +54,9 @@ function main() {
   const specialistPoolServiceClient =
     new aiplatform.SpecialistPoolServiceClient();
   const tensorboardServiceClient = new aiplatform.TensorboardServiceClient();
+  const vertexRagDataServiceClient =
+    new aiplatform.VertexRagDataServiceClient();
+  const vertexRagServiceClient = new aiplatform.VertexRagServiceClient();
   const vizierServiceClient = new aiplatform.VizierServiceClient();
 }
 

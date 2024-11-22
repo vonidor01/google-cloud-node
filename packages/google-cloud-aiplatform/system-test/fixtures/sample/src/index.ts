@@ -43,6 +43,8 @@ import {
   ScheduleServiceClient,
   SpecialistPoolServiceClient,
   TensorboardServiceClient,
+  VertexRagDataServiceClient,
+  VertexRagServiceClient,
   VizierServiceClient,
 } from '@google-cloud/aiplatform';
 
@@ -143,6 +145,14 @@ function doStuffWithSpecialistPoolServiceClient(
 function doStuffWithTensorboardServiceClient(client: TensorboardServiceClient) {
   client.close();
 }
+function doStuffWithVertexRagDataServiceClient(
+  client: VertexRagDataServiceClient
+) {
+  client.close();
+}
+function doStuffWithVertexRagServiceClient(client: VertexRagServiceClient) {
+  client.close();
+}
 function doStuffWithVizierServiceClient(client: VizierServiceClient) {
   client.close();
 }
@@ -235,6 +245,12 @@ function main() {
   // check that the client instance can be created
   const tensorboardServiceClient = new TensorboardServiceClient();
   doStuffWithTensorboardServiceClient(tensorboardServiceClient);
+  // check that the client instance can be created
+  const vertexRagDataServiceClient = new VertexRagDataServiceClient();
+  doStuffWithVertexRagDataServiceClient(vertexRagDataServiceClient);
+  // check that the client instance can be created
+  const vertexRagServiceClient = new VertexRagServiceClient();
+  doStuffWithVertexRagServiceClient(vertexRagServiceClient);
   // check that the client instance can be created
   const vizierServiceClient = new VizierServiceClient();
   doStuffWithVizierServiceClient(vizierServiceClient);

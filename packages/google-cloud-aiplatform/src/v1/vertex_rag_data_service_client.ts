@@ -32,24 +32,24 @@ import type {
   LocationsClient,
   LocationProtos,
 } from 'google-gax';
-import {Transform, PassThrough} from 'stream';
+import {Transform} from 'stream';
 import * as protos from '../../protos/protos';
 import jsonProtos = require('../../protos/protos.json');
 
 /**
  * Client JSON configuration object, loaded from
- * `src/v1/tensorboard_service_client_config.json`.
+ * `src/v1/vertex_rag_data_service_client_config.json`.
  * This file defines retry strategy and timeouts for all API methods in this library.
  */
-import * as gapicConfig from './tensorboard_service_client_config.json';
+import * as gapicConfig from './vertex_rag_data_service_client_config.json';
 const version = require('../../../package.json').version;
 
 /**
- *  TensorboardService
+ *  A service for managing user data for RAG.
  * @class
  * @memberof v1
  */
-export class TensorboardServiceClient {
+export class VertexRagDataServiceClient {
   private _terminated = false;
   private _opts: ClientOptions;
   private _providedCustomServicePath: boolean;
@@ -72,10 +72,10 @@ export class TensorboardServiceClient {
   locationsClient: LocationsClient;
   pathTemplates: {[name: string]: gax.PathTemplate};
   operationsClient: gax.OperationsClient;
-  tensorboardServiceStub?: Promise<{[name: string]: Function}>;
+  vertexRagDataServiceStub?: Promise<{[name: string]: Function}>;
 
   /**
-   * Construct an instance of TensorboardServiceClient.
+   * Construct an instance of VertexRagDataServiceClient.
    *
    * @param {object} [options] - The configuration object.
    * The options accepted by the constructor are described in detail
@@ -110,7 +110,7 @@ export class TensorboardServiceClient {
    *     HTTP implementation. Load only fallback version and pass it to the constructor:
    *     ```
    *     const gax = require('google-gax/build/src/fallback'); // avoids loading google-gax with gRPC
-   *     const client = new TensorboardServiceClient({fallback: true}, gax);
+   *     const client = new VertexRagDataServiceClient({fallback: true}, gax);
    *     ```
    */
   constructor(
@@ -118,7 +118,7 @@ export class TensorboardServiceClient {
     gaxInstance?: typeof gax | typeof gax.fallback
   ) {
     // Ensure that options include all the required fields.
-    const staticMembers = this.constructor as typeof TensorboardServiceClient;
+    const staticMembers = this.constructor as typeof VertexRagDataServiceClient;
     if (
       opts?.universe_domain &&
       opts?.universeDomain &&
@@ -320,9 +320,6 @@ export class TensorboardServiceClient {
       pipelineJobPathTemplate: new this._gaxModule.PathTemplate(
         'projects/{project}/locations/{location}/pipelineJobs/{pipeline_job}'
       ),
-      projectPathTemplate: new this._gaxModule.PathTemplate(
-        'projects/{project}'
-      ),
       projectLocationEndpointPathTemplate: new this._gaxModule.PathTemplate(
         'projects/{project}/locations/{location}/endpoints/{endpoint}'
       ),
@@ -386,40 +383,15 @@ export class TensorboardServiceClient {
     // (e.g. 50 results at a time, with tokens to get subsequent
     // pages). Denote the keys used for pagination and results.
     this.descriptors.page = {
-      listTensorboards: new this._gaxModule.PageDescriptor(
+      listRagCorpora: new this._gaxModule.PageDescriptor(
         'pageToken',
         'nextPageToken',
-        'tensorboards'
+        'ragCorpora'
       ),
-      listTensorboardExperiments: new this._gaxModule.PageDescriptor(
+      listRagFiles: new this._gaxModule.PageDescriptor(
         'pageToken',
         'nextPageToken',
-        'tensorboardExperiments'
-      ),
-      listTensorboardRuns: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'tensorboardRuns'
-      ),
-      listTensorboardTimeSeries: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'tensorboardTimeSeries'
-      ),
-      exportTensorboardTimeSeriesData: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'timeSeriesDataPoints'
-      ),
-    };
-
-    // Some of the methods on this service provide streaming responses.
-    // Provide descriptors for these.
-    this.descriptors.stream = {
-      readTensorboardBlobData: new this._gaxModule.StreamDescriptor(
-        this._gaxModule.StreamType.SERVER_STREAMING,
-        !!opts.fallback,
-        !!opts.gaxServerStreamingRetries
+        'ragFiles'
       ),
     };
 
@@ -1984,87 +1956,68 @@ export class TensorboardServiceClient {
     this.operationsClient = this._gaxModule
       .lro(lroOptions)
       .operationsClient(opts);
-    const createTensorboardResponse = protoFilesRoot.lookup(
-      '.google.cloud.aiplatform.v1.Tensorboard'
+    const createRagCorpusResponse = protoFilesRoot.lookup(
+      '.google.cloud.aiplatform.v1.RagCorpus'
     ) as gax.protobuf.Type;
-    const createTensorboardMetadata = protoFilesRoot.lookup(
-      '.google.cloud.aiplatform.v1.CreateTensorboardOperationMetadata'
+    const createRagCorpusMetadata = protoFilesRoot.lookup(
+      '.google.cloud.aiplatform.v1.CreateRagCorpusOperationMetadata'
     ) as gax.protobuf.Type;
-    const updateTensorboardResponse = protoFilesRoot.lookup(
-      '.google.cloud.aiplatform.v1.Tensorboard'
+    const updateRagCorpusResponse = protoFilesRoot.lookup(
+      '.google.cloud.aiplatform.v1.RagCorpus'
     ) as gax.protobuf.Type;
-    const updateTensorboardMetadata = protoFilesRoot.lookup(
-      '.google.cloud.aiplatform.v1.UpdateTensorboardOperationMetadata'
+    const updateRagCorpusMetadata = protoFilesRoot.lookup(
+      '.google.cloud.aiplatform.v1.UpdateRagCorpusOperationMetadata'
     ) as gax.protobuf.Type;
-    const deleteTensorboardResponse = protoFilesRoot.lookup(
+    const deleteRagCorpusResponse = protoFilesRoot.lookup(
       '.google.protobuf.Empty'
     ) as gax.protobuf.Type;
-    const deleteTensorboardMetadata = protoFilesRoot.lookup(
+    const deleteRagCorpusMetadata = protoFilesRoot.lookup(
       '.google.cloud.aiplatform.v1.DeleteOperationMetadata'
     ) as gax.protobuf.Type;
-    const deleteTensorboardExperimentResponse = protoFilesRoot.lookup(
+    const importRagFilesResponse = protoFilesRoot.lookup(
+      '.google.cloud.aiplatform.v1.ImportRagFilesResponse'
+    ) as gax.protobuf.Type;
+    const importRagFilesMetadata = protoFilesRoot.lookup(
+      '.google.cloud.aiplatform.v1.ImportRagFilesOperationMetadata'
+    ) as gax.protobuf.Type;
+    const deleteRagFileResponse = protoFilesRoot.lookup(
       '.google.protobuf.Empty'
     ) as gax.protobuf.Type;
-    const deleteTensorboardExperimentMetadata = protoFilesRoot.lookup(
-      '.google.cloud.aiplatform.v1.DeleteOperationMetadata'
-    ) as gax.protobuf.Type;
-    const deleteTensorboardRunResponse = protoFilesRoot.lookup(
-      '.google.protobuf.Empty'
-    ) as gax.protobuf.Type;
-    const deleteTensorboardRunMetadata = protoFilesRoot.lookup(
-      '.google.cloud.aiplatform.v1.DeleteOperationMetadata'
-    ) as gax.protobuf.Type;
-    const deleteTensorboardTimeSeriesResponse = protoFilesRoot.lookup(
-      '.google.protobuf.Empty'
-    ) as gax.protobuf.Type;
-    const deleteTensorboardTimeSeriesMetadata = protoFilesRoot.lookup(
+    const deleteRagFileMetadata = protoFilesRoot.lookup(
       '.google.cloud.aiplatform.v1.DeleteOperationMetadata'
     ) as gax.protobuf.Type;
 
     this.descriptors.longrunning = {
-      createTensorboard: new this._gaxModule.LongrunningDescriptor(
+      createRagCorpus: new this._gaxModule.LongrunningDescriptor(
         this.operationsClient,
-        createTensorboardResponse.decode.bind(createTensorboardResponse),
-        createTensorboardMetadata.decode.bind(createTensorboardMetadata)
+        createRagCorpusResponse.decode.bind(createRagCorpusResponse),
+        createRagCorpusMetadata.decode.bind(createRagCorpusMetadata)
       ),
-      updateTensorboard: new this._gaxModule.LongrunningDescriptor(
+      updateRagCorpus: new this._gaxModule.LongrunningDescriptor(
         this.operationsClient,
-        updateTensorboardResponse.decode.bind(updateTensorboardResponse),
-        updateTensorboardMetadata.decode.bind(updateTensorboardMetadata)
+        updateRagCorpusResponse.decode.bind(updateRagCorpusResponse),
+        updateRagCorpusMetadata.decode.bind(updateRagCorpusMetadata)
       ),
-      deleteTensorboard: new this._gaxModule.LongrunningDescriptor(
+      deleteRagCorpus: new this._gaxModule.LongrunningDescriptor(
         this.operationsClient,
-        deleteTensorboardResponse.decode.bind(deleteTensorboardResponse),
-        deleteTensorboardMetadata.decode.bind(deleteTensorboardMetadata)
+        deleteRagCorpusResponse.decode.bind(deleteRagCorpusResponse),
+        deleteRagCorpusMetadata.decode.bind(deleteRagCorpusMetadata)
       ),
-      deleteTensorboardExperiment: new this._gaxModule.LongrunningDescriptor(
+      importRagFiles: new this._gaxModule.LongrunningDescriptor(
         this.operationsClient,
-        deleteTensorboardExperimentResponse.decode.bind(
-          deleteTensorboardExperimentResponse
-        ),
-        deleteTensorboardExperimentMetadata.decode.bind(
-          deleteTensorboardExperimentMetadata
-        )
+        importRagFilesResponse.decode.bind(importRagFilesResponse),
+        importRagFilesMetadata.decode.bind(importRagFilesMetadata)
       ),
-      deleteTensorboardRun: new this._gaxModule.LongrunningDescriptor(
+      deleteRagFile: new this._gaxModule.LongrunningDescriptor(
         this.operationsClient,
-        deleteTensorboardRunResponse.decode.bind(deleteTensorboardRunResponse),
-        deleteTensorboardRunMetadata.decode.bind(deleteTensorboardRunMetadata)
-      ),
-      deleteTensorboardTimeSeries: new this._gaxModule.LongrunningDescriptor(
-        this.operationsClient,
-        deleteTensorboardTimeSeriesResponse.decode.bind(
-          deleteTensorboardTimeSeriesResponse
-        ),
-        deleteTensorboardTimeSeriesMetadata.decode.bind(
-          deleteTensorboardTimeSeriesMetadata
-        )
+        deleteRagFileResponse.decode.bind(deleteRagFileResponse),
+        deleteRagFileMetadata.decode.bind(deleteRagFileMetadata)
       ),
     };
 
     // Put together the default options sent with requests.
     this._defaults = this._gaxGrpc.constructSettings(
-      'google.cloud.aiplatform.v1.TensorboardService',
+      'google.cloud.aiplatform.v1.VertexRagDataService',
       gapicConfig as gax.ClientConfig,
       opts.clientConfig || {},
       {'x-goog-api-client': clientHeader.join(' ')}
@@ -2092,74 +2045,42 @@ export class TensorboardServiceClient {
    */
   initialize() {
     // If the client stub promise is already initialized, return immediately.
-    if (this.tensorboardServiceStub) {
-      return this.tensorboardServiceStub;
+    if (this.vertexRagDataServiceStub) {
+      return this.vertexRagDataServiceStub;
     }
 
     // Put together the "service stub" for
-    // google.cloud.aiplatform.v1.TensorboardService.
-    this.tensorboardServiceStub = this._gaxGrpc.createStub(
+    // google.cloud.aiplatform.v1.VertexRagDataService.
+    this.vertexRagDataServiceStub = this._gaxGrpc.createStub(
       this._opts.fallback
         ? (this._protos as protobuf.Root).lookupService(
-            'google.cloud.aiplatform.v1.TensorboardService'
+            'google.cloud.aiplatform.v1.VertexRagDataService'
           )
         : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (this._protos as any).google.cloud.aiplatform.v1.TensorboardService,
+          (this._protos as any).google.cloud.aiplatform.v1.VertexRagDataService,
       this._opts,
       this._providedCustomServicePath
     ) as Promise<{[method: string]: Function}>;
 
     // Iterate over each of the methods that the service provides
     // and create an API call method for each.
-    const tensorboardServiceStubMethods = [
-      'createTensorboard',
-      'getTensorboard',
-      'updateTensorboard',
-      'listTensorboards',
-      'deleteTensorboard',
-      'readTensorboardUsage',
-      'readTensorboardSize',
-      'createTensorboardExperiment',
-      'getTensorboardExperiment',
-      'updateTensorboardExperiment',
-      'listTensorboardExperiments',
-      'deleteTensorboardExperiment',
-      'createTensorboardRun',
-      'batchCreateTensorboardRuns',
-      'getTensorboardRun',
-      'updateTensorboardRun',
-      'listTensorboardRuns',
-      'deleteTensorboardRun',
-      'batchCreateTensorboardTimeSeries',
-      'createTensorboardTimeSeries',
-      'getTensorboardTimeSeries',
-      'updateTensorboardTimeSeries',
-      'listTensorboardTimeSeries',
-      'deleteTensorboardTimeSeries',
-      'batchReadTensorboardTimeSeriesData',
-      'readTensorboardTimeSeriesData',
-      'readTensorboardBlobData',
-      'writeTensorboardExperimentData',
-      'writeTensorboardRunData',
-      'exportTensorboardTimeSeriesData',
+    const vertexRagDataServiceStubMethods = [
+      'createRagCorpus',
+      'updateRagCorpus',
+      'getRagCorpus',
+      'listRagCorpora',
+      'deleteRagCorpus',
+      'uploadRagFile',
+      'importRagFiles',
+      'getRagFile',
+      'listRagFiles',
+      'deleteRagFile',
     ];
-    for (const methodName of tensorboardServiceStubMethods) {
-      const callPromise = this.tensorboardServiceStub.then(
+    for (const methodName of vertexRagDataServiceStubMethods) {
+      const callPromise = this.vertexRagDataServiceStub.then(
         stub =>
           (...args: Array<{}>) => {
             if (this._terminated) {
-              if (methodName in this.descriptors.stream) {
-                const stream = new PassThrough();
-                setImmediate(() => {
-                  stream.emit(
-                    'error',
-                    new this._gaxModule.GoogleError(
-                      'The client has already been closed.'
-                    )
-                  );
-                });
-                return stream;
-              }
               return Promise.reject('The client has already been closed.');
             }
             const func = stub[methodName];
@@ -2172,7 +2093,6 @@ export class TensorboardServiceClient {
 
       const descriptor =
         this.descriptors.page[methodName] ||
-        this.descriptors.stream[methodName] ||
         this.descriptors.longrunning[methodName] ||
         undefined;
       const apiCall = this._gaxModule.createApiCall(
@@ -2185,7 +2105,7 @@ export class TensorboardServiceClient {
       this.innerApiCalls[methodName] = apiCall;
     }
 
-    return this.tensorboardServiceStub;
+    return this.vertexRagDataServiceStub;
   }
 
   /**
@@ -2250,10 +2170,7 @@ export class TensorboardServiceClient {
    * @returns {string[]} List of default scopes.
    */
   static get scopes() {
-    return [
-      'https://www.googleapis.com/auth/cloud-platform',
-      'https://www.googleapis.com/auth/cloud-platform.read-only',
-    ];
+    return ['https://www.googleapis.com/auth/cloud-platform'];
   }
 
   getProjectId(): Promise<string>;
@@ -2276,76 +2193,70 @@ export class TensorboardServiceClient {
   // -- Service calls --
   // -------------------
   /**
-   * Gets a Tensorboard.
+   * Gets a RagCorpus.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.name
-   *   Required. The name of the Tensorboard resource.
+   *   Required. The name of the RagCorpus resource.
    *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.Tensorboard|Tensorboard}.
+   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.RagCorpus|RagCorpus}.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.get_tensorboard.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_GetTensorboard_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.get_rag_corpus.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_GetRagCorpus_async
    */
-  getTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardRequest,
+  getRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest,
     options?: CallOptions
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboard,
-      protos.google.cloud.aiplatform.v1.IGetTensorboardRequest | undefined,
+      protos.google.cloud.aiplatform.v1.IRagCorpus,
+      protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest | undefined,
       {} | undefined,
     ]
   >;
-  getTensorboard(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardRequest,
+  getRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest,
     options: CallOptions,
     callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboard,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardRequest
-      | null
-      | undefined,
+      protos.google.cloud.aiplatform.v1.IRagCorpus,
+      protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest | null | undefined,
       {} | null | undefined
     >
   ): void;
-  getTensorboard(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardRequest,
+  getRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest,
     callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboard,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardRequest
-      | null
-      | undefined,
+      protos.google.cloud.aiplatform.v1.IRagCorpus,
+      protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest | null | undefined,
       {} | null | undefined
     >
   ): void;
-  getTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardRequest,
+  getRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest,
     optionsOrCallback?:
       | CallOptions
       | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboard,
-          | protos.google.cloud.aiplatform.v1.IGetTensorboardRequest
+          protos.google.cloud.aiplatform.v1.IRagCorpus,
+          | protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest
           | null
           | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboard,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardRequest
-      | null
-      | undefined,
+      protos.google.cloud.aiplatform.v1.IRagCorpus,
+      protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest | null | undefined,
       {} | null | undefined
     >
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboard,
-      protos.google.cloud.aiplatform.v1.IGetTensorboardRequest | undefined,
+      protos.google.cloud.aiplatform.v1.IRagCorpus,
+      protos.google.cloud.aiplatform.v1.IGetRagCorpusRequest | undefined,
       {} | undefined,
     ]
   > | void {
@@ -2365,283 +2276,84 @@ export class TensorboardServiceClient {
         name: request.name ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.getTensorboard(request, options, callback);
+    return this.innerApiCalls.getRagCorpus(request, options, callback);
   }
   /**
-   * Returns a list of monthly active users for a given TensorBoard instance.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboard
-   *   Required. The name of the Tensorboard resource.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.ReadTensorboardUsageResponse|ReadTensorboardUsageResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.read_tensorboard_usage.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ReadTensorboardUsage_async
-   */
-  readTensorboardUsage(
-    request?: protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IReadTensorboardUsageResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  readTensorboardUsage(
-    request: protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardUsageResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  readTensorboardUsage(
-    request: protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardUsageResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  readTensorboardUsage(
-    request?: protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IReadTensorboardUsageResponse,
-          | protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardUsageResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IReadTensorboardUsageResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IReadTensorboardUsageRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard: request.tensorboard ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.readTensorboardUsage(request, options, callback);
-  }
-  /**
-   * Returns the storage size for a given TensorBoard instance.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboard
-   *   Required. The name of the Tensorboard resource.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.ReadTensorboardSizeResponse|ReadTensorboardSizeResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.read_tensorboard_size.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ReadTensorboardSize_async
-   */
-  readTensorboardSize(
-    request?: protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IReadTensorboardSizeResponse,
-      protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest | undefined,
-      {} | undefined,
-    ]
-  >;
-  readTensorboardSize(
-    request: protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardSizeResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  readTensorboardSize(
-    request: protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardSizeResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  readTensorboardSize(
-    request?: protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IReadTensorboardSizeResponse,
-          | protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardSizeResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IReadTensorboardSizeResponse,
-      protos.google.cloud.aiplatform.v1.IReadTensorboardSizeRequest | undefined,
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard: request.tensorboard ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.readTensorboardSize(request, options, callback);
-  }
-  /**
-   * Creates a TensorboardExperiment.
+   * Upload a file into a RagCorpus.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Tensorboard to create the
-   *   TensorboardExperiment in. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-   * @param {google.cloud.aiplatform.v1.TensorboardExperiment} request.tensorboardExperiment
-   *   The TensorboardExperiment to create.
-   * @param {string} request.tensorboardExperimentId
-   *   Required. The ID to use for the Tensorboard experiment, which becomes the
-   *   final component of the Tensorboard experiment's resource name.
-   *
-   *   This value should be 1-128 characters, and valid characters
-   *   are `/{@link protos.0-9|a-z}-/`.
+   *   Required. The name of the RagCorpus resource into which to upload the file.
+   *   Format:
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+   * @param {google.cloud.aiplatform.v1.RagFile} request.ragFile
+   *   Required. The RagFile to upload.
+   * @param {google.cloud.aiplatform.v1.UploadRagFileConfig} request.uploadRagFileConfig
+   *   Required. The config for the RagFiles to be uploaded into the RagCorpus.
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.UploadRagFile|VertexRagDataService.UploadRagFile}.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardExperiment|TensorboardExperiment}.
+   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.UploadRagFileResponse|UploadRagFileResponse}.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.create_tensorboard_experiment.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_CreateTensorboardExperiment_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.upload_rag_file.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_UploadRagFile_async
    */
-  createTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest,
+  uploadRagFile(
+    request?: protos.google.cloud.aiplatform.v1.IUploadRagFileRequest,
     options?: CallOptions
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      (
-        | protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest
-        | undefined
-      ),
+      protos.google.cloud.aiplatform.v1.IUploadRagFileResponse,
+      protos.google.cloud.aiplatform.v1.IUploadRagFileRequest | undefined,
       {} | undefined,
     ]
   >;
-  createTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest,
+  uploadRagFile(
+    request: protos.google.cloud.aiplatform.v1.IUploadRagFileRequest,
     options: CallOptions,
     callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest
+      protos.google.cloud.aiplatform.v1.IUploadRagFileResponse,
+      | protos.google.cloud.aiplatform.v1.IUploadRagFileRequest
       | null
       | undefined,
       {} | null | undefined
     >
   ): void;
-  createTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest,
+  uploadRagFile(
+    request: protos.google.cloud.aiplatform.v1.IUploadRagFileRequest,
     callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest
+      protos.google.cloud.aiplatform.v1.IUploadRagFileResponse,
+      | protos.google.cloud.aiplatform.v1.IUploadRagFileRequest
       | null
       | undefined,
       {} | null | undefined
     >
   ): void;
-  createTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest,
+  uploadRagFile(
+    request?: protos.google.cloud.aiplatform.v1.IUploadRagFileRequest,
     optionsOrCallback?:
       | CallOptions
       | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-          | protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest
+          protos.google.cloud.aiplatform.v1.IUploadRagFileResponse,
+          | protos.google.cloud.aiplatform.v1.IUploadRagFileRequest
           | null
           | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest
+      protos.google.cloud.aiplatform.v1.IUploadRagFileResponse,
+      | protos.google.cloud.aiplatform.v1.IUploadRagFileRequest
       | null
       | undefined,
       {} | null | undefined
     >
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      (
-        | protos.google.cloud.aiplatform.v1.ICreateTensorboardExperimentRequest
-        | undefined
-      ),
+      protos.google.cloud.aiplatform.v1.IUploadRagFileResponse,
+      protos.google.cloud.aiplatform.v1.IUploadRagFileRequest | undefined,
       {} | undefined,
     ]
   > | void {
@@ -2661,89 +2373,73 @@ export class TensorboardServiceClient {
         parent: request.parent ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.createTensorboardExperiment(
-      request,
-      options,
-      callback
-    );
+    return this.innerApiCalls.uploadRagFile(request, options, callback);
   }
   /**
-   * Gets a TensorboardExperiment.
+   * Gets a RagFile.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.name
-   *   Required. The name of the TensorboardExperiment resource.
+   *   Required. The name of the RagFile resource.
    *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}`
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardExperiment|TensorboardExperiment}.
+   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.RagFile|RagFile}.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.get_tensorboard_experiment.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_GetTensorboardExperiment_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.get_rag_file.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_GetRagFile_async
    */
-  getTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest,
+  getRagFile(
+    request?: protos.google.cloud.aiplatform.v1.IGetRagFileRequest,
     options?: CallOptions
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      (
-        | protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest
-        | undefined
-      ),
+      protos.google.cloud.aiplatform.v1.IRagFile,
+      protos.google.cloud.aiplatform.v1.IGetRagFileRequest | undefined,
       {} | undefined,
     ]
   >;
-  getTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest,
+  getRagFile(
+    request: protos.google.cloud.aiplatform.v1.IGetRagFileRequest,
     options: CallOptions,
     callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest
-      | null
-      | undefined,
+      protos.google.cloud.aiplatform.v1.IRagFile,
+      protos.google.cloud.aiplatform.v1.IGetRagFileRequest | null | undefined,
       {} | null | undefined
     >
   ): void;
-  getTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest,
+  getRagFile(
+    request: protos.google.cloud.aiplatform.v1.IGetRagFileRequest,
     callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest
-      | null
-      | undefined,
+      protos.google.cloud.aiplatform.v1.IRagFile,
+      protos.google.cloud.aiplatform.v1.IGetRagFileRequest | null | undefined,
       {} | null | undefined
     >
   ): void;
-  getTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest,
+  getRagFile(
+    request?: protos.google.cloud.aiplatform.v1.IGetRagFileRequest,
     optionsOrCallback?:
       | CallOptions
       | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-          | protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest
+          protos.google.cloud.aiplatform.v1.IRagFile,
+          | protos.google.cloud.aiplatform.v1.IGetRagFileRequest
           | null
           | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest
-      | null
-      | undefined,
+      protos.google.cloud.aiplatform.v1.IRagFile,
+      protos.google.cloud.aiplatform.v1.IGetRagFileRequest | null | undefined,
       {} | null | undefined
     >
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      (
-        | protos.google.cloud.aiplatform.v1.IGetTensorboardExperimentRequest
-        | undefined
-      ),
+      protos.google.cloud.aiplatform.v1.IRagFile,
+      protos.google.cloud.aiplatform.v1.IGetRagFileRequest | undefined,
       {} | undefined,
     ]
   > | void {
@@ -2763,1454 +2459,19 @@ export class TensorboardServiceClient {
         name: request.name ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.getTensorboardExperiment(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Updates a TensorboardExperiment.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {google.protobuf.FieldMask} request.updateMask
-   *   Required. Field mask is used to specify the fields to be overwritten in the
-   *   TensorboardExperiment resource by the update.
-   *   The fields specified in the update_mask are relative to the resource, not
-   *   the full request. A field is overwritten if it's in the mask. If the
-   *   user does not provide a mask then all fields are overwritten if new
-   *   values are specified.
-   * @param {google.cloud.aiplatform.v1.TensorboardExperiment} request.tensorboardExperiment
-   *   Required. The TensorboardExperiment's `name` field is used to identify the
-   *   TensorboardExperiment to be updated. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardExperiment|TensorboardExperiment}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.update_tensorboard_experiment.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_UpdateTensorboardExperiment_async
-   */
-  updateTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      (
-        | protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  updateTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  updateTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  updateTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-          | protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment,
-      (
-        | protos.google.cloud.aiplatform.v1.IUpdateTensorboardExperimentRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        'tensorboard_experiment.name':
-          request.tensorboardExperiment!.name ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.updateTensorboardExperiment(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Creates a TensorboardRun.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardExperiment to create the
-   *   TensorboardRun in. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   * @param {google.cloud.aiplatform.v1.TensorboardRun} request.tensorboardRun
-   *   Required. The TensorboardRun to create.
-   * @param {string} request.tensorboardRunId
-   *   Required. The ID to use for the Tensorboard run, which becomes the final
-   *   component of the Tensorboard run's resource name.
-   *
-   *   This value should be 1-128 characters, and valid characters
-   *   are `/{@link protos.0-9|a-z}-/`.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardRun|TensorboardRun}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.create_tensorboard_run.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_CreateTensorboardRun_async
-   */
-  createTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      (
-        | protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  createTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  createTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  createTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardRun,
-          | protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      (
-        | protos.google.cloud.aiplatform.v1.ICreateTensorboardRunRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.createTensorboardRun(request, options, callback);
-  }
-  /**
-   * Batch create TensorboardRuns.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardExperiment to create the
-   *   TensorboardRuns in. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   *   The parent field in the CreateTensorboardRunRequest messages must match
-   *   this field.
-   * @param {number[]} request.requests
-   *   Required. The request message specifying the TensorboardRuns to create.
-   *   A maximum of 1000 TensorboardRuns can be created in a batch.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.BatchCreateTensorboardRunsResponse|BatchCreateTensorboardRunsResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.batch_create_tensorboard_runs.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_BatchCreateTensorboardRuns_async
-   */
-  batchCreateTensorboardRuns(
-    request?: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  batchCreateTensorboardRuns(
-    request: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  batchCreateTensorboardRuns(
-    request: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  batchCreateTensorboardRuns(
-    request?: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsResponse,
-          | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardRunsRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.batchCreateTensorboardRuns(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Gets a TensorboardRun.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The name of the TensorboardRun resource.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardRun|TensorboardRun}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.get_tensorboard_run.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_GetTensorboardRun_async
-   */
-  getTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest | undefined,
-      {} | undefined,
-    ]
-  >;
-  getTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  getTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  getTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardRun,
-          | protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      protos.google.cloud.aiplatform.v1.IGetTensorboardRunRequest | undefined,
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.getTensorboardRun(request, options, callback);
-  }
-  /**
-   * Updates a TensorboardRun.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {google.protobuf.FieldMask} request.updateMask
-   *   Required. Field mask is used to specify the fields to be overwritten in the
-   *   TensorboardRun resource by the update.
-   *   The fields specified in the update_mask are relative to the resource, not
-   *   the full request. A field is overwritten if it's in the mask. If the
-   *   user does not provide a mask then all fields are overwritten if new
-   *   values are specified.
-   * @param {google.cloud.aiplatform.v1.TensorboardRun} request.tensorboardRun
-   *   Required. The TensorboardRun's `name` field is used to identify the
-   *   TensorboardRun to be updated. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardRun|TensorboardRun}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.update_tensorboard_run.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_UpdateTensorboardRun_async
-   */
-  updateTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      (
-        | protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  updateTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  updateTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  updateTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardRun,
-          | protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun,
-      (
-        | protos.google.cloud.aiplatform.v1.IUpdateTensorboardRunRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        'tensorboard_run.name': request.tensorboardRun!.name ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.updateTensorboardRun(request, options, callback);
-  }
-  /**
-   * Batch create TensorboardTimeSeries that belong to a TensorboardExperiment.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardExperiment to create the
-   *   TensorboardTimeSeries in.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   *   The TensorboardRuns referenced by the parent fields in the
-   *   CreateTensorboardTimeSeriesRequest messages must be sub resources of this
-   *   TensorboardExperiment.
-   * @param {number[]} request.requests
-   *   Required. The request message specifying the TensorboardTimeSeries to
-   *   create. A maximum of 1000 TensorboardTimeSeries can be created in a batch.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.BatchCreateTensorboardTimeSeriesResponse|BatchCreateTensorboardTimeSeriesResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.batch_create_tensorboard_time_series.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_BatchCreateTensorboardTimeSeries_async
-   */
-  batchCreateTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  batchCreateTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  batchCreateTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  batchCreateTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesResponse,
-          | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IBatchCreateTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.batchCreateTensorboardTimeSeries(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Creates a TensorboardTimeSeries.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardRun to create the
-   *   TensorboardTimeSeries in.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {string} [request.tensorboardTimeSeriesId]
-   *   Optional. The user specified unique ID to use for the
-   *   TensorboardTimeSeries, which becomes the final component of the
-   *   TensorboardTimeSeries's resource name. This value should match
-   *   "{@link protos.a-z0-9-|a-z0-9}{0, 127}"
-   * @param {google.cloud.aiplatform.v1.TensorboardTimeSeries} request.tensorboardTimeSeries
-   *   Required. The TensorboardTimeSeries to create.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardTimeSeries|TensorboardTimeSeries}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.create_tensorboard_time_series.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_CreateTensorboardTimeSeries_async
-   */
-  createTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      (
-        | protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  createTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  createTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  createTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-          | protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      (
-        | protos.google.cloud.aiplatform.v1.ICreateTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.createTensorboardTimeSeries(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Gets a TensorboardTimeSeries.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The name of the TensorboardTimeSeries resource.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardTimeSeries|TensorboardTimeSeries}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.get_tensorboard_time_series.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_GetTensorboardTimeSeries_async
-   */
-  getTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      (
-        | protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  getTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  getTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  getTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-          | protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      (
-        | protos.google.cloud.aiplatform.v1.IGetTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.getTensorboardTimeSeries(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Updates a TensorboardTimeSeries.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {google.protobuf.FieldMask} request.updateMask
-   *   Required. Field mask is used to specify the fields to be overwritten in the
-   *   TensorboardTimeSeries resource by the update.
-   *   The fields specified in the update_mask are relative to the resource, not
-   *   the full request. A field is overwritten if it's in the mask. If the
-   *   user does not provide a mask then all fields are overwritten if new
-   *   values are specified.
-   * @param {google.cloud.aiplatform.v1.TensorboardTimeSeries} request.tensorboardTimeSeries
-   *   Required. The TensorboardTimeSeries' `name` field is used to identify the
-   *   TensorboardTimeSeries to be updated.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardTimeSeries|TensorboardTimeSeries}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.update_tensorboard_time_series.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_UpdateTensorboardTimeSeries_async
-   */
-  updateTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      (
-        | protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  updateTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  updateTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  updateTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-          | protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      | protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries,
-      (
-        | protos.google.cloud.aiplatform.v1.IUpdateTensorboardTimeSeriesRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        'tensorboard_time_series.name':
-          request.tensorboardTimeSeries!.name ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.updateTensorboardTimeSeries(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Reads multiple TensorboardTimeSeries' data. The data point number limit is
-   * 1000 for scalars, 100 for tensors and blob references. If the number of
-   * data points stored is less than the limit, all data is returned.
-   * Otherwise, the number limit of data points is randomly selected from
-   * this time series and returned.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboard
-   *   Required. The resource name of the Tensorboard containing
-   *   TensorboardTimeSeries to read data from. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`.
-   *   The TensorboardTimeSeries referenced by
-   *   {@link protos.google.cloud.aiplatform.v1.BatchReadTensorboardTimeSeriesDataRequest.time_series|time_series}
-   *   must be sub resources of this Tensorboard.
-   * @param {string[]} request.timeSeries
-   *   Required. The resource names of the TensorboardTimeSeries to read data
-   *   from. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.BatchReadTensorboardTimeSeriesDataResponse|BatchReadTensorboardTimeSeriesDataResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.batch_read_tensorboard_time_series_data.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_BatchReadTensorboardTimeSeriesData_async
-   */
-  batchReadTensorboardTimeSeriesData(
-    request?: protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  batchReadTensorboardTimeSeriesData(
-    request: protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  batchReadTensorboardTimeSeriesData(
-    request: protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  batchReadTensorboardTimeSeriesData(
-    request?: protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataResponse,
-          | protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataResponse,
-      | protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IBatchReadTensorboardTimeSeriesDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard: request.tensorboard ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.batchReadTensorboardTimeSeriesData(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Reads a TensorboardTimeSeries' data. By default, if the number of data
-   * points stored is less than 1000, all data is returned. Otherwise, 1000
-   * data points is randomly selected from this time series and returned.
-   * This value can be changed by changing max_data_points, which can't be
-   * greater than 10k.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboardTimeSeries
-   *   Required. The resource name of the TensorboardTimeSeries to read data from.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {number} request.maxDataPoints
-   *   The maximum number of TensorboardTimeSeries' data to return.
-   *
-   *   This value should be a positive integer.
-   *   This value can be set to -1 to return all data.
-   * @param {string} request.filter
-   *   Reads the TensorboardTimeSeries' data that match the filter expression.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.ReadTensorboardTimeSeriesDataResponse|ReadTensorboardTimeSeriesDataResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.read_tensorboard_time_series_data.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ReadTensorboardTimeSeriesData_async
-   */
-  readTensorboardTimeSeriesData(
-    request?: protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  readTensorboardTimeSeriesData(
-    request: protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  readTensorboardTimeSeriesData(
-    request: protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  readTensorboardTimeSeriesData(
-    request?: protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataResponse,
-          | protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataResponse,
-      | protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IReadTensorboardTimeSeriesDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard_time_series: request.tensorboardTimeSeries ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.readTensorboardTimeSeriesData(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Write time series data points of multiple TensorboardTimeSeries in multiple
-   * TensorboardRun's. If any data fail to be ingested, an error is returned.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboardExperiment
-   *   Required. The resource name of the TensorboardExperiment to write data to.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   * @param {number[]} request.writeRunDataRequests
-   *   Required. Requests containing per-run TensorboardTimeSeries data to write.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.WriteTensorboardExperimentDataResponse|WriteTensorboardExperimentDataResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.write_tensorboard_experiment_data.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_WriteTensorboardExperimentData_async
-   */
-  writeTensorboardExperimentData(
-    request?: protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  writeTensorboardExperimentData(
-    request: protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataResponse,
-      | protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  writeTensorboardExperimentData(
-    request: protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataResponse,
-      | protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  writeTensorboardExperimentData(
-    request?: protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataResponse,
-          | protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataResponse,
-      | protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IWriteTensorboardExperimentDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard_experiment: request.tensorboardExperiment ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.writeTensorboardExperimentData(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Write time series data points into multiple TensorboardTimeSeries under
-   * a TensorboardRun. If any data fail to be ingested, an error is returned.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboardRun
-   *   Required. The resource name of the TensorboardRun to write data to.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {number[]} request.timeSeriesData
-   *   Required. The TensorboardTimeSeries data to write.
-   *   Values with in a time series are indexed by their step value.
-   *   Repeated writes to the same step will overwrite the existing value for that
-   *   step.
-   *   The upper limit of data points per write request is 5000.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing {@link protos.google.cloud.aiplatform.v1.WriteTensorboardRunDataResponse|WriteTensorboardRunDataResponse}.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#regular-methods | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.write_tensorboard_run_data.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_WriteTensorboardRunData_async
-   */
-  writeTensorboardRunData(
-    request?: protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  >;
-  writeTensorboardRunData(
-    request: protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest,
-    options: CallOptions,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataResponse,
-      | protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  writeTensorboardRunData(
-    request: protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest,
-    callback: Callback<
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataResponse,
-      | protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  writeTensorboardRunData(
-    request?: protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataResponse,
-          | protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest
-          | null
-          | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataResponse,
-      | protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest
-      | null
-      | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataResponse,
-      (
-        | protos.google.cloud.aiplatform.v1.IWriteTensorboardRunDataRequest
-        | undefined
-      ),
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard_run: request.tensorboardRun ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.writeTensorboardRunData(
-      request,
-      options,
-      callback
-    );
+    return this.innerApiCalls.getRagFile(request, options, callback);
   }
 
   /**
-   * Gets bytes of TensorboardBlobs.
-   * This is to allow reading blob data stored in consumer project's Cloud
-   * Storage bucket without users having to obtain Cloud Storage access
-   * permission.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.timeSeries
-   *   Required. The resource name of the TensorboardTimeSeries to list Blobs.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {string[]} request.blobIds
-   *   IDs of the blobs to read.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits {@link protos.google.cloud.aiplatform.v1.ReadTensorboardBlobDataResponse|ReadTensorboardBlobDataResponse} on 'data' event.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#server-streaming | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.read_tensorboard_blob_data.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ReadTensorboardBlobData_async
-   */
-  readTensorboardBlobData(
-    request?: protos.google.cloud.aiplatform.v1.IReadTensorboardBlobDataRequest,
-    options?: CallOptions
-  ): gax.CancellableStream {
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        time_series: request.timeSeries ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.readTensorboardBlobData(request, options);
-  }
-
-  /**
-   * Creates a Tensorboard.
+   * Creates a RagCorpus.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Location to create the Tensorboard in.
+   *   Required. The resource name of the Location to create the RagCorpus in.
    *   Format: `projects/{project}/locations/{location}`
-   * @param {google.cloud.aiplatform.v1.Tensorboard} request.tensorboard
-   *   Required. The Tensorboard to create.
+   * @param {google.cloud.aiplatform.v1.RagCorpus} request.ragCorpus
+   *   Required. The RagCorpus to create.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
@@ -4219,61 +2480,61 @@ export class TensorboardServiceClient {
    *   you can `await` for.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.create_tensorboard.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_CreateTensorboard_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.create_rag_corpus.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_CreateRagCorpus_async
    */
-  createTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardRequest,
+  createRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.ICreateRagCorpusRequest,
     options?: CallOptions
   ): Promise<
     [
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.ICreateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | undefined,
       {} | undefined,
     ]
   >;
-  createTensorboard(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardRequest,
+  createRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.ICreateRagCorpusRequest,
     options: CallOptions,
     callback: Callback<
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.ICreateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | null | undefined,
       {} | null | undefined
     >
   ): void;
-  createTensorboard(
-    request: protos.google.cloud.aiplatform.v1.ICreateTensorboardRequest,
+  createRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.ICreateRagCorpusRequest,
     callback: Callback<
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.ICreateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | null | undefined,
       {} | null | undefined
     >
   ): void;
-  createTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.ICreateTensorboardRequest,
+  createRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.ICreateRagCorpusRequest,
     optionsOrCallback?:
       | CallOptions
       | Callback<
           LROperation<
-            protos.google.cloud.aiplatform.v1.ITensorboard,
-            protos.google.cloud.aiplatform.v1.ICreateTensorboardOperationMetadata
+            protos.google.cloud.aiplatform.v1.IRagCorpus,
+            protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
           >,
           protos.google.longrunning.IOperation | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.ICreateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | null | undefined,
       {} | null | undefined
@@ -4281,8 +2542,8 @@ export class TensorboardServiceClient {
   ): Promise<
     [
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.ICreateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.ICreateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | undefined,
       {} | undefined,
@@ -4304,25 +2565,25 @@ export class TensorboardServiceClient {
         parent: request.parent ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.createTensorboard(request, options, callback);
+    return this.innerApiCalls.createRagCorpus(request, options, callback);
   }
   /**
-   * Check the status of the long running operation returned by `createTensorboard()`.
+   * Check the status of the long running operation returned by `createRagCorpus()`.
    * @param {String} name
    *   The operation name that will be passed.
    * @returns {Promise} - The promise which resolves to an object.
    *   The decoded operation object has result and metadata field to get information from.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.create_tensorboard.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_CreateTensorboard_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.create_rag_corpus.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_CreateRagCorpus_async
    */
-  async checkCreateTensorboardProgress(
+  async checkCreateRagCorpusProgress(
     name: string
   ): Promise<
     LROperation<
-      protos.google.cloud.aiplatform.v1.Tensorboard,
-      protos.google.cloud.aiplatform.v1.CreateTensorboardOperationMetadata
+      protos.google.cloud.aiplatform.v1.RagCorpus,
+      protos.google.cloud.aiplatform.v1.CreateRagCorpusOperationMetadata
     >
   > {
     const request =
@@ -4332,30 +2593,21 @@ export class TensorboardServiceClient {
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
-      this.descriptors.longrunning.createTensorboard,
+      this.descriptors.longrunning.createRagCorpus,
       this._gaxModule.createDefaultBackoffSettings()
     );
     return decodeOperation as LROperation<
-      protos.google.cloud.aiplatform.v1.Tensorboard,
-      protos.google.cloud.aiplatform.v1.CreateTensorboardOperationMetadata
+      protos.google.cloud.aiplatform.v1.RagCorpus,
+      protos.google.cloud.aiplatform.v1.CreateRagCorpusOperationMetadata
     >;
   }
   /**
-   * Updates a Tensorboard.
+   * Updates a RagCorpus.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {google.protobuf.FieldMask} request.updateMask
-   *   Required. Field mask is used to specify the fields to be overwritten in the
-   *   Tensorboard resource by the update.
-   *   The fields specified in the update_mask are relative to the resource, not
-   *   the full request. A field is overwritten if it's in the mask. If the
-   *   user does not provide a mask then all fields are overwritten if new
-   *   values are specified.
-   * @param {google.cloud.aiplatform.v1.Tensorboard} request.tensorboard
-   *   Required. The Tensorboard's `name` field is used to identify the
-   *   Tensorboard to be updated. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+   * @param {google.cloud.aiplatform.v1.RagCorpus} request.ragCorpus
+   *   Required. The RagCorpus which replaces the resource on the server.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
@@ -4364,61 +2616,61 @@ export class TensorboardServiceClient {
    *   you can `await` for.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.update_tensorboard.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_UpdateTensorboard_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.update_rag_corpus.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_UpdateRagCorpus_async
    */
-  updateTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRequest,
+  updateRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.IUpdateRagCorpusRequest,
     options?: CallOptions
   ): Promise<
     [
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.IUpdateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | undefined,
       {} | undefined,
     ]
   >;
-  updateTensorboard(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRequest,
+  updateRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.IUpdateRagCorpusRequest,
     options: CallOptions,
     callback: Callback<
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.IUpdateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | null | undefined,
       {} | null | undefined
     >
   ): void;
-  updateTensorboard(
-    request: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRequest,
+  updateRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.IUpdateRagCorpusRequest,
     callback: Callback<
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.IUpdateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | null | undefined,
       {} | null | undefined
     >
   ): void;
-  updateTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.IUpdateTensorboardRequest,
+  updateRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.IUpdateRagCorpusRequest,
     optionsOrCallback?:
       | CallOptions
       | Callback<
           LROperation<
-            protos.google.cloud.aiplatform.v1.ITensorboard,
-            protos.google.cloud.aiplatform.v1.IUpdateTensorboardOperationMetadata
+            protos.google.cloud.aiplatform.v1.IRagCorpus,
+            protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
           >,
           protos.google.longrunning.IOperation | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.IUpdateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | null | undefined,
       {} | null | undefined
@@ -4426,8 +2678,8 @@ export class TensorboardServiceClient {
   ): Promise<
     [
       LROperation<
-        protos.google.cloud.aiplatform.v1.ITensorboard,
-        protos.google.cloud.aiplatform.v1.IUpdateTensorboardOperationMetadata
+        protos.google.cloud.aiplatform.v1.IRagCorpus,
+        protos.google.cloud.aiplatform.v1.IUpdateRagCorpusOperationMetadata
       >,
       protos.google.longrunning.IOperation | undefined,
       {} | undefined,
@@ -4446,28 +2698,28 @@ export class TensorboardServiceClient {
     options.otherArgs.headers = options.otherArgs.headers || {};
     options.otherArgs.headers['x-goog-request-params'] =
       this._gaxModule.routingHeader.fromParams({
-        'tensorboard.name': request.tensorboard!.name ?? '',
+        'rag_corpus.name': request.ragCorpus!.name ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.updateTensorboard(request, options, callback);
+    return this.innerApiCalls.updateRagCorpus(request, options, callback);
   }
   /**
-   * Check the status of the long running operation returned by `updateTensorboard()`.
+   * Check the status of the long running operation returned by `updateRagCorpus()`.
    * @param {String} name
    *   The operation name that will be passed.
    * @returns {Promise} - The promise which resolves to an object.
    *   The decoded operation object has result and metadata field to get information from.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.update_tensorboard.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_UpdateTensorboard_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.update_rag_corpus.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_UpdateRagCorpus_async
    */
-  async checkUpdateTensorboardProgress(
+  async checkUpdateRagCorpusProgress(
     name: string
   ): Promise<
     LROperation<
-      protos.google.cloud.aiplatform.v1.Tensorboard,
-      protos.google.cloud.aiplatform.v1.UpdateTensorboardOperationMetadata
+      protos.google.cloud.aiplatform.v1.RagCorpus,
+      protos.google.cloud.aiplatform.v1.UpdateRagCorpusOperationMetadata
     >
   > {
     const request =
@@ -4477,23 +2729,27 @@ export class TensorboardServiceClient {
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
-      this.descriptors.longrunning.updateTensorboard,
+      this.descriptors.longrunning.updateRagCorpus,
       this._gaxModule.createDefaultBackoffSettings()
     );
     return decodeOperation as LROperation<
-      protos.google.cloud.aiplatform.v1.Tensorboard,
-      protos.google.cloud.aiplatform.v1.UpdateTensorboardOperationMetadata
+      protos.google.cloud.aiplatform.v1.RagCorpus,
+      protos.google.cloud.aiplatform.v1.UpdateRagCorpusOperationMetadata
     >;
   }
   /**
-   * Deletes a Tensorboard.
+   * Deletes a RagCorpus.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.name
-   *   Required. The name of the Tensorboard to be deleted.
+   *   Required. The name of the RagCorpus resource to be deleted.
    *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+   * @param {boolean} [request.force]
+   *   Optional. If set to true, any RagFiles in this RagCorpus will also be
+   *   deleted. Otherwise, the request will only work if the RagCorpus has no
+   *   RagFiles.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
@@ -4502,11 +2758,11 @@ export class TensorboardServiceClient {
    *   you can `await` for.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboard_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.delete_rag_corpus.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_DeleteRagCorpus_async
    */
-  deleteTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRequest,
+  deleteRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.IDeleteRagCorpusRequest,
     options?: CallOptions
   ): Promise<
     [
@@ -4518,8 +2774,8 @@ export class TensorboardServiceClient {
       {} | undefined,
     ]
   >;
-  deleteTensorboard(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRequest,
+  deleteRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.IDeleteRagCorpusRequest,
     options: CallOptions,
     callback: Callback<
       LROperation<
@@ -4530,8 +2786,8 @@ export class TensorboardServiceClient {
       {} | null | undefined
     >
   ): void;
-  deleteTensorboard(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRequest,
+  deleteRagCorpus(
+    request: protos.google.cloud.aiplatform.v1.IDeleteRagCorpusRequest,
     callback: Callback<
       LROperation<
         protos.google.protobuf.IEmpty,
@@ -4541,8 +2797,8 @@ export class TensorboardServiceClient {
       {} | null | undefined
     >
   ): void;
-  deleteTensorboard(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRequest,
+  deleteRagCorpus(
+    request?: protos.google.cloud.aiplatform.v1.IDeleteRagCorpusRequest,
     optionsOrCallback?:
       | CallOptions
       | Callback<
@@ -4587,20 +2843,20 @@ export class TensorboardServiceClient {
         name: request.name ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.deleteTensorboard(request, options, callback);
+    return this.innerApiCalls.deleteRagCorpus(request, options, callback);
   }
   /**
-   * Check the status of the long running operation returned by `deleteTensorboard()`.
+   * Check the status of the long running operation returned by `deleteRagCorpus()`.
    * @param {String} name
    *   The operation name that will be passed.
    * @returns {Promise} - The promise which resolves to an object.
    *   The decoded operation object has result and metadata field to get information from.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboard_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.delete_rag_corpus.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_DeleteRagCorpus_async
    */
-  async checkDeleteTensorboardProgress(
+  async checkDeleteRagCorpusProgress(
     name: string
   ): Promise<
     LROperation<
@@ -4615,7 +2871,7 @@ export class TensorboardServiceClient {
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
-      this.descriptors.longrunning.deleteTensorboard,
+      this.descriptors.longrunning.deleteRagCorpus,
       this._gaxModule.createDefaultBackoffSettings()
     );
     return decodeOperation as LROperation<
@@ -4624,14 +2880,18 @@ export class TensorboardServiceClient {
     >;
   }
   /**
-   * Deletes a TensorboardExperiment.
+   * Import files from Google Cloud Storage or Google Drive into a RagCorpus.
    *
    * @param {Object} request
    *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The name of the TensorboardExperiment to be deleted.
+   * @param {string} request.parent
+   *   Required. The name of the RagCorpus resource into which to import files.
    *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+   * @param {google.cloud.aiplatform.v1.ImportRagFilesConfig} request.importRagFilesConfig
+   *   Required. The config for the RagFiles to be synced and imported into the
+   *   RagCorpus.
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.ImportRagFiles|VertexRagDataService.ImportRagFiles}.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
@@ -4640,11 +2900,149 @@ export class TensorboardServiceClient {
    *   you can `await` for.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard_experiment.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboardExperiment_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.import_rag_files.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_ImportRagFiles_async
    */
-  deleteTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardExperimentRequest,
+  importRagFiles(
+    request?: protos.google.cloud.aiplatform.v1.IImportRagFilesRequest,
+    options?: CallOptions
+  ): Promise<
+    [
+      LROperation<
+        protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+        protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
+      >,
+      protos.google.longrunning.IOperation | undefined,
+      {} | undefined,
+    ]
+  >;
+  importRagFiles(
+    request: protos.google.cloud.aiplatform.v1.IImportRagFilesRequest,
+    options: CallOptions,
+    callback: Callback<
+      LROperation<
+        protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+        protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
+      >,
+      protos.google.longrunning.IOperation | null | undefined,
+      {} | null | undefined
+    >
+  ): void;
+  importRagFiles(
+    request: protos.google.cloud.aiplatform.v1.IImportRagFilesRequest,
+    callback: Callback<
+      LROperation<
+        protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+        protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
+      >,
+      protos.google.longrunning.IOperation | null | undefined,
+      {} | null | undefined
+    >
+  ): void;
+  importRagFiles(
+    request?: protos.google.cloud.aiplatform.v1.IImportRagFilesRequest,
+    optionsOrCallback?:
+      | CallOptions
+      | Callback<
+          LROperation<
+            protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+            protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
+          >,
+          protos.google.longrunning.IOperation | null | undefined,
+          {} | null | undefined
+        >,
+    callback?: Callback<
+      LROperation<
+        protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+        protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
+      >,
+      protos.google.longrunning.IOperation | null | undefined,
+      {} | null | undefined
+    >
+  ): Promise<
+    [
+      LROperation<
+        protos.google.cloud.aiplatform.v1.IImportRagFilesResponse,
+        protos.google.cloud.aiplatform.v1.IImportRagFilesOperationMetadata
+      >,
+      protos.google.longrunning.IOperation | undefined,
+      {} | undefined,
+    ]
+  > | void {
+    request = request || {};
+    let options: CallOptions;
+    if (typeof optionsOrCallback === 'function' && callback === undefined) {
+      callback = optionsOrCallback;
+      options = {};
+    } else {
+      options = optionsOrCallback as CallOptions;
+    }
+    options = options || {};
+    options.otherArgs = options.otherArgs || {};
+    options.otherArgs.headers = options.otherArgs.headers || {};
+    options.otherArgs.headers['x-goog-request-params'] =
+      this._gaxModule.routingHeader.fromParams({
+        parent: request.parent ?? '',
+      });
+    this.initialize();
+    return this.innerApiCalls.importRagFiles(request, options, callback);
+  }
+  /**
+   * Check the status of the long running operation returned by `importRagFiles()`.
+   * @param {String} name
+   *   The operation name that will be passed.
+   * @returns {Promise} - The promise which resolves to an object.
+   *   The decoded operation object has result and metadata field to get information from.
+   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
+   *   for more details and examples.
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.import_rag_files.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_ImportRagFiles_async
+   */
+  async checkImportRagFilesProgress(
+    name: string
+  ): Promise<
+    LROperation<
+      protos.google.cloud.aiplatform.v1.ImportRagFilesResponse,
+      protos.google.cloud.aiplatform.v1.ImportRagFilesOperationMetadata
+    >
+  > {
+    const request =
+      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
+        {name}
+      );
+    const [operation] = await this.operationsClient.getOperation(request);
+    const decodeOperation = new this._gaxModule.Operation(
+      operation,
+      this.descriptors.longrunning.importRagFiles,
+      this._gaxModule.createDefaultBackoffSettings()
+    );
+    return decodeOperation as LROperation<
+      protos.google.cloud.aiplatform.v1.ImportRagFilesResponse,
+      protos.google.cloud.aiplatform.v1.ImportRagFilesOperationMetadata
+    >;
+  }
+  /**
+   * Deletes a RagFile.
+   *
+   * @param {Object} request
+   *   The request object that will be sent.
+   * @param {string} request.name
+   *   Required. The name of the RagFile resource to be deleted.
+   *   Format:
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}`
+   * @param {object} [options]
+   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+   * @returns {Promise} - The promise which resolves to an array.
+   *   The first element of the array is an object representing
+   *   a long running operation. Its `promise()` method returns a promise
+   *   you can `await` for.
+   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
+   *   for more details and examples.
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.delete_rag_file.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_DeleteRagFile_async
+   */
+  deleteRagFile(
+    request?: protos.google.cloud.aiplatform.v1.IDeleteRagFileRequest,
     options?: CallOptions
   ): Promise<
     [
@@ -4656,8 +3054,8 @@ export class TensorboardServiceClient {
       {} | undefined,
     ]
   >;
-  deleteTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardExperimentRequest,
+  deleteRagFile(
+    request: protos.google.cloud.aiplatform.v1.IDeleteRagFileRequest,
     options: CallOptions,
     callback: Callback<
       LROperation<
@@ -4668,8 +3066,8 @@ export class TensorboardServiceClient {
       {} | null | undefined
     >
   ): void;
-  deleteTensorboardExperiment(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardExperimentRequest,
+  deleteRagFile(
+    request: protos.google.cloud.aiplatform.v1.IDeleteRagFileRequest,
     callback: Callback<
       LROperation<
         protos.google.protobuf.IEmpty,
@@ -4679,8 +3077,8 @@ export class TensorboardServiceClient {
       {} | null | undefined
     >
   ): void;
-  deleteTensorboardExperiment(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardExperimentRequest,
+  deleteRagFile(
+    request?: protos.google.cloud.aiplatform.v1.IDeleteRagFileRequest,
     optionsOrCallback?:
       | CallOptions
       | Callback<
@@ -4725,24 +3123,20 @@ export class TensorboardServiceClient {
         name: request.name ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.deleteTensorboardExperiment(
-      request,
-      options,
-      callback
-    );
+    return this.innerApiCalls.deleteRagFile(request, options, callback);
   }
   /**
-   * Check the status of the long running operation returned by `deleteTensorboardExperiment()`.
+   * Check the status of the long running operation returned by `deleteRagFile()`.
    * @param {String} name
    *   The operation name that will be passed.
    * @returns {Promise} - The promise which resolves to an object.
    *   The decoded operation object has result and metadata field to get information from.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard_experiment.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboardExperiment_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.delete_rag_file.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_DeleteRagFile_async
    */
-  async checkDeleteTensorboardExperimentProgress(
+  async checkDeleteRagFileProgress(
     name: string
   ): Promise<
     LROperation<
@@ -4757,7 +3151,7 @@ export class TensorboardServiceClient {
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
-      this.descriptors.longrunning.deleteTensorboardExperiment,
+      this.descriptors.longrunning.deleteRagFile,
       this._gaxModule.createDefaultBackoffSettings()
     );
     return decodeOperation as LROperation<
@@ -4766,379 +3160,88 @@ export class TensorboardServiceClient {
     >;
   }
   /**
-   * Deletes a TensorboardRun.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The name of the TensorboardRun to be deleted.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing
-   *   a long running operation. Its `promise()` method returns a promise
-   *   you can `await` for.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard_run.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboardRun_async
-   */
-  deleteTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRunRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | undefined,
-      {} | undefined,
-    ]
-  >;
-  deleteTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRunRequest,
-    options: CallOptions,
-    callback: Callback<
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | null | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  deleteTensorboardRun(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRunRequest,
-    callback: Callback<
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | null | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  deleteTensorboardRun(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardRunRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          LROperation<
-            protos.google.protobuf.IEmpty,
-            protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-          >,
-          protos.google.longrunning.IOperation | null | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | null | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | undefined,
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.deleteTensorboardRun(request, options, callback);
-  }
-  /**
-   * Check the status of the long running operation returned by `deleteTensorboardRun()`.
-   * @param {String} name
-   *   The operation name that will be passed.
-   * @returns {Promise} - The promise which resolves to an object.
-   *   The decoded operation object has result and metadata field to get information from.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard_run.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboardRun_async
-   */
-  async checkDeleteTensorboardRunProgress(
-    name: string
-  ): Promise<
-    LROperation<
-      protos.google.protobuf.Empty,
-      protos.google.cloud.aiplatform.v1.DeleteOperationMetadata
-    >
-  > {
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name}
-      );
-    const [operation] = await this.operationsClient.getOperation(request);
-    const decodeOperation = new this._gaxModule.Operation(
-      operation,
-      this.descriptors.longrunning.deleteTensorboardRun,
-      this._gaxModule.createDefaultBackoffSettings()
-    );
-    return decodeOperation as LROperation<
-      protos.google.protobuf.Empty,
-      protos.google.cloud.aiplatform.v1.DeleteOperationMetadata
-    >;
-  }
-  /**
-   * Deletes a TensorboardTimeSeries.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The name of the TensorboardTimeSeries to be deleted.
-   *   Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing
-   *   a long running operation. Its `promise()` method returns a promise
-   *   you can `await` for.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard_time_series.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboardTimeSeries_async
-   */
-  deleteTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | undefined,
-      {} | undefined,
-    ]
-  >;
-  deleteTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardTimeSeriesRequest,
-    options: CallOptions,
-    callback: Callback<
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | null | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  deleteTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IDeleteTensorboardTimeSeriesRequest,
-    callback: Callback<
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | null | undefined,
-      {} | null | undefined
-    >
-  ): void;
-  deleteTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IDeleteTensorboardTimeSeriesRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | Callback<
-          LROperation<
-            protos.google.protobuf.IEmpty,
-            protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-          >,
-          protos.google.longrunning.IOperation | null | undefined,
-          {} | null | undefined
-        >,
-    callback?: Callback<
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | null | undefined,
-      {} | null | undefined
-    >
-  ): Promise<
-    [
-      LROperation<
-        protos.google.protobuf.IEmpty,
-        protos.google.cloud.aiplatform.v1.IDeleteOperationMetadata
-      >,
-      protos.google.longrunning.IOperation | undefined,
-      {} | undefined,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.deleteTensorboardTimeSeries(
-      request,
-      options,
-      callback
-    );
-  }
-  /**
-   * Check the status of the long running operation returned by `deleteTensorboardTimeSeries()`.
-   * @param {String} name
-   *   The operation name that will be passed.
-   * @returns {Promise} - The promise which resolves to an object.
-   *   The decoded operation object has result and metadata field to get information from.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#long-running-operations | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.delete_tensorboard_time_series.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_DeleteTensorboardTimeSeries_async
-   */
-  async checkDeleteTensorboardTimeSeriesProgress(
-    name: string
-  ): Promise<
-    LROperation<
-      protos.google.protobuf.Empty,
-      protos.google.cloud.aiplatform.v1.DeleteOperationMetadata
-    >
-  > {
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name}
-      );
-    const [operation] = await this.operationsClient.getOperation(request);
-    const decodeOperation = new this._gaxModule.Operation(
-      operation,
-      this.descriptors.longrunning.deleteTensorboardTimeSeries,
-      this._gaxModule.createDefaultBackoffSettings()
-    );
-    return decodeOperation as LROperation<
-      protos.google.protobuf.Empty,
-      protos.google.cloud.aiplatform.v1.DeleteOperationMetadata
-    >;
-  }
-  /**
-   * Lists Tensorboards in a Location.
+   * Lists RagCorpora in a Location.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Location to list Tensorboards.
-   *   Format:
-   *   `projects/{project}/locations/{location}`
-   * @param {string} request.filter
-   *   Lists the Tensorboards that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of Tensorboards to return. The service may return
-   *   fewer than this value. If unspecified, at most 100 Tensorboards are
-   *   returned. The maximum value is 100; values above 100 are coerced to
-   *   100.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboards|TensorboardService.ListTensorboards}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboards|TensorboardService.ListTensorboards}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
+   *   Required. The resource name of the Location from which to list the
+   *   RagCorpora. Format: `projects/{project}/locations/{location}`
+   * @param {number} [request.pageSize]
+   *   Optional. The standard list page size.
+   * @param {string} [request.pageToken]
+   *   Optional. The standard list page token.
+   *   Typically obtained via
+   *   {@link protos.google.cloud.aiplatform.v1.ListRagCorporaResponse.next_page_token|ListRagCorporaResponse.next_page_token}
+   *   of the previous
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.ListRagCorpora|VertexRagDataService.ListRagCorpora}
+   *   call.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of {@link protos.google.cloud.aiplatform.v1.Tensorboard|Tensorboard}.
+   *   The first element of the array is Array of {@link protos.google.cloud.aiplatform.v1.RagCorpus|RagCorpus}.
    *   The client library will perform auto-pagination by default: it will call the API as many
    *   times as needed and will merge results from all the pages into this array.
    *   Note that it can affect your quota.
-   *   We recommend using `listTensorboardsAsync()`
+   *   We recommend using `listRagCorporaAsync()`
    *   method described below for async iteration which you can stop as needed.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
    *   for more details and examples.
    */
-  listTensorboards(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
+  listRagCorpora(
+    request?: protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
     options?: CallOptions
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboard[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardsRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardsResponse,
+      protos.google.cloud.aiplatform.v1.IRagCorpus[],
+      protos.google.cloud.aiplatform.v1.IListRagCorporaRequest | null,
+      protos.google.cloud.aiplatform.v1.IListRagCorporaResponse,
     ]
   >;
-  listTensorboards(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
+  listRagCorpora(
+    request: protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
     options: CallOptions,
     callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardsResponse
+      protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
+      | protos.google.cloud.aiplatform.v1.IListRagCorporaResponse
       | null
       | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboard
+      protos.google.cloud.aiplatform.v1.IRagCorpus
     >
   ): void;
-  listTensorboards(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
+  listRagCorpora(
+    request: protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
     callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardsResponse
+      protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
+      | protos.google.cloud.aiplatform.v1.IListRagCorporaResponse
       | null
       | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboard
+      protos.google.cloud.aiplatform.v1.IRagCorpus
     >
   ): void;
-  listTensorboards(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
+  listRagCorpora(
+    request?: protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
     optionsOrCallback?:
       | CallOptions
       | PaginationCallback<
-          protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
-          | protos.google.cloud.aiplatform.v1.IListTensorboardsResponse
+          protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
+          | protos.google.cloud.aiplatform.v1.IListRagCorporaResponse
           | null
           | undefined,
-          protos.google.cloud.aiplatform.v1.ITensorboard
+          protos.google.cloud.aiplatform.v1.IRagCorpus
         >,
     callback?: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardsResponse
+      protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
+      | protos.google.cloud.aiplatform.v1.IListRagCorporaResponse
       | null
       | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboard
+      protos.google.cloud.aiplatform.v1.IRagCorpus
     >
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboard[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardsRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardsResponse,
+      protos.google.cloud.aiplatform.v1.IRagCorpus[],
+      protos.google.cloud.aiplatform.v1.IListRagCorporaRequest | null,
+      protos.google.cloud.aiplatform.v1.IListRagCorporaResponse,
     ]
   > | void {
     request = request || {};
@@ -5157,7 +3260,7 @@ export class TensorboardServiceClient {
         parent: request.parent ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.listTensorboards(request, options, callback);
+    return this.innerApiCalls.listRagCorpora(request, options, callback);
   }
 
   /**
@@ -5165,41 +3268,30 @@ export class TensorboardServiceClient {
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Location to list Tensorboards.
-   *   Format:
-   *   `projects/{project}/locations/{location}`
-   * @param {string} request.filter
-   *   Lists the Tensorboards that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of Tensorboards to return. The service may return
-   *   fewer than this value. If unspecified, at most 100 Tensorboards are
-   *   returned. The maximum value is 100; values above 100 are coerced to
-   *   100.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboards|TensorboardService.ListTensorboards}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboards|TensorboardService.ListTensorboards}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
+   *   Required. The resource name of the Location from which to list the
+   *   RagCorpora. Format: `projects/{project}/locations/{location}`
+   * @param {number} [request.pageSize]
+   *   Optional. The standard list page size.
+   * @param {string} [request.pageToken]
+   *   Optional. The standard list page token.
+   *   Typically obtained via
+   *   {@link protos.google.cloud.aiplatform.v1.ListRagCorporaResponse.next_page_token|ListRagCorporaResponse.next_page_token}
+   *   of the previous
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.ListRagCorpora|VertexRagDataService.ListRagCorpora}
+   *   call.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Stream}
-   *   An object stream which emits an object representing {@link protos.google.cloud.aiplatform.v1.Tensorboard|Tensorboard} on 'data' event.
+   *   An object stream which emits an object representing {@link protos.google.cloud.aiplatform.v1.RagCorpus|RagCorpus} on 'data' event.
    *   The client library will perform auto-pagination by default: it will call the API as many
    *   times as needed. Note that it can affect your quota.
-   *   We recommend using `listTensorboardsAsync()`
+   *   We recommend using `listRagCorporaAsync()`
    *   method described below for async iteration which you can stop as needed.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
    *   for more details and examples.
    */
-  listTensorboardsStream(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
+  listRagCorporaStream(
+    request?: protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
     options?: CallOptions
   ): Transform {
     request = request || {};
@@ -5210,61 +3302,50 @@ export class TensorboardServiceClient {
       this._gaxModule.routingHeader.fromParams({
         parent: request.parent ?? '',
       });
-    const defaultCallSettings = this._defaults['listTensorboards'];
+    const defaultCallSettings = this._defaults['listRagCorpora'];
     const callSettings = defaultCallSettings.merge(options);
     this.initialize();
-    return this.descriptors.page.listTensorboards.createStream(
-      this.innerApiCalls.listTensorboards as GaxCall,
+    return this.descriptors.page.listRagCorpora.createStream(
+      this.innerApiCalls.listRagCorpora as GaxCall,
       request,
       callSettings
     );
   }
 
   /**
-   * Equivalent to `listTensorboards`, but returns an iterable object.
+   * Equivalent to `listRagCorpora`, but returns an iterable object.
    *
    * `for`-`await`-`of` syntax is used with the iterable to get response elements on-demand.
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Location to list Tensorboards.
-   *   Format:
-   *   `projects/{project}/locations/{location}`
-   * @param {string} request.filter
-   *   Lists the Tensorboards that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of Tensorboards to return. The service may return
-   *   fewer than this value. If unspecified, at most 100 Tensorboards are
-   *   returned. The maximum value is 100; values above 100 are coerced to
-   *   100.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboards|TensorboardService.ListTensorboards}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboards|TensorboardService.ListTensorboards}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
+   *   Required. The resource name of the Location from which to list the
+   *   RagCorpora. Format: `projects/{project}/locations/{location}`
+   * @param {number} [request.pageSize]
+   *   Optional. The standard list page size.
+   * @param {string} [request.pageToken]
+   *   Optional. The standard list page token.
+   *   Typically obtained via
+   *   {@link protos.google.cloud.aiplatform.v1.ListRagCorporaResponse.next_page_token|ListRagCorporaResponse.next_page_token}
+   *   of the previous
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.ListRagCorpora|VertexRagDataService.ListRagCorpora}
+   *   call.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Object}
    *   An iterable Object that allows {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols | async iteration }.
    *   When you iterate the returned iterable, each element will be an object representing
-   *   {@link protos.google.cloud.aiplatform.v1.Tensorboard|Tensorboard}. The API will be called under the hood as needed, once per the page,
+   *   {@link protos.google.cloud.aiplatform.v1.RagCorpus|RagCorpus}. The API will be called under the hood as needed, once per the page,
    *   so you can stop the iteration when you don't need more results.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.list_tensorboards.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ListTensorboards_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.list_rag_corpora.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_ListRagCorpora_async
    */
-  listTensorboardsAsync(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardsRequest,
+  listRagCorporaAsync(
+    request?: protos.google.cloud.aiplatform.v1.IListRagCorporaRequest,
     options?: CallOptions
-  ): AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboard> {
+  ): AsyncIterable<protos.google.cloud.aiplatform.v1.IRagCorpus> {
     request = request || {};
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -5273,109 +3354,99 @@ export class TensorboardServiceClient {
       this._gaxModule.routingHeader.fromParams({
         parent: request.parent ?? '',
       });
-    const defaultCallSettings = this._defaults['listTensorboards'];
+    const defaultCallSettings = this._defaults['listRagCorpora'];
     const callSettings = defaultCallSettings.merge(options);
     this.initialize();
-    return this.descriptors.page.listTensorboards.asyncIterate(
-      this.innerApiCalls['listTensorboards'] as GaxCall,
+    return this.descriptors.page.listRagCorpora.asyncIterate(
+      this.innerApiCalls['listRagCorpora'] as GaxCall,
       request as {},
       callSettings
-    ) as AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboard>;
+    ) as AsyncIterable<protos.google.cloud.aiplatform.v1.IRagCorpus>;
   }
   /**
-   * Lists TensorboardExperiments in a Location.
+   * Lists RagFiles in a RagCorpus.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Tensorboard to list
-   *   TensorboardExperiments. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-   * @param {string} request.filter
-   *   Lists the TensorboardExperiments that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardExperiments to return. The service may
-   *   return fewer than this value. If unspecified, at most 50
-   *   TensorboardExperiments are returned. The maximum value is 1000; values
-   *   above 1000 are coerced to 1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments|TensorboardService.ListTensorboardExperiments}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments|TensorboardService.ListTensorboardExperiments}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
+   *   Required. The resource name of the RagCorpus from which to list the
+   *   RagFiles. Format:
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+   * @param {number} [request.pageSize]
+   *   Optional. The standard list page size.
+   * @param {string} [request.pageToken]
+   *   Optional. The standard list page token.
+   *   Typically obtained via
+   *   {@link protos.google.cloud.aiplatform.v1.ListRagFilesResponse.next_page_token|ListRagFilesResponse.next_page_token}
+   *   of the previous
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.ListRagFiles|VertexRagDataService.ListRagFiles}
+   *   call.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of {@link protos.google.cloud.aiplatform.v1.TensorboardExperiment|TensorboardExperiment}.
+   *   The first element of the array is Array of {@link protos.google.cloud.aiplatform.v1.RagFile|RagFile}.
    *   The client library will perform auto-pagination by default: it will call the API as many
    *   times as needed and will merge results from all the pages into this array.
    *   Note that it can affect your quota.
-   *   We recommend using `listTensorboardExperimentsAsync()`
+   *   We recommend using `listRagFilesAsync()`
    *   method described below for async iteration which you can stop as needed.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
    *   for more details and examples.
    */
-  listTensorboardExperiments(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
+  listRagFiles(
+    request?: protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
     options?: CallOptions
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsResponse,
+      protos.google.cloud.aiplatform.v1.IRagFile[],
+      protos.google.cloud.aiplatform.v1.IListRagFilesRequest | null,
+      protos.google.cloud.aiplatform.v1.IListRagFilesResponse,
     ]
   >;
-  listTensorboardExperiments(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
+  listRagFiles(
+    request: protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
     options: CallOptions,
     callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsResponse
+      protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
+      | protos.google.cloud.aiplatform.v1.IListRagFilesResponse
       | null
       | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment
+      protos.google.cloud.aiplatform.v1.IRagFile
     >
   ): void;
-  listTensorboardExperiments(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
+  listRagFiles(
+    request: protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
     callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsResponse
+      protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
+      | protos.google.cloud.aiplatform.v1.IListRagFilesResponse
       | null
       | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment
+      protos.google.cloud.aiplatform.v1.IRagFile
     >
   ): void;
-  listTensorboardExperiments(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
+  listRagFiles(
+    request?: protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
     optionsOrCallback?:
       | CallOptions
       | PaginationCallback<
-          protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
-          | protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsResponse
+          protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
+          | protos.google.cloud.aiplatform.v1.IListRagFilesResponse
           | null
           | undefined,
-          protos.google.cloud.aiplatform.v1.ITensorboardExperiment
+          protos.google.cloud.aiplatform.v1.IRagFile
         >,
     callback?: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsResponse
+      protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
+      | protos.google.cloud.aiplatform.v1.IListRagFilesResponse
       | null
       | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment
+      protos.google.cloud.aiplatform.v1.IRagFile
     >
   ): Promise<
     [
-      protos.google.cloud.aiplatform.v1.ITensorboardExperiment[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsResponse,
+      protos.google.cloud.aiplatform.v1.IRagFile[],
+      protos.google.cloud.aiplatform.v1.IListRagFilesRequest | null,
+      protos.google.cloud.aiplatform.v1.IListRagFilesResponse,
     ]
   > | void {
     request = request || {};
@@ -5394,11 +3465,7 @@ export class TensorboardServiceClient {
         parent: request.parent ?? '',
       });
     this.initialize();
-    return this.innerApiCalls.listTensorboardExperiments(
-      request,
-      options,
-      callback
-    );
+    return this.innerApiCalls.listRagFiles(request, options, callback);
   }
 
   /**
@@ -5406,41 +3473,31 @@ export class TensorboardServiceClient {
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Tensorboard to list
-   *   TensorboardExperiments. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-   * @param {string} request.filter
-   *   Lists the TensorboardExperiments that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardExperiments to return. The service may
-   *   return fewer than this value. If unspecified, at most 50
-   *   TensorboardExperiments are returned. The maximum value is 1000; values
-   *   above 1000 are coerced to 1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments|TensorboardService.ListTensorboardExperiments}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments|TensorboardService.ListTensorboardExperiments}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
+   *   Required. The resource name of the RagCorpus from which to list the
+   *   RagFiles. Format:
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+   * @param {number} [request.pageSize]
+   *   Optional. The standard list page size.
+   * @param {string} [request.pageToken]
+   *   Optional. The standard list page token.
+   *   Typically obtained via
+   *   {@link protos.google.cloud.aiplatform.v1.ListRagFilesResponse.next_page_token|ListRagFilesResponse.next_page_token}
+   *   of the previous
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.ListRagFiles|VertexRagDataService.ListRagFiles}
+   *   call.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Stream}
-   *   An object stream which emits an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardExperiment|TensorboardExperiment} on 'data' event.
+   *   An object stream which emits an object representing {@link protos.google.cloud.aiplatform.v1.RagFile|RagFile} on 'data' event.
    *   The client library will perform auto-pagination by default: it will call the API as many
    *   times as needed. Note that it can affect your quota.
-   *   We recommend using `listTensorboardExperimentsAsync()`
+   *   We recommend using `listRagFilesAsync()`
    *   method described below for async iteration which you can stop as needed.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
    *   for more details and examples.
    */
-  listTensorboardExperimentsStream(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
+  listRagFilesStream(
+    request?: protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
     options?: CallOptions
   ): Transform {
     request = request || {};
@@ -5451,61 +3508,51 @@ export class TensorboardServiceClient {
       this._gaxModule.routingHeader.fromParams({
         parent: request.parent ?? '',
       });
-    const defaultCallSettings = this._defaults['listTensorboardExperiments'];
+    const defaultCallSettings = this._defaults['listRagFiles'];
     const callSettings = defaultCallSettings.merge(options);
     this.initialize();
-    return this.descriptors.page.listTensorboardExperiments.createStream(
-      this.innerApiCalls.listTensorboardExperiments as GaxCall,
+    return this.descriptors.page.listRagFiles.createStream(
+      this.innerApiCalls.listRagFiles as GaxCall,
       request,
       callSettings
     );
   }
 
   /**
-   * Equivalent to `listTensorboardExperiments`, but returns an iterable object.
+   * Equivalent to `listRagFiles`, but returns an iterable object.
    *
    * `for`-`await`-`of` syntax is used with the iterable to get response elements on-demand.
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. The resource name of the Tensorboard to list
-   *   TensorboardExperiments. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-   * @param {string} request.filter
-   *   Lists the TensorboardExperiments that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardExperiments to return. The service may
-   *   return fewer than this value. If unspecified, at most 50
-   *   TensorboardExperiments are returned. The maximum value is 1000; values
-   *   above 1000 are coerced to 1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments|TensorboardService.ListTensorboardExperiments}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments|TensorboardService.ListTensorboardExperiments}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
+   *   Required. The resource name of the RagCorpus from which to list the
+   *   RagFiles. Format:
+   *   `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+   * @param {number} [request.pageSize]
+   *   Optional. The standard list page size.
+   * @param {string} [request.pageToken]
+   *   Optional. The standard list page token.
+   *   Typically obtained via
+   *   {@link protos.google.cloud.aiplatform.v1.ListRagFilesResponse.next_page_token|ListRagFilesResponse.next_page_token}
+   *   of the previous
+   *   {@link protos.google.cloud.aiplatform.v1.VertexRagDataService.ListRagFiles|VertexRagDataService.ListRagFiles}
+   *   call.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Object}
    *   An iterable Object that allows {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols | async iteration }.
    *   When you iterate the returned iterable, each element will be an object representing
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardExperiment|TensorboardExperiment}. The API will be called under the hood as needed, once per the page,
+   *   {@link protos.google.cloud.aiplatform.v1.RagFile|RagFile}. The API will be called under the hood as needed, once per the page,
    *   so you can stop the iteration when you don't need more results.
    *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
    *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.list_tensorboard_experiments.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ListTensorboardExperiments_async
+   * @example <caption>include:samples/generated/v1/vertex_rag_data_service.list_rag_files.js</caption>
+   * region_tag:aiplatform_v1_generated_VertexRagDataService_ListRagFiles_async
    */
-  listTensorboardExperimentsAsync(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardExperimentsRequest,
+  listRagFilesAsync(
+    request?: protos.google.cloud.aiplatform.v1.IListRagFilesRequest,
     options?: CallOptions
-  ): AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboardExperiment> {
+  ): AsyncIterable<protos.google.cloud.aiplatform.v1.IRagFile> {
     request = request || {};
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -5514,733 +3561,14 @@ export class TensorboardServiceClient {
       this._gaxModule.routingHeader.fromParams({
         parent: request.parent ?? '',
       });
-    const defaultCallSettings = this._defaults['listTensorboardExperiments'];
+    const defaultCallSettings = this._defaults['listRagFiles'];
     const callSettings = defaultCallSettings.merge(options);
     this.initialize();
-    return this.descriptors.page.listTensorboardExperiments.asyncIterate(
-      this.innerApiCalls['listTensorboardExperiments'] as GaxCall,
+    return this.descriptors.page.listRagFiles.asyncIterate(
+      this.innerApiCalls['listRagFiles'] as GaxCall,
       request as {},
       callSettings
-    ) as AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboardExperiment>;
-  }
-  /**
-   * Lists TensorboardRuns in a Location.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardExperiment to list
-   *   TensorboardRuns. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   * @param {string} request.filter
-   *   Lists the TensorboardRuns that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardRuns to return. The service may return
-   *   fewer than this value. If unspecified, at most 50 TensorboardRuns are
-   *   returned. The maximum value is 1000; values above 1000 are coerced to
-   *   1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns|TensorboardService.ListTensorboardRuns}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns|TensorboardService.ListTensorboardRuns}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of {@link protos.google.cloud.aiplatform.v1.TensorboardRun|TensorboardRun}.
-   *   The client library will perform auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *   Note that it can affect your quota.
-   *   We recommend using `listTensorboardRunsAsync()`
-   *   method described below for async iteration which you can stop as needed.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   */
-  listTensorboardRuns(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardRunsResponse,
-    ]
-  >;
-  listTensorboardRuns(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-    options: CallOptions,
-    callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardRunsResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardRun
-    >
-  ): void;
-  listTensorboardRuns(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-    callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardRunsResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardRun
-    >
-  ): void;
-  listTensorboardRuns(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | PaginationCallback<
-          protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-          | protos.google.cloud.aiplatform.v1.IListTensorboardRunsResponse
-          | null
-          | undefined,
-          protos.google.cloud.aiplatform.v1.ITensorboardRun
-        >,
-    callback?: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardRunsResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardRun
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardRun[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardRunsResponse,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.listTensorboardRuns(request, options, callback);
-  }
-
-  /**
-   * Equivalent to `method.name.toCamelCase()`, but returns a NodeJS Stream object.
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardExperiment to list
-   *   TensorboardRuns. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   * @param {string} request.filter
-   *   Lists the TensorboardRuns that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardRuns to return. The service may return
-   *   fewer than this value. If unspecified, at most 50 TensorboardRuns are
-   *   returned. The maximum value is 1000; values above 1000 are coerced to
-   *   1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns|TensorboardService.ListTensorboardRuns}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns|TensorboardService.ListTensorboardRuns}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardRun|TensorboardRun} on 'data' event.
-   *   The client library will perform auto-pagination by default: it will call the API as many
-   *   times as needed. Note that it can affect your quota.
-   *   We recommend using `listTensorboardRunsAsync()`
-   *   method described below for async iteration which you can stop as needed.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   */
-  listTensorboardRunsStream(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-    options?: CallOptions
-  ): Transform {
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    const defaultCallSettings = this._defaults['listTensorboardRuns'];
-    const callSettings = defaultCallSettings.merge(options);
-    this.initialize();
-    return this.descriptors.page.listTensorboardRuns.createStream(
-      this.innerApiCalls.listTensorboardRuns as GaxCall,
-      request,
-      callSettings
-    );
-  }
-
-  /**
-   * Equivalent to `listTensorboardRuns`, but returns an iterable object.
-   *
-   * `for`-`await`-`of` syntax is used with the iterable to get response elements on-demand.
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardExperiment to list
-   *   TensorboardRuns. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}`
-   * @param {string} request.filter
-   *   Lists the TensorboardRuns that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardRuns to return. The service may return
-   *   fewer than this value. If unspecified, at most 50 TensorboardRuns are
-   *   returned. The maximum value is 1000; values above 1000 are coerced to
-   *   1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns|TensorboardService.ListTensorboardRuns}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns|TensorboardService.ListTensorboardRuns}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Object}
-   *   An iterable Object that allows {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols | async iteration }.
-   *   When you iterate the returned iterable, each element will be an object representing
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardRun|TensorboardRun}. The API will be called under the hood as needed, once per the page,
-   *   so you can stop the iteration when you don't need more results.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.list_tensorboard_runs.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ListTensorboardRuns_async
-   */
-  listTensorboardRunsAsync(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardRunsRequest,
-    options?: CallOptions
-  ): AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboardRun> {
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    const defaultCallSettings = this._defaults['listTensorboardRuns'];
-    const callSettings = defaultCallSettings.merge(options);
-    this.initialize();
-    return this.descriptors.page.listTensorboardRuns.asyncIterate(
-      this.innerApiCalls['listTensorboardRuns'] as GaxCall,
-      request as {},
-      callSettings
-    ) as AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboardRun>;
-  }
-  /**
-   * Lists TensorboardTimeSeries in a Location.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardRun to list
-   *   TensorboardTimeSeries. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {string} request.filter
-   *   Lists the TensorboardTimeSeries that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardTimeSeries to return. The service may
-   *   return fewer than this value. If unspecified, at most 50
-   *   TensorboardTimeSeries are returned. The maximum value is 1000; values
-   *   above 1000 are coerced to 1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries|TensorboardService.ListTensorboardTimeSeries}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries|TensorboardService.ListTensorboardTimeSeries}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of {@link protos.google.cloud.aiplatform.v1.TensorboardTimeSeries|TensorboardTimeSeries}.
-   *   The client library will perform auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *   Note that it can affect your quota.
-   *   We recommend using `listTensorboardTimeSeriesAsync()`
-   *   method described below for async iteration which you can stop as needed.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   */
-  listTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesResponse,
-    ]
-  >;
-  listTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-    options: CallOptions,
-    callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries
-    >
-  ): void;
-  listTensorboardTimeSeries(
-    request: protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-    callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries
-    >
-  ): void;
-  listTensorboardTimeSeries(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | PaginationCallback<
-          protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-          | protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesResponse
-          | null
-          | undefined,
-          protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries
-        >,
-    callback?: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-      | protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries[],
-      protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest | null,
-      protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesResponse,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.listTensorboardTimeSeries(
-      request,
-      options,
-      callback
-    );
-  }
-
-  /**
-   * Equivalent to `method.name.toCamelCase()`, but returns a NodeJS Stream object.
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardRun to list
-   *   TensorboardTimeSeries. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {string} request.filter
-   *   Lists the TensorboardTimeSeries that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardTimeSeries to return. The service may
-   *   return fewer than this value. If unspecified, at most 50
-   *   TensorboardTimeSeries are returned. The maximum value is 1000; values
-   *   above 1000 are coerced to 1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries|TensorboardService.ListTensorboardTimeSeries}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries|TensorboardService.ListTensorboardTimeSeries}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing {@link protos.google.cloud.aiplatform.v1.TensorboardTimeSeries|TensorboardTimeSeries} on 'data' event.
-   *   The client library will perform auto-pagination by default: it will call the API as many
-   *   times as needed. Note that it can affect your quota.
-   *   We recommend using `listTensorboardTimeSeriesAsync()`
-   *   method described below for async iteration which you can stop as needed.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   */
-  listTensorboardTimeSeriesStream(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): Transform {
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    const defaultCallSettings = this._defaults['listTensorboardTimeSeries'];
-    const callSettings = defaultCallSettings.merge(options);
-    this.initialize();
-    return this.descriptors.page.listTensorboardTimeSeries.createStream(
-      this.innerApiCalls.listTensorboardTimeSeries as GaxCall,
-      request,
-      callSettings
-    );
-  }
-
-  /**
-   * Equivalent to `listTensorboardTimeSeries`, but returns an iterable object.
-   *
-   * `for`-`await`-`of` syntax is used with the iterable to get response elements on-demand.
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The resource name of the TensorboardRun to list
-   *   TensorboardTimeSeries. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}`
-   * @param {string} request.filter
-   *   Lists the TensorboardTimeSeries that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of TensorboardTimeSeries to return. The service may
-   *   return fewer than this value. If unspecified, at most 50
-   *   TensorboardTimeSeries are returned. The maximum value is 1000; values
-   *   above 1000 are coerced to 1000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries|TensorboardService.ListTensorboardTimeSeries}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries|TensorboardService.ListTensorboardTimeSeries}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the list.
-   * @param {google.protobuf.FieldMask} request.readMask
-   *   Mask specifying which fields to read.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Object}
-   *   An iterable Object that allows {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols | async iteration }.
-   *   When you iterate the returned iterable, each element will be an object representing
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardTimeSeries|TensorboardTimeSeries}. The API will be called under the hood as needed, once per the page,
-   *   so you can stop the iteration when you don't need more results.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.list_tensorboard_time_series.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ListTensorboardTimeSeries_async
-   */
-  listTensorboardTimeSeriesAsync(
-    request?: protos.google.cloud.aiplatform.v1.IListTensorboardTimeSeriesRequest,
-    options?: CallOptions
-  ): AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries> {
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    const defaultCallSettings = this._defaults['listTensorboardTimeSeries'];
-    const callSettings = defaultCallSettings.merge(options);
-    this.initialize();
-    return this.descriptors.page.listTensorboardTimeSeries.asyncIterate(
-      this.innerApiCalls['listTensorboardTimeSeries'] as GaxCall,
-      request as {},
-      callSettings
-    ) as AsyncIterable<protos.google.cloud.aiplatform.v1.ITensorboardTimeSeries>;
-  }
-  /**
-   * Exports a TensorboardTimeSeries' data. Data is returned in paginated
-   * responses.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboardTimeSeries
-   *   Required. The resource name of the TensorboardTimeSeries to export data
-   *   from. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {string} request.filter
-   *   Exports the TensorboardTimeSeries' data that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of data points to return per page.
-   *   The default page_size is 1000. Values must be between 1 and 10000.
-   *   Values above 10000 are coerced to 10000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData|ExportTensorboardTimeSeriesData}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData|ExportTensorboardTimeSeriesData}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the TensorboardTimeSeries' data.
-   *   By default, TensorboardTimeSeries' data is returned in a pseudo random
-   *   order.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of {@link protos.google.cloud.aiplatform.v1.TimeSeriesDataPoint|TimeSeriesDataPoint}.
-   *   The client library will perform auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *   Note that it can affect your quota.
-   *   We recommend using `exportTensorboardTimeSeriesDataAsync()`
-   *   method described below for async iteration which you can stop as needed.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   */
-  exportTensorboardTimeSeriesData(
-    request?: protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-    options?: CallOptions
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint[],
-      protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest | null,
-      protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataResponse,
-    ]
-  >;
-  exportTensorboardTimeSeriesData(
-    request: protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-    options: CallOptions,
-    callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-      | protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint
-    >
-  ): void;
-  exportTensorboardTimeSeriesData(
-    request: protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-    callback: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-      | protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint
-    >
-  ): void;
-  exportTensorboardTimeSeriesData(
-    request?: protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-    optionsOrCallback?:
-      | CallOptions
-      | PaginationCallback<
-          protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-          | protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataResponse
-          | null
-          | undefined,
-          protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint
-        >,
-    callback?: PaginationCallback<
-      protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-      | protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataResponse
-      | null
-      | undefined,
-      protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint
-    >
-  ): Promise<
-    [
-      protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint[],
-      protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest | null,
-      protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataResponse,
-    ]
-  > | void {
-    request = request || {};
-    let options: CallOptions;
-    if (typeof optionsOrCallback === 'function' && callback === undefined) {
-      callback = optionsOrCallback;
-      options = {};
-    } else {
-      options = optionsOrCallback as CallOptions;
-    }
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard_time_series: request.tensorboardTimeSeries ?? '',
-      });
-    this.initialize();
-    return this.innerApiCalls.exportTensorboardTimeSeriesData(
-      request,
-      options,
-      callback
-    );
-  }
-
-  /**
-   * Equivalent to `method.name.toCamelCase()`, but returns a NodeJS Stream object.
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboardTimeSeries
-   *   Required. The resource name of the TensorboardTimeSeries to export data
-   *   from. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {string} request.filter
-   *   Exports the TensorboardTimeSeries' data that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of data points to return per page.
-   *   The default page_size is 1000. Values must be between 1 and 10000.
-   *   Values above 10000 are coerced to 10000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData|ExportTensorboardTimeSeriesData}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData|ExportTensorboardTimeSeriesData}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the TensorboardTimeSeries' data.
-   *   By default, TensorboardTimeSeries' data is returned in a pseudo random
-   *   order.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing {@link protos.google.cloud.aiplatform.v1.TimeSeriesDataPoint|TimeSeriesDataPoint} on 'data' event.
-   *   The client library will perform auto-pagination by default: it will call the API as many
-   *   times as needed. Note that it can affect your quota.
-   *   We recommend using `exportTensorboardTimeSeriesDataAsync()`
-   *   method described below for async iteration which you can stop as needed.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   */
-  exportTensorboardTimeSeriesDataStream(
-    request?: protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-    options?: CallOptions
-  ): Transform {
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard_time_series: request.tensorboardTimeSeries ?? '',
-      });
-    const defaultCallSettings =
-      this._defaults['exportTensorboardTimeSeriesData'];
-    const callSettings = defaultCallSettings.merge(options);
-    this.initialize();
-    return this.descriptors.page.exportTensorboardTimeSeriesData.createStream(
-      this.innerApiCalls.exportTensorboardTimeSeriesData as GaxCall,
-      request,
-      callSettings
-    );
-  }
-
-  /**
-   * Equivalent to `exportTensorboardTimeSeriesData`, but returns an iterable object.
-   *
-   * `for`-`await`-`of` syntax is used with the iterable to get response elements on-demand.
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.tensorboardTimeSeries
-   *   Required. The resource name of the TensorboardTimeSeries to export data
-   *   from. Format:
-   *   `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}`
-   * @param {string} request.filter
-   *   Exports the TensorboardTimeSeries' data that match the filter expression.
-   * @param {number} request.pageSize
-   *   The maximum number of data points to return per page.
-   *   The default page_size is 1000. Values must be between 1 and 10000.
-   *   Values above 10000 are coerced to 10000.
-   * @param {string} request.pageToken
-   *   A page token, received from a previous
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData|ExportTensorboardTimeSeriesData}
-   *   call. Provide this to retrieve the subsequent page.
-   *
-   *   When paginating, all other parameters provided to
-   *   {@link protos.google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData|ExportTensorboardTimeSeriesData}
-   *   must match the call that provided the page token.
-   * @param {string} request.orderBy
-   *   Field to use to sort the TensorboardTimeSeries' data.
-   *   By default, TensorboardTimeSeries' data is returned in a pseudo random
-   *   order.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Object}
-   *   An iterable Object that allows {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols | async iteration }.
-   *   When you iterate the returned iterable, each element will be an object representing
-   *   {@link protos.google.cloud.aiplatform.v1.TimeSeriesDataPoint|TimeSeriesDataPoint}. The API will be called under the hood as needed, once per the page,
-   *   so you can stop the iteration when you don't need more results.
-   *   Please see the {@link https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination | documentation }
-   *   for more details and examples.
-   * @example <caption>include:samples/generated/v1/tensorboard_service.export_tensorboard_time_series_data.js</caption>
-   * region_tag:aiplatform_v1_generated_TensorboardService_ExportTensorboardTimeSeriesData_async
-   */
-  exportTensorboardTimeSeriesDataAsync(
-    request?: protos.google.cloud.aiplatform.v1.IExportTensorboardTimeSeriesDataRequest,
-    options?: CallOptions
-  ): AsyncIterable<protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint> {
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        tensorboard_time_series: request.tensorboardTimeSeries ?? '',
-      });
-    const defaultCallSettings =
-      this._defaults['exportTensorboardTimeSeriesData'];
-    const callSettings = defaultCallSettings.merge(options);
-    this.initialize();
-    return this.descriptors.page.exportTensorboardTimeSeriesData.asyncIterate(
-      this.innerApiCalls['exportTensorboardTimeSeriesData'] as GaxCall,
-      request as {},
-      callSettings
-    ) as AsyncIterable<protos.google.cloud.aiplatform.v1.ITimeSeriesDataPoint>;
+    ) as AsyncIterable<protos.google.cloud.aiplatform.v1.IRagFile>;
   }
   /**
    * Gets the access control policy for a resource. Returns an empty policy
@@ -8850,29 +6178,6 @@ export class TensorboardServiceClient {
   }
 
   /**
-   * Return a fully-qualified project resource name string.
-   *
-   * @param {string} project
-   * @returns {string} Resource name string.
-   */
-  projectPath(project: string) {
-    return this.pathTemplates.projectPathTemplate.render({
-      project: project,
-    });
-  }
-
-  /**
-   * Parse the project from Project resource.
-   *
-   * @param {string} projectName
-   *   A fully-qualified path representing Project resource.
-   * @returns {string} A string representing the project.
-   */
-  matchProjectFromProjectName(projectName: string) {
-    return this.pathTemplates.projectPathTemplate.match(projectName).project;
-  }
-
-  /**
    * Return a fully-qualified projectLocationEndpoint resource name string.
    *
    * @param {string} project
@@ -10114,8 +7419,8 @@ export class TensorboardServiceClient {
    * @returns {Promise} A promise that resolves when the client is closed.
    */
   close(): Promise<void> {
-    if (this.tensorboardServiceStub && !this._terminated) {
-      return this.tensorboardServiceStub.then(stub => {
+    if (this.vertexRagDataServiceStub && !this._terminated) {
+      return this.vertexRagDataServiceStub.then(stub => {
         this._terminated = true;
         stub.close();
         this.iamClient.close();
