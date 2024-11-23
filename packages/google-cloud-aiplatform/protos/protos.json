@@ -39156,6 +39156,7 @@
                           "type": "int32",
                           "id": 2,
                           "options": {
+                            "deprecated": true,
                             "(google.api.field_behavior)": "OPTIONAL",
                             "proto3_optional": true
                           }
@@ -39164,8 +39165,16 @@
                           "type": "double",
                           "id": 3,
                           "options": {
+                            "deprecated": true,
                             "(google.api.field_behavior)": "OPTIONAL",
                             "proto3_optional": true
+                          }
+                        },
+                        "ragRetrievalConfig": {
+                          "type": "RagRetrievalConfig",
+                          "id": 6,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
                           }
                         }
                       },
@@ -39278,6 +39287,158 @@
                             "AUTO": 1,
                             "ANY": 2,
                             "NONE": 3
+                          }
+                        }
+                      }
+                    },
+                    "RagRetrievalConfig": {
+                      "fields": {
+                        "topK": {
+                          "type": "int32",
+                          "id": 1,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "hybridSearch": {
+                          "type": "HybridSearch",
+                          "id": 2,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "filter": {
+                          "type": "Filter",
+                          "id": 3,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "ranking": {
+                          "type": "Ranking",
+                          "id": 4,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        }
+                      },
+                      "nested": {
+                        "HybridSearch": {
+                          "oneofs": {
+                            "_alpha": {
+                              "oneof": [
+                                "alpha"
+                              ]
+                            }
+                          },
+                          "fields": {
+                            "alpha": {
+                              "type": "float",
+                              "id": 1,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL",
+                                "proto3_optional": true
+                              }
+                            }
+                          }
+                        },
+                        "Filter": {
+                          "oneofs": {
+                            "vectorDbThreshold": {
+                              "oneof": [
+                                "vectorDistanceThreshold",
+                                "vectorSimilarityThreshold"
+                              ]
+                            }
+                          },
+                          "fields": {
+                            "vectorDistanceThreshold": {
+                              "type": "double",
+                              "id": 3,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            },
+                            "vectorSimilarityThreshold": {
+                              "type": "double",
+                              "id": 4,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            },
+                            "metadataFilter": {
+                              "type": "string",
+                              "id": 2,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            }
+                          }
+                        },
+                        "Ranking": {
+                          "oneofs": {
+                            "rankingConfig": {
+                              "oneof": [
+                                "rankService",
+                                "llmRanker"
+                              ]
+                            }
+                          },
+                          "fields": {
+                            "rankService": {
+                              "type": "RankService",
+                              "id": 1,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            },
+                            "llmRanker": {
+                              "type": "LlmRanker",
+                              "id": 3,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            }
+                          },
+                          "nested": {
+                            "RankService": {
+                              "oneofs": {
+                                "_modelName": {
+                                  "oneof": [
+                                    "modelName"
+                                  ]
+                                }
+                              },
+                              "fields": {
+                                "modelName": {
+                                  "type": "string",
+                                  "id": 1,
+                                  "options": {
+                                    "(google.api.field_behavior)": "OPTIONAL",
+                                    "proto3_optional": true
+                                  }
+                                }
+                              }
+                            },
+                            "LlmRanker": {
+                              "oneofs": {
+                                "_modelName": {
+                                  "oneof": [
+                                    "modelName"
+                                  ]
+                                }
+                              },
+                              "fields": {
+                                "modelName": {
+                                  "type": "string",
+                                  "id": 1,
+                                  "options": {
+                                    "(google.api.field_behavior)": "OPTIONAL",
+                                    "proto3_optional": true
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -72933,6 +73094,13 @@
                         "apiAuth": {
                           "type": "ApiAuth",
                           "id": 5
+                        },
+                        "ragEmbeddingModelConfig": {
+                          "type": "RagEmbeddingModelConfig",
+                          "id": 7,
+                          "options": {
+                            "(google.api.field_behavior)": "IMMUTABLE"
+                          }
                         }
                       },
                       "nested": {
@@ -73008,6 +73176,14 @@
                         }
                       }
                     },
+                    "VertexAiSearchConfig": {
+                      "fields": {
+                        "servingConfig": {
+                          "type": "string",
+                          "id": 1
+                        }
+                      }
+                    },
                     "CorpusStatus": {
                       "fields": {
                         "state": {
@@ -73043,6 +73219,14 @@
                         "(google.api.resource).plural": "ragCorpora",
                         "(google.api.resource).singular": "ragCorpus"
                       },
+                      "oneofs": {
+                        "backendConfig": {
+                          "oneof": [
+                            "vectorDbConfig",
+                            "vertexAiSearchConfig"
+                          ]
+                        }
+                      },
                       "fields": {
                         "name": {
                           "type": "string",
@@ -73069,6 +73253,7 @@
                           "type": "RagEmbeddingModelConfig",
                           "id": 6,
                           "options": {
+                            "deprecated": true,
                             "(google.api.field_behavior)": "IMMUTABLE"
                           }
                         },
@@ -73076,6 +73261,7 @@
                           "type": "RagVectorDbConfig",
                           "id": 7,
                           "options": {
+                            "deprecated": true,
                             "(google.api.field_behavior)": "IMMUTABLE"
                           }
                         },
@@ -73098,6 +73284,20 @@
                           "id": 8,
                           "options": {
                             "(google.api.field_behavior)": "OUTPUT_ONLY"
+                          }
+                        },
+                        "vectorDbConfig": {
+                          "type": "RagVectorDbConfig",
+                          "id": 9,
+                          "options": {
+                            "(google.api.field_behavior)": "IMMUTABLE"
+                          }
+                        },
+                        "vertexAiSearchConfig": {
+                          "type": "VertexAiSearchConfig",
+                          "id": 10,
+                          "options": {
+                            "(google.api.field_behavior)": "IMMUTABLE"
                           }
                         }
                       }
@@ -73223,22 +73423,102 @@
                       }
                     },
                     "RagFileChunkingConfig": {
+                      "oneofs": {
+                        "chunkingConfig": {
+                          "oneof": [
+                            "fixedLengthChunking"
+                          ]
+                        }
+                      },
                       "fields": {
+                        "fixedLengthChunking": {
+                          "type": "FixedLengthChunking",
+                          "id": 3
+                        },
                         "chunkSize": {
                           "type": "int32",
-                          "id": 1
+                          "id": 1,
+                          "options": {
+                            "deprecated": true
+                          }
                         },
                         "chunkOverlap": {
                           "type": "int32",
-                          "id": 2
+                          "id": 2,
+                          "options": {
+                            "deprecated": true
+                          }
+                        }
+                      },
+                      "nested": {
+                        "FixedLengthChunking": {
+                          "fields": {
+                            "chunkSize": {
+                              "type": "int32",
+                              "id": 1
+                            },
+                            "chunkOverlap": {
+                              "type": "int32",
+                              "id": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "RagFileTransformationConfig": {
+                      "fields": {
+                        "ragFileChunkingConfig": {
+                          "type": "RagFileChunkingConfig",
+                          "id": 1
                         }
                       }
                     },
                     "RagFileParsingConfig": {
+                      "oneofs": {
+                        "parser": {
+                          "oneof": [
+                            "advancedParser",
+                            "layoutParser"
+                          ]
+                        }
+                      },
                       "fields": {
+                        "advancedParser": {
+                          "type": "AdvancedParser",
+                          "id": 3
+                        },
+                        "layoutParser": {
+                          "type": "LayoutParser",
+                          "id": 4
+                        },
                         "useAdvancedPdfParsing": {
                           "type": "bool",
-                          "id": 2
+                          "id": 2,
+                          "options": {
+                            "deprecated": true
+                          }
+                        }
+                      },
+                      "nested": {
+                        "AdvancedParser": {
+                          "fields": {
+                            "useAdvancedPdfParsing": {
+                              "type": "bool",
+                              "id": 1
+                            }
+                          }
+                        },
+                        "LayoutParser": {
+                          "fields": {
+                            "processorName": {
+                              "type": "string",
+                              "id": 1
+                            },
+                            "maxParsingRequestsPerMin": {
+                              "type": "int32",
+                              "id": 2
+                            }
+                          }
                         }
                       }
                     },
@@ -73246,7 +73526,14 @@
                       "fields": {
                         "ragFileChunkingConfig": {
                           "type": "RagFileChunkingConfig",
-                          "id": 1
+                          "id": 1,
+                          "options": {
+                            "deprecated": true
+                          }
+                        },
+                        "ragFileTransformationConfig": {
+                          "type": "RagFileTransformationConfig",
+                          "id": 3
                         }
                       }
                     },
@@ -73291,19 +73578,35 @@
                         },
                         "partialFailureGcsSink": {
                           "type": "GcsDestination",
-                          "id": 11
+                          "id": 11,
+                          "options": {
+                            "deprecated": true
+                          }
                         },
                         "partialFailureBigquerySink": {
                           "type": "BigQueryDestination",
-                          "id": 12
+                          "id": 12,
+                          "options": {
+                            "deprecated": true
+                          }
                         },
                         "ragFileChunkingConfig": {
                           "type": "RagFileChunkingConfig",
-                          "id": 4
+                          "id": 4,
+                          "options": {
+                            "deprecated": true
+                          }
+                        },
+                        "ragFileTransformationConfig": {
+                          "type": "RagFileTransformationConfig",
+                          "id": 16
                         },
                         "ragFileParsingConfig": {
                           "type": "RagFileParsingConfig",
-                          "id": 8
+                          "id": 8,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
                         },
                         "maxEmbeddingRequestsPerMin": {
                           "type": "int32",
@@ -73874,6 +74177,46 @@
                               "(google.api.method_signature)": "parent,query"
                             }
                           ]
+                        },
+                        "AugmentPrompt": {
+                          "requestType": "AugmentPromptRequest",
+                          "responseType": "AugmentPromptResponse",
+                          "options": {
+                            "(google.api.http).post": "/v1beta1/{parent=projects/*/locations/*}:augmentPrompt",
+                            "(google.api.http).body": "*",
+                            "(google.api.method_signature)": "parent,model,vertex_rag_store"
+                          },
+                          "parsedOptions": [
+                            {
+                              "(google.api.http)": {
+                                "post": "/v1beta1/{parent=projects/*/locations/*}:augmentPrompt",
+                                "body": "*"
+                              }
+                            },
+                            {
+                              "(google.api.method_signature)": "parent,model,vertex_rag_store"
+                            }
+                          ]
+                        },
+                        "CorroborateContent": {
+                          "requestType": "CorroborateContentRequest",
+                          "responseType": "CorroborateContentResponse",
+                          "options": {
+                            "(google.api.http).post": "/v1beta1/{parent=projects/*/locations/*}:corroborateContent",
+                            "(google.api.http).body": "*",
+                            "(google.api.method_signature)": "parent,content,facts"
+                          },
+                          "parsedOptions": [
+                            {
+                              "(google.api.http)": {
+                                "post": "/v1beta1/{parent=projects/*/locations/*}:corroborateContent",
+                                "body": "*"
+                              }
+                            },
+                            {
+                              "(google.api.method_signature)": "parent,content,facts"
+                            }
+                          ]
                         }
                       }
                     },
@@ -73897,12 +74240,21 @@
                           "type": "int32",
                           "id": 2,
                           "options": {
+                            "deprecated": true,
                             "(google.api.field_behavior)": "OPTIONAL"
                           }
                         },
                         "ranking": {
                           "type": "Ranking",
                           "id": 4,
+                          "options": {
+                            "deprecated": true,
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "ragRetrievalConfig": {
+                          "type": "RagRetrievalConfig",
+                          "id": 6,
                           "options": {
                             "(google.api.field_behavior)": "OPTIONAL"
                           }
@@ -73990,6 +74342,7 @@
                               "type": "double",
                               "id": 2,
                               "options": {
+                                "deprecated": true,
                                 "(google.api.field_behavior)": "OPTIONAL",
                                 "proto3_optional": true
                               }
@@ -74030,10 +74383,21 @@
                       },
                       "nested": {
                         "Context": {
+                          "oneofs": {
+                            "_score": {
+                              "oneof": [
+                                "score"
+                              ]
+                            }
+                          },
                           "fields": {
                             "sourceUri": {
                               "type": "string",
                               "id": 1
+                            },
+                            "sourceDisplayName": {
+                              "type": "string",
+                              "id": 5
                             },
                             "text": {
                               "type": "string",
@@ -74041,11 +74405,24 @@
                             },
                             "distance": {
                               "type": "double",
-                              "id": 3
+                              "id": 3,
+                              "options": {
+                                "deprecated": true
+                              }
                             },
                             "sparseDistance": {
                               "type": "double",
-                              "id": 4
+                              "id": 4,
+                              "options": {
+                                "deprecated": true
+                              }
+                            },
+                            "score": {
+                              "type": "double",
+                              "id": 6,
+                              "options": {
+                                "proto3_optional": true
+                              }
                             }
                           }
                         }
@@ -74056,6 +74433,285 @@
                         "contexts": {
                           "type": "RagContexts",
                           "id": 1
+                        }
+                      }
+                    },
+                    "AugmentPromptRequest": {
+                      "oneofs": {
+                        "dataSource": {
+                          "oneof": [
+                            "vertexRagStore"
+                          ]
+                        }
+                      },
+                      "fields": {
+                        "vertexRagStore": {
+                          "type": "VertexRagStore",
+                          "id": 4,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "parent": {
+                          "type": "string",
+                          "id": 1,
+                          "options": {
+                            "(google.api.field_behavior)": "REQUIRED",
+                            "(google.api.resource_reference).type": "locations.googleapis.com/Location"
+                          }
+                        },
+                        "contents": {
+                          "rule": "repeated",
+                          "type": "Content",
+                          "id": 2,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "model": {
+                          "type": "Model",
+                          "id": 3,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        }
+                      },
+                      "nested": {
+                        "Model": {
+                          "fields": {
+                            "model": {
+                              "type": "string",
+                              "id": 1,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            },
+                            "modelVersion": {
+                              "type": "string",
+                              "id": 2,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "AugmentPromptResponse": {
+                      "fields": {
+                        "augmentedPrompt": {
+                          "rule": "repeated",
+                          "type": "Content",
+                          "id": 1
+                        },
+                        "facts": {
+                          "rule": "repeated",
+                          "type": "Fact",
+                          "id": 2
+                        }
+                      }
+                    },
+                    "CorroborateContentRequest": {
+                      "oneofs": {
+                        "_content": {
+                          "oneof": [
+                            "content"
+                          ]
+                        }
+                      },
+                      "fields": {
+                        "parent": {
+                          "type": "string",
+                          "id": 1,
+                          "options": {
+                            "(google.api.field_behavior)": "REQUIRED",
+                            "(google.api.resource_reference).type": "locations.googleapis.com/Location"
+                          }
+                        },
+                        "content": {
+                          "type": "Content",
+                          "id": 2,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL",
+                            "proto3_optional": true
+                          }
+                        },
+                        "facts": {
+                          "rule": "repeated",
+                          "type": "Fact",
+                          "id": 3,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "parameters": {
+                          "type": "Parameters",
+                          "id": 4,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        }
+                      },
+                      "nested": {
+                        "Parameters": {
+                          "fields": {
+                            "citationThreshold": {
+                              "type": "double",
+                              "id": 1,
+                              "options": {
+                                "(google.api.field_behavior)": "OPTIONAL"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "CorroborateContentResponse": {
+                      "oneofs": {
+                        "_corroborationScore": {
+                          "oneof": [
+                            "corroborationScore"
+                          ]
+                        }
+                      },
+                      "fields": {
+                        "corroborationScore": {
+                          "type": "float",
+                          "id": 1,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        },
+                        "claims": {
+                          "rule": "repeated",
+                          "type": "Claim",
+                          "id": 2
+                        }
+                      }
+                    },
+                    "Fact": {
+                      "oneofs": {
+                        "_query": {
+                          "oneof": [
+                            "query"
+                          ]
+                        },
+                        "_title": {
+                          "oneof": [
+                            "title"
+                          ]
+                        },
+                        "_uri": {
+                          "oneof": [
+                            "uri"
+                          ]
+                        },
+                        "_summary": {
+                          "oneof": [
+                            "summary"
+                          ]
+                        },
+                        "_vectorDistance": {
+                          "oneof": [
+                            "vectorDistance"
+                          ]
+                        },
+                        "_score": {
+                          "oneof": [
+                            "score"
+                          ]
+                        }
+                      },
+                      "fields": {
+                        "query": {
+                          "type": "string",
+                          "id": 1,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        },
+                        "title": {
+                          "type": "string",
+                          "id": 2,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        },
+                        "uri": {
+                          "type": "string",
+                          "id": 3,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        },
+                        "summary": {
+                          "type": "string",
+                          "id": 4,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        },
+                        "vectorDistance": {
+                          "type": "double",
+                          "id": 5,
+                          "options": {
+                            "deprecated": true,
+                            "proto3_optional": true
+                          }
+                        },
+                        "score": {
+                          "type": "double",
+                          "id": 6,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        }
+                      }
+                    },
+                    "Claim": {
+                      "oneofs": {
+                        "_startIndex": {
+                          "oneof": [
+                            "startIndex"
+                          ]
+                        },
+                        "_endIndex": {
+                          "oneof": [
+                            "endIndex"
+                          ]
+                        },
+                        "_score": {
+                          "oneof": [
+                            "score"
+                          ]
+                        }
+                      },
+                      "fields": {
+                        "startIndex": {
+                          "type": "int32",
+                          "id": 1,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        },
+                        "endIndex": {
+                          "type": "int32",
+                          "id": 2,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        },
+                        "factIndexes": {
+                          "rule": "repeated",
+                          "type": "int32",
+                          "id": 3
+                        },
+                        "score": {
+                          "type": "float",
+                          "id": 4,
+                          "options": {
+                            "proto3_optional": true
+                          }
                         }
                       }
                     },

@@ -662,6 +662,8 @@
   * [Vertex_rag_data_service.list_rag_files](#vertex_rag_data_service.list_rag_files)
   * [Vertex_rag_data_service.update_rag_corpus](#vertex_rag_data_service.update_rag_corpus)
   * [Vertex_rag_data_service.upload_rag_file](#vertex_rag_data_service.upload_rag_file)
+  * [Vertex_rag_service.augment_prompt](#vertex_rag_service.augment_prompt)
+  * [Vertex_rag_service.corroborate_content](#vertex_rag_service.corroborate_content)
   * [Vertex_rag_service.retrieve_contexts](#vertex_rag_service.retrieve_contexts)
   * [Vizier_service.add_trial_measurement](#vizier_service.add_trial_measurement)
   * [Vizier_service.check_trial_early_stopping_state](#vizier_service.check_trial_early_stopping_state)
@@ -11738,6 +11740,40 @@ __Usage:__
 
 
 `node packages/google-cloud-aiplatform/samples/generated/v1beta1/vertex_rag_data_service.upload_rag_file.js`
+
+
+-----
+
+
+
+
+### Vertex_rag_service.augment_prompt
+
+View the [source code](https://github.com/googleapis/google-cloud-node/blob/main/packages/google-cloud-aiplatform/samples/generated/v1beta1/vertex_rag_service.augment_prompt.js).
+
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/google-cloud-node&page=editor&open_in_editor=packages/google-cloud-aiplatform/samples/generated/v1beta1/vertex_rag_service.augment_prompt.js,samples/README.md)
+
+__Usage:__
+
+
+`node packages/google-cloud-aiplatform/samples/generated/v1beta1/vertex_rag_service.augment_prompt.js`
+
+
+-----
+
+
+
+
+### Vertex_rag_service.corroborate_content
+
+View the [source code](https://github.com/googleapis/google-cloud-node/blob/main/packages/google-cloud-aiplatform/samples/generated/v1beta1/vertex_rag_service.corroborate_content.js).
+
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/google-cloud-node&page=editor&open_in_editor=packages/google-cloud-aiplatform/samples/generated/v1beta1/vertex_rag_service.corroborate_content.js,samples/README.md)
+
+__Usage:__
+
+
+`node packages/google-cloud-aiplatform/samples/generated/v1beta1/vertex_rag_service.corroborate_content.js`
 
 
 -----

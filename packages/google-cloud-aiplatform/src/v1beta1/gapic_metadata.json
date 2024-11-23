@@ -4027,6 +4027,16 @@
               "methods": [
                 "retrieveContexts"
               ]
+            },
+            "AugmentPrompt": {
+              "methods": [
+                "augmentPrompt"
+              ]
+            },
+            "CorroborateContent": {
+              "methods": [
+                "corroborateContent"
+              ]
             }
           }
         },
@@ -4036,6 +4046,16 @@
             "RetrieveContexts": {
               "methods": [
                 "retrieveContexts"
+              ]
+            },
+            "AugmentPrompt": {
+              "methods": [
+                "augmentPrompt"
+              ]
+            },
+            "CorroborateContent": {
+              "methods": [
+                "corroborateContent"
               ]
             }
           }
