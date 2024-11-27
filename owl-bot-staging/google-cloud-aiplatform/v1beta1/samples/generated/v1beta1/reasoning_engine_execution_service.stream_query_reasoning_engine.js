@@ -41,7 +41,7 @@ function main(name) {
   // const input = {}
   /**
    *  Optional. Class method to be used for the stream query.
-   *  It is optional and defaults to "steam_query" if unspecified.
+   *  It is optional and defaults to "stream_query" if unspecified.
    */
   // const classMethod = 'abc123'
 

@@ -614,7 +614,7 @@ export class ReasoningEngineExecutionServiceClient {
  *   include text query, function calling parameters, media bytes, etc.
  * @param {string} [request.classMethod]
  *   Optional. Class method to be used for the stream query.
- *   It is optional and defaults to "steam_query" if unspecified.
+ *   It is optional and defaults to "stream_query" if unspecified.
  * @param {object} [options]
  *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
  * @returns {Stream}
