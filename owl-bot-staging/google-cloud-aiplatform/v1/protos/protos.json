@@ -1666,6 +1666,13 @@
                             "(google.api.field_behavior)": "IMMUTABLE"
                           }
                         },
+                        "requiredReplicaCount": {
+                          "type": "int32",
+                          "id": 9,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
                         "autoscalingMetricSpecs": {
                           "rule": "repeated",
                           "type": "AutoscalingMetricSpec",
@@ -6739,10 +6746,44 @@
                           "type": "FasterDeploymentConfig",
                           "id": 23
                         },
+                        "status": {
+                          "type": "Status",
+                          "id": 26,
+                          "options": {
+                            "(google.api.field_behavior)": "OUTPUT_ONLY"
+                          }
+                        },
                         "systemLabels": {
                           "keyType": "string",
                           "type": "string",
                           "id": 28
+                        }
+                      },
+                      "nested": {
+                        "Status": {
+                          "fields": {
+                            "message": {
+                              "type": "string",
+                              "id": 1,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            },
+                            "lastUpdateTime": {
+                              "type": "google.protobuf.Timestamp",
+                              "id": 2,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            },
+                            "availableReplicaCount": {
+                              "type": "int32",
+                              "id": 3,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            }
+                          }
                         }
                       }
                     },
