@@ -25630,6 +25630,11 @@
                             "executionUser",
                             "serviceAccount"
                           ]
+                        },
+                        "runtimeEnvironment": {
+                          "oneof": [
+                            "workbenchRuntime"
+                          ]
                         }
                       },
                       "fields": {
@@ -25667,6 +25672,10 @@
                         "serviceAccount": {
                           "type": "string",
                           "id": 18
+                        },
+                        "workbenchRuntime": {
+                          "type": "WorkbenchRuntime",
+                          "id": 23
                         },
                         "name": {
                           "type": "string",
@@ -25724,6 +25733,10 @@
                           "type": "string",
                           "id": 19
                         },
+                        "kernelName": {
+                          "type": "string",
+                          "id": 20
+                        },
                         "encryptionSpec": {
                           "type": "EncryptionSpec",
                           "id": 22
@@ -25777,6 +25790,9 @@
                               "id": 3
                             }
                           }
+                        },
+                        "WorkbenchRuntime": {
+                          "fields": {}
                         }
                       }
                     },
