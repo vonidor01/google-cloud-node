@@ -39,6 +39,11 @@ function main(name) {
    *  include text query, function calling parameters, media bytes, etc.
    */
   // const input = {}
+  /**
+   *  Optional. Class method to be used for the query.
+   *  It is optional and defaults to "query" if unspecified.
+   */
+  // const classMethod = 'abc123'
 
   // Imports the Aiplatform library
   const {ReasoningEngineExecutionServiceClient} = require('@google-cloud/aiplatform').v1beta1;

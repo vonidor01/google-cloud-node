@@ -1669,6 +1669,13 @@
                             "(google.api.field_behavior)": "IMMUTABLE"
                           }
                         },
+                        "requiredReplicaCount": {
+                          "type": "int32",
+                          "id": 9,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
                         "autoscalingMetricSpecs": {
                           "rule": "repeated",
                           "type": "AutoscalingMetricSpec",
@@ -6742,10 +6749,44 @@
                           "type": "FasterDeploymentConfig",
                           "id": 23
                         },
+                        "status": {
+                          "type": "Status",
+                          "id": 26,
+                          "options": {
+                            "(google.api.field_behavior)": "OUTPUT_ONLY"
+                          }
+                        },
                         "systemLabels": {
                           "keyType": "string",
                           "type": "string",
                           "id": 28
+                        }
+                      },
+                      "nested": {
+                        "Status": {
+                          "fields": {
+                            "message": {
+                              "type": "string",
+                              "id": 1,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            },
+                            "lastUpdateTime": {
+                              "type": "google.protobuf.Timestamp",
+                              "id": 2,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            },
+                            "availableReplicaCount": {
+                              "type": "int32",
+                              "id": 3,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            }
+                          }
                         }
                       }
                     },
@@ -25592,6 +25633,11 @@
                             "executionUser",
                             "serviceAccount"
                           ]
+                        },
+                        "runtimeEnvironment": {
+                          "oneof": [
+                            "workbenchRuntime"
+                          ]
                         }
                       },
                       "fields": {
@@ -25629,6 +25675,10 @@
                         "serviceAccount": {
                           "type": "string",
                           "id": 18
+                        },
+                        "workbenchRuntime": {
+                          "type": "WorkbenchRuntime",
+                          "id": 23
                         },
                         "name": {
                           "type": "string",
@@ -25686,6 +25736,10 @@
                           "type": "string",
                           "id": 19
                         },
+                        "kernelName": {
+                          "type": "string",
+                          "id": 20
+                        },
                         "encryptionSpec": {
                           "type": "EncryptionSpec",
                           "id": 22
@@ -25739,6 +25793,9 @@
                               "id": 3
                             }
                           }
+                        },
+                        "WorkbenchRuntime": {
+                          "fields": {}
                         }
                       }
                     },
@@ -36261,6 +36318,13 @@
                             "(google.api.field_behavior)": "IMMUTABLE"
                           }
                         },
+                        "requiredReplicaCount": {
+                          "type": "int32",
+                          "id": 9,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
                         "autoscalingMetricSpecs": {
                           "rule": "repeated",
                           "type": "AutoscalingMetricSpec",
@@ -42291,10 +42355,44 @@
                           "type": "FasterDeploymentConfig",
                           "id": 23
                         },
+                        "status": {
+                          "type": "Status",
+                          "id": 26,
+                          "options": {
+                            "(google.api.field_behavior)": "OUTPUT_ONLY"
+                          }
+                        },
                         "systemLabels": {
                           "keyType": "string",
                           "type": "string",
                           "id": 28
+                        }
+                      },
+                      "nested": {
+                        "Status": {
+                          "fields": {
+                            "message": {
+                              "type": "string",
+                              "id": 1,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            },
+                            "lastUpdateTime": {
+                              "type": "google.protobuf.Timestamp",
+                              "id": 2,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            },
+                            "availableReplicaCount": {
+                              "type": "int32",
+                              "id": 3,
+                              "options": {
+                                "(google.api.field_behavior)": "OUTPUT_ONLY"
+                              }
+                            }
+                          }
                         }
                       }
                     },
@@ -42346,19 +42444,19 @@
                         }
                       }
                     },
-                    "FasterDeploymentConfig": {
-                      "fields": {
-                        "fastTryoutEnabled": {
-                          "type": "bool",
-                          "id": 2
-                        }
-                      }
-                    },
                     "ClientConnectionConfig": {
                       "fields": {
                         "inferenceTimeout": {
                           "type": "google.protobuf.Duration",
                           "id": 1
+                        }
+                      }
+                    },
+                    "FasterDeploymentConfig": {
+                      "fields": {
+                        "fastTryoutEnabled": {
+                          "type": "bool",
+                          "id": 2
                         }
                       }
                     },
@@ -63717,6 +63815,11 @@
                             "executionUser",
                             "serviceAccount"
                           ]
+                        },
+                        "runtimeEnvironment": {
+                          "oneof": [
+                            "workbenchRuntime"
+                          ]
                         }
                       },
                       "fields": {
@@ -63754,6 +63857,10 @@
                         "serviceAccount": {
                           "type": "string",
                           "id": 18
+                        },
+                        "workbenchRuntime": {
+                          "type": "WorkbenchRuntime",
+                          "id": 23
                         },
                         "name": {
                           "type": "string",
@@ -63811,6 +63918,10 @@
                           "type": "string",
                           "id": 19
                         },
+                        "kernelName": {
+                          "type": "string",
+                          "id": 20
+                        },
                         "encryptionSpec": {
                           "type": "EncryptionSpec",
                           "id": 22
@@ -63864,6 +63975,9 @@
                               "id": 3
                             }
                           }
+                        },
+                        "WorkbenchRuntime": {
+                          "fields": {}
                         }
                       }
                     },
@@ -68391,6 +68505,23 @@
                               }
                             }
                           ]
+                        },
+                        "StreamQueryReasoningEngine": {
+                          "requestType": "StreamQueryReasoningEngineRequest",
+                          "responseType": "google.api.HttpBody",
+                          "responseStream": true,
+                          "options": {
+                            "(google.api.http).post": "/v1beta1/{name=projects/*/locations/*/reasoningEngines/*}:streamQuery",
+                            "(google.api.http).body": "*"
+                          },
+                          "parsedOptions": [
+                            {
+                              "(google.api.http)": {
+                                "post": "/v1beta1/{name=projects/*/locations/*/reasoningEngines/*}:streamQuery",
+                                "body": "*"
+                              }
+                            }
+                          ]
                         }
                       }
                     },
@@ -68410,6 +68541,13 @@
                           "options": {
                             "(google.api.field_behavior)": "OPTIONAL"
                           }
+                        },
+                        "classMethod": {
+                          "type": "string",
+                          "id": 3,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
                         }
                       }
                     },
@@ -68418,6 +68556,32 @@
                         "output": {
                           "type": "google.protobuf.Value",
                           "id": 1
+                        }
+                      }
+                    },
+                    "StreamQueryReasoningEngineRequest": {
+                      "fields": {
+                        "name": {
+                          "type": "string",
+                          "id": 1,
+                          "options": {
+                            "(google.api.field_behavior)": "REQUIRED",
+                            "(google.api.resource_reference).type": "aiplatform.googleapis.com/ReasoningEngine"
+                          }
+                        },
+                        "input": {
+                          "type": "google.protobuf.Struct",
+                          "id": 2,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "classMethod": {
+                          "type": "string",
+                          "id": 3,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
                         }
                       }
                     },
@@ -68599,7 +68763,7 @@
                           "type": "google.protobuf.FieldMask",
                           "id": 2,
                           "options": {
-                            "(google.api.field_behavior)": "REQUIRED"
+                            "(google.api.field_behavior)": "OPTIONAL"
                           }
                         }
                       }

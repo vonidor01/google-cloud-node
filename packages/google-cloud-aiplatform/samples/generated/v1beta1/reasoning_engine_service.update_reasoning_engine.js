@@ -20,7 +20,7 @@
 
 'use strict';
 
-function main(reasoningEngine, updateMask) {
+function main(reasoningEngine) {
   // [START aiplatform_v1beta1_generated_ReasoningEngineService_UpdateReasoningEngine_async]
   /**
    * This snippet has been automatically generated and should be regarded as a code template only.
@@ -33,7 +33,7 @@ function main(reasoningEngine, updateMask) {
    */
   // const reasoningEngine = {}
   /**
-   *  Required. Mask specifying which fields to update.
+   *  Optional. Mask specifying which fields to update.
    */
   // const updateMask = {}
 
@@ -47,7 +47,6 @@ function main(reasoningEngine, updateMask) {
     // Construct request
     const request = {
       reasoningEngine,
-      updateMask,
     };
 
     // Run request

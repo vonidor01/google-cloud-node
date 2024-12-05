@@ -2620,8 +2620,8 @@ export class ReasoningEngineServiceClient {
    *   The request object that will be sent.
    * @param {google.cloud.aiplatform.v1beta1.ReasoningEngine} request.reasoningEngine
    *   Required. The ReasoningEngine which replaces the resource on the server.
-   * @param {google.protobuf.FieldMask} request.updateMask
-   *   Required. Mask specifying which fields to update.
+   * @param {google.protobuf.FieldMask} [request.updateMask]
+   *   Optional. Mask specifying which fields to update.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.

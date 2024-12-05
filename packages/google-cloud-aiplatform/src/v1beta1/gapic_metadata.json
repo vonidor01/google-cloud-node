@@ -3328,6 +3328,11 @@
               "methods": [
                 "queryReasoningEngine"
               ]
+            },
+            "StreamQueryReasoningEngine": {
+              "methods": [
+                "streamQueryReasoningEngine"
+              ]
             }
           }
         },

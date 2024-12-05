@@ -13154,7 +13154,7 @@
             "segments": [
                 {
                     "start": 25,
-                    "end": 60,
+                    "end": 65,
                     "type": "FULL"
                 }
             ],
@@ -13170,6 +13170,10 @@
                     {
                         "name": "input",
                         "type": ".google.protobuf.Struct"
+                    },
+                    {
+                        "name": "class_method",
+                        "type": "TYPE_STRING"
                     }
                 ],
                 "resultType": ".google.cloud.aiplatform.v1beta1.QueryReasoningEngineResponse",
@@ -13180,6 +13184,54 @@
                 "method": {
                     "shortName": "QueryReasoningEngine",
                     "fullName": "google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionService.QueryReasoningEngine",
+                    "service": {
+                        "shortName": "ReasoningEngineExecutionService",
+                        "fullName": "google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionService"
+                    }
+                }
+            }
+        },
+        {
+            "regionTag": "aiplatform_v1beta1_generated_ReasoningEngineExecutionService_StreamQueryReasoningEngine_async",
+            "title": "DatasetService streamQueryReasoningEngine Sample",
+            "origin": "API_DEFINITION",
+            "description": " Streams queries using a reasoning engine.",
+            "canonical": true,
+            "file": "reasoning_engine_execution_service.stream_query_reasoning_engine.js",
+            "language": "JAVASCRIPT",
+            "segments": [
+                {
+                    "start": 25,
+                    "end": 67,
+                    "type": "FULL"
+                }
+            ],
+            "clientMethod": {
+                "shortName": "StreamQueryReasoningEngine",
+                "fullName": "google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionService.StreamQueryReasoningEngine",
+                "async": true,
+                "parameters": [
+                    {
+                        "name": "name",
+                        "type": "TYPE_STRING"
+                    },
+                    {
+                        "name": "input",
+                        "type": ".google.protobuf.Struct"
+                    },
+                    {
+                        "name": "class_method",
+                        "type": "TYPE_STRING"
+                    }
+                ],
+                "resultType": ".google.api.HttpBody",
+                "client": {
+                    "shortName": "ReasoningEngineExecutionServiceClient",
+                    "fullName": "google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionServiceClient"
+                },
+                "method": {
+                    "shortName": "StreamQueryReasoningEngine",
+                    "fullName": "google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionService.StreamQueryReasoningEngine",
                     "service": {
                         "shortName": "ReasoningEngineExecutionService",
                         "fullName": "google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionService"
@@ -13334,7 +13386,7 @@
             "segments": [
                 {
                     "start": 25,
-                    "end": 59,
+                    "end": 58,
                     "type": "FULL"
                 }
             ],
