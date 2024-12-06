@@ -9390,7 +9390,7 @@
       "segments": [
         {
           "start": 25,
-          "end": 88,
+          "end": 92,
           "type": "FULL"
         }
       ],
@@ -9426,6 +9426,10 @@
           {
             "name": "language_code",
             "type": "TYPE_STRING"
+          },
+          {
+            "name": "list_all_versions",
+            "type": "TYPE_BOOL"
           }
         ],
         "resultType": ".google.cloud.aiplatform.v1beta1.ListPublisherModelsResponse",
