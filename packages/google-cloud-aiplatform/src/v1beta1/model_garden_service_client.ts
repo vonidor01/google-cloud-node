@@ -709,6 +709,8 @@ export class ModelGardenServiceClient {
    *   Optional. The IETF BCP-47 language code representing the language in which
    *   the publisher models' text information should be written in. If not set, by
    *   default English (en).
+   * @param {boolean} [request.listAllVersions]
+   *   Optional. List all publisher model versions if the flag is set to true.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Promise} - The promise which resolves to an array.
@@ -823,6 +825,8 @@ export class ModelGardenServiceClient {
    *   Optional. The IETF BCP-47 language code representing the language in which
    *   the publisher models' text information should be written in. If not set, by
    *   default English (en).
+   * @param {boolean} [request.listAllVersions]
+   *   Optional. List all publisher model versions if the flag is set to true.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Stream}
@@ -885,6 +889,8 @@ export class ModelGardenServiceClient {
    *   Optional. The IETF BCP-47 language code representing the language in which
    *   the publisher models' text information should be written in. If not set, by
    *   default English (en).
+   * @param {boolean} [request.listAllVersions]
+   *   Optional. List all publisher model versions if the flag is set to true.
    * @param {object} [options]
    *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
    * @returns {Object}

@@ -39,6 +39,7 @@
                         "NVIDIA_A100_80GB": 9,
                         "NVIDIA_L4": 11,
                         "NVIDIA_H100_80GB": 13,
+                        "NVIDIA_H100_MEGA_80GB": 14,
                         "TPU_V2": 6,
                         "TPU_V3": 7,
                         "TPU_V4_POD": 10,
@@ -34668,6 +34669,7 @@
                         "NVIDIA_A100_80GB": 9,
                         "NVIDIA_L4": 11,
                         "NVIDIA_H100_80GB": 13,
+                        "NVIDIA_H100_MEGA_80GB": 14,
                         "TPU_V2": 6,
                         "TPU_V3": 7,
                         "TPU_V4_POD": 10,
@@ -60860,6 +60862,13 @@
                         "languageCode": {
                           "type": "string",
                           "id": 7,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "listAllVersions": {
+                          "type": "bool",
+                          "id": 8,
                           "options": {
                             "(google.api.field_behavior)": "OPTIONAL"
                           }

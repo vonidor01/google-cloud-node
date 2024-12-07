@@ -65,6 +65,10 @@ function main(parent) {
    *  default English (en).
    */
   // const languageCode = 'abc123'
+  /**
+   *  Optional. List all publisher model versions if the flag is set to true.
+   */
+  // const listAllVersions = true
 
   // Imports the Aiplatform library
   const {ModelGardenServiceClient} = require('@google-cloud/aiplatform').v1beta1;
