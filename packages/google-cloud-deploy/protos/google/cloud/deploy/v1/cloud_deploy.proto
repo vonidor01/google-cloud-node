@@ -1427,12 +1427,17 @@ message GkeCluster {
   //
   // Only specify this option when `cluster` is a [private GKE
   // cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept).
+  // Note that `internal_ip` and `dns_endpoint` cannot both be set to true.
   bool internal_ip = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. If set, used to configure a
   // [proxy](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#proxy)
   // to the Kubernetes server.
   string proxy_url = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If set, the cluster will be accessed using the DNS endpoint. Note
+  // that `dns_endpoint` and `internal_ip` cannot both be set to true.
+  bool dns_endpoint = 4 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Information specifying an Anthos Cluster.
