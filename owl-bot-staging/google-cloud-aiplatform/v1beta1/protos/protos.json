@@ -3294,6 +3294,47 @@
                         }
                       }
                     },
+                    "PrebuiltVoiceConfig": {
+                      "oneofs": {
+                        "_voiceName": {
+                          "oneof": [
+                            "voiceName"
+                          ]
+                        }
+                      },
+                      "fields": {
+                        "voiceName": {
+                          "type": "string",
+                          "id": 1,
+                          "options": {
+                            "proto3_optional": true
+                          }
+                        }
+                      }
+                    },
+                    "VoiceConfig": {
+                      "oneofs": {
+                        "voiceConfig": {
+                          "oneof": [
+                            "prebuiltVoiceConfig"
+                          ]
+                        }
+                      },
+                      "fields": {
+                        "prebuiltVoiceConfig": {
+                          "type": "PrebuiltVoiceConfig",
+                          "id": 1
+                        }
+                      }
+                    },
+                    "SpeechConfig": {
+                      "fields": {
+                        "voiceConfig": {
+                          "type": "VoiceConfig",
+                          "id": 1
+                        }
+                      }
+                    },
                     "GenerationConfig": {
                       "oneofs": {
                         "_temperature": {
@@ -3359,6 +3400,16 @@
                         "_audioTimestamp": {
                           "oneof": [
                             "audioTimestamp"
+                          ]
+                        },
+                        "_mediaResolution": {
+                          "oneof": [
+                            "mediaResolution"
+                          ]
+                        },
+                        "_speechConfig": {
+                          "oneof": [
+                            "speechConfig"
                           ]
                         }
                       },
@@ -3481,6 +3532,30 @@
                             "(google.api.field_behavior)": "OPTIONAL",
                             "proto3_optional": true
                           }
+                        },
+                        "responseModalities": {
+                          "rule": "repeated",
+                          "type": "Modality",
+                          "id": 21,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
+                        "mediaResolution": {
+                          "type": "MediaResolution",
+                          "id": 22,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL",
+                            "proto3_optional": true
+                          }
+                        },
+                        "speechConfig": {
+                          "type": "SpeechConfig",
+                          "id": 23,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL",
+                            "proto3_optional": true
+                          }
                         }
                       },
                       "nested": {
@@ -3550,6 +3625,22 @@
                                 }
                               }
                             }
+                          }
+                        },
+                        "Modality": {
+                          "values": {
+                            "MODALITY_UNSPECIFIED": 0,
+                            "TEXT": 1,
+                            "IMAGE": 2,
+                            "AUDIO": 3
+                          }
+                        },
+                        "MediaResolution": {
+                          "values": {
+                            "MEDIA_RESOLUTION_UNSPECIFIED": 0,
+                            "MEDIA_RESOLUTION_LOW": 1,
+                            "MEDIA_RESOLUTION_MEDIUM": 2,
+                            "MEDIA_RESOLUTION_HIGH": 3
                           }
                         }
                       }
@@ -4316,6 +4407,13 @@
                             "(google.api.field_behavior)": "OPTIONAL"
                           }
                         },
+                        "googleSearch": {
+                          "type": "GoogleSearch",
+                          "id": 7,
+                          "options": {
+                            "(google.api.field_behavior)": "OPTIONAL"
+                          }
+                        },
                         "googleSearchRetrieval": {
                           "type": "GoogleSearchRetrieval",
                           "id": 3,
@@ -4332,6 +4430,9 @@
                         }
                       },
                       "nested": {
+                        "GoogleSearch": {
+                          "fields": {}
+                        },
                         "CodeExecution": {
                           "fields": {}
                         }
