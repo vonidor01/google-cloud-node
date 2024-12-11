@@ -39140,7 +39140,8 @@
                         "parser": {
                           "oneof": [
                             "advancedParser",
-                            "layoutParser"
+                            "layoutParser",
+                            "llmParser"
                           ]
                         }
                       },
@@ -39152,6 +39153,10 @@
                         "layoutParser": {
                           "type": "LayoutParser",
                           "id": 4
+                        },
+                        "llmParser": {
+                          "type": "LlmParser",
+                          "id": 5
                         },
                         "useAdvancedPdfParsing": {
                           "type": "bool",
@@ -39179,6 +39184,22 @@
                             "maxParsingRequestsPerMin": {
                               "type": "int32",
                               "id": 2
+                            }
+                          }
+                        },
+                        "LlmParser": {
+                          "fields": {
+                            "modelName": {
+                              "type": "string",
+                              "id": 1
+                            },
+                            "maxParsingRequestsPerMin": {
+                              "type": "int32",
+                              "id": 2
+                            },
+                            "customParsingPrompt": {
+                              "type": "string",
+                              "id": 3
                             }
                           }
                         }
