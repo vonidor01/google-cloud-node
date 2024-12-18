@@ -1059,6 +1059,10 @@ export class VertexRagDataServiceClient {
             },
             {
               delete:
+                '/ui/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*/operations/*}',
+            },
+            {
+              delete:
                 '/ui/{name=projects/*/locations/*/featureOnlineStores/*/featureViews/*/operations/*}',
             },
             {delete: '/v1beta1/{name=projects/*/locations/*/operations/*}'},
@@ -1272,6 +1276,10 @@ export class VertexRagDataServiceClient {
             },
             {
               delete:
+                '/v1beta1/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*/operations/*}',
+            },
+            {
+              delete:
                 '/v1beta1/{name=projects/*/locations/*/featureOnlineStores/*/featureViews/*/operations/*}',
             },
           ],
@@ -1410,6 +1418,9 @@ export class VertexRagDataServiceClient {
             },
             {
               get: '/ui/{name=projects/*/locations/*/featureGroups/*/features/*/operations/*}',
+            },
+            {
+              get: '/ui/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*/operations/*}',
             },
             {get: '/v1beta1/{name=projects/*/locations/*/operations/*}'},
             {
@@ -1569,6 +1580,9 @@ export class VertexRagDataServiceClient {
             {
               get: '/v1beta1/{name=projects/*/locations/*/featureGroups/*/features/*/operations/*}',
             },
+            {
+              get: '/v1beta1/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*/operations/*}',
+            },
           ],
         },
         {
@@ -1694,6 +1708,9 @@ export class VertexRagDataServiceClient {
             },
             {
               get: '/ui/{name=projects/*/locations/*/featureGroups/*/features/*/operations/*}:wait',
+            },
+            {
+              get: '/ui/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*/operations/*}:wait',
             },
             {get: '/v1beta1/{name=projects/*/locations/*}/operations'},
             {get: '/v1beta1/{name=projects/*/locations/*/agents/*}/operations'},
@@ -1849,6 +1866,9 @@ export class VertexRagDataServiceClient {
             {
               get: '/v1beta1/{name=projects/*/locations/*/featureGroups/*/features/*}/operations',
             },
+            {
+              get: '/v1beta1/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*}/operations',
+            },
           ],
         },
         {
@@ -1998,6 +2018,9 @@ export class VertexRagDataServiceClient {
             },
             {
               post: '/ui/{name=projects/*/locations/*/featureGroups/*/features/*/operations/*}:wait',
+            },
+            {
+              post: '/ui/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*/operations/*}:wait',
             },
             {post: '/v1beta1/{name=projects/*/locations/*/operations/*}:wait'},
             {
@@ -2155,6 +2178,9 @@ export class VertexRagDataServiceClient {
             },
             {
               post: '/v1beta1/{name=projects/*/locations/*/featureGroups/*/features/*/operations/*}:wait',
+            },
+            {
+              post: '/v1beta1/{name=projects/*/locations/*/featureGroups/*/featureMonitors/*/operations/*}:wait',
             },
           ],
         },
